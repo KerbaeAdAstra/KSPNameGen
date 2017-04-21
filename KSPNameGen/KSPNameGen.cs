@@ -1,4 +1,4 @@
-﻿/*
+/*
  * KSPNameGen: name generator for Kerbal Space Program
  * Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
  * KSPNameGen is (c) 2016-2017 0111narwhalz & TotallyNotHuman_
@@ -171,14 +171,6 @@ namespace KSPNameGen
 
 					break;
 
-				/* case 6:
-
-					//break;
-
-				case 7:
-
-					break; 6 and 7 are forbidden mechanisms */
-
 				case 8:
 
 					break;
@@ -202,14 +194,6 @@ namespace KSPNameGen
 				case 13:
 
 					break;
-
-				/* case 14:
-
-					break;
-
-				case 15:
-
-					break; 14 and 15 likewise */
 
 				default:
 
