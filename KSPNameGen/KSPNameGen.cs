@@ -127,6 +127,26 @@ namespace KSPNameGen
 		static Random random = new Random();
 		static uint param = 15;
 
+		/* The variable 'param' has a maximum value of 15 (1111 binary).
+		 * Bit 0: name type (Future = 1; standard = 0)
+		 * Bits 1 & 2: combo (10), constructed only (01), proper only (00)
+		 * Bit 3: gender (male = 1; female = 0)
+		 * Possible values:
+		 *  0 (0000): Standard proper female
+		 *  1 (0001): Standard proper male
+		 *  2 (0010): Standard constructed female
+		 *  3 (0011): Standard constructed male
+		 *  4 (0100): Standard combined female
+		 *  5 (0101): Standard combined male
+		 *  8 (1000): Future proper female
+		 *  9 (1001): Future proper male
+		 * 10 (1010): Future constructed female
+		 * 11 (1011): Future constructed male
+		 * 12 (1100): Future combined female
+		 * 13 (1101): Future combined male
+		 * 15 (1111): Default value
+		 */
+
 		// application logic begins here
 
 		static void Kill()
@@ -148,27 +168,41 @@ namespace KSPNameGen
 			switch (param)
 			{
 				case 0:
-
+					Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
 					break;
 
 				case 1:
-
+					Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
 					break;
 
 				case 2:
-
+					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
 					break;
 
 				case 3:
-
+					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
 					break;
 
 				case 4:
-
+					if (toggle)
+					{
+						Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
+					}
+					else
+					{
+						Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
+					}
 					break;
 
 				case 5:
-
+					if (toggle)
+					{
+						Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
+					}
+					else
+					{
+						Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
+					}
 					break;
 
 				case 8:
