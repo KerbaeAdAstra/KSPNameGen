@@ -112,42 +112,75 @@ namespace KSPNameGen
 
 		static String[] prompt = {
 			"Specify types of names to generate.\n" +
-			"Type 'f' for Future-style names, or 's' for standard names.", // type
+			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
 			"Specify if you want to generate:\n" +
 			" r: a combination of constructed and proper names\n" +
 			" c: constructed names only, or\n" +
-			" p: proper names only", // combo, c only, or p only
+			" p: proper names only", // CMBO
 			"Specify gender of generated names.\n" +
-			"Type 'm' for male, or 'f' for female", // gender
-			"Specify number of names to generate." // number
+			"Type 'm' for male, or 'f' for female", // GNDR
+			"Specify number of names to generate." // NMBR
 		};
 
 		// variable definitions
 
 		static Random random = new Random();
-		static uint param = 15;
-
-		/* The variable 'param' has a maximum value of 15 (1111 binary).
-		 * Bit 0: name type (Future = 1; standard = 0)
-		 * Bits 1 & 2: combo (10), constructed only (01), proper only (00)
-		 * Bit 3: gender (male = 1; female = 0)
-		 * Possible values:
-		 *  0 (0000): Standard proper female
-		 *  1 (0001): Standard proper male
-		 *  2 (0010): Standard constructed female
-		 *  3 (0011): Standard constructed male
-		 *  4 (0100): Standard combined female
-		 *  5 (0101): Standard combined male
-		 *  8 (1000): Future proper female
-		 *  9 (1001): Future proper male
-		 * 10 (1010): Future constructed female
-		 * 11 (1011): Future constructed male
-		 * 12 (1100): Future combined female
-		 * 13 (1101): Future combined male
-		 * 15 (1111): Default value
-		 */
+		static String param = null;
+		static uint inpar = 0;
 
 		// application logic begins here
+
+		static void Loop()
+		{
+			String input;
+			bool gen = true;
+			for (;;)
+			{
+				if (gen)
+				{
+					nameGen(param, inpar);
+				}
+				input = PromptS("Would you like to generate more names? (Y/N)", false);
+				switch (input)
+				{
+					case "y":
+						gen = true;
+						break;
+
+					case "n":
+						Kill();
+						break;
+
+					default:
+						Console.WriteLine("Invalid response.");
+						gen = false;
+						break;
+				}
+			}
+		}
+
+		static String PromptS(String query, bool help)
+		{
+			Console.WriteLine(query);
+			if (help)
+			{
+				Console.WriteLine("Type 'help' for help; 'exit' to exit.");
+			}
+			return Console.ReadLine().ToLower();
+		}
+
+		static uint PromptI(String query)
+		{
+			uint inputInt = 0;
+			Console.WriteLine(query);
+			String input = Console.ReadLine();
+			if (!UInt32.TryParse(input, out inputInt))
+			{
+				Console.WriteLine("A number was not specified.");
+				nameGen(param, 3);
+			}
+			return inputInt;
+		}
 
 		static void Kill()
 		{
@@ -162,28 +195,91 @@ namespace KSPNameGen
 			Environment.Exit(0);
 		}
 
+
+		static void nameGen(String param, uint inpar)
+		{
+			String input;
+			uint inint;
+
+			switch (inpar)
+			{
+				case 0: // TYPE
+					input = PromptS(prompt[inpar], true);
+					switch (input)
+					{
+						case "exit":
+							Kill();
+							break;
+
+						case "f":
+							param = "f";
+							inpar = 1; // CMBO
+							break;
+
+						case "s":
+							param = "s";
+							inpar = 1; // CMBO
+							break;
+
+						default:
+							Console.WriteLine("Specified type is invalid.");
+							break;
+					}
+					nameGen(param, inpar);
+					break;
+
+				case 1: // CMBO
+					input = PromptS(prompt[inpar], true);
+					switch (input)
+					{
+						case "exit":
+							Kill();
+							break;
+
+						case "r":
+							param += "r";
+							inpar = 2; // GNDR
+							break;
+
+						case "c":
+							param += "c";
+							inpar = 2;  //GNDR
+							break;
+
+						case "p":
+							param += "p";
+							inpar = 2;  //GNDR
+							break;
+
+						default:
+							Console.WriteLine("Specified modifier is invalid.");
+							break;
+					}
+			}
+		}
+
 		static void Generate()
 		{
 			bool toggle = random.Next(20) == 0;
 			switch (param)
 			{
-				case 0:
+				case "spf":
 					Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
 					break;
 
-				case 1:
+				case "spm":
 					Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
 					break;
 
-				case 2:
+				case "scf":
 					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
 					break;
 
-				case 3:
+				case "scm":
 					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
 					break;
 
-				case 4:
+				case "srf":
 					if (toggle)
 					{
 						Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
@@ -194,7 +290,7 @@ namespace KSPNameGen
 					}
 					break;
 
-				case 5:
+				case "srm":
 					if (toggle)
 					{
 						Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
@@ -205,32 +301,46 @@ namespace KSPNameGen
 					}
 					break;
 
-				case 8:
-
+				case "fpf":
+					Console.WriteLine(fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
 					break;
 
-				case 9:
-
+				case "fpm":
+					Console.WriteLine(mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
 					break;
 
-				case 10:
-
+				case "fcf":
+					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
 					break;
 
-				case 11:
-
+				case "fcm":
+					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
 					break;
 
-				case 12:
-
+				case "frf":
+					if (toggle)
+					{
+						Console.WriteLine(fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+					}
+					else
+					{
+						Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+					}
 					break;
 
-				case 13:
-
+				case "frm":
+					if (toggle)
+					{
+						Console.WriteLine(mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+					}
+					else
+					{
+						Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+					}
 					break;
 
 				default:
-
+					Console.WriteLine("Specified type is invalid.");
 					break;
 			}
 	}
