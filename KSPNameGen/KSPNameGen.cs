@@ -122,6 +122,13 @@ namespace KSPNameGen
 			"Specify number of names to generate." // NMBR
 		};
 
+		// static version defs
+
+		static uint MAJOR = 0;
+		static uint MINOR = 1;
+		static uint PATCH = 0;
+		static string SUFFIX = "-rc1";
+
 		// variable definitions
 
 		static Random random = new Random();
@@ -133,6 +140,7 @@ namespace KSPNameGen
 
 		static void Main()
 		{
+			Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFIX);
 			Loop(true);
 		}
 
