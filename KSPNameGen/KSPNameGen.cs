@@ -30,7 +30,7 @@ namespace KSPNameGen
 	{
 		// array definitions
 
-		static String[] fcp = {	// female constructed prefix
+		static string[] fcp = {	// female constructed prefix
 			"Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
 			"Cer", "Clau", "Cris", "Da", "Dan", "Daph", "De", "Deb", "Di", "Eil",
 			"Eli", "Eri", "Fran", "Gem", "Ger", "Gi", "Gil", "Gle", "Gra", "Gwen",
@@ -43,7 +43,7 @@ namespace KSPNameGen
 			"Tra", "Tri", "Ur", "Val", "Ver", "Vir", "Wen", "Wil", "Zel"
 		};
 
-		static String[] fcs = {	// female constructed suffix
+		static string[] fcs = {	// female constructed suffix
        		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
@@ -63,7 +63,7 @@ namespace KSPNameGen
 			"zie", "zy"
 		};
 
-		static String[] fpr = {    // female proper name
+		static string[] fpr = {    // female proper name
 			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
@@ -73,7 +73,7 @@ namespace KSPNameGen
 			"Tatyana", "Valentina"
 		};
 
-		static String[] mcp = {    // male constructed prefix
+		static string[] mcp = {    // male constructed prefix
 			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
@@ -86,7 +86,7 @@ namespace KSPNameGen
 			"Sid", "Sig", "Son", "Thom", "Thomp", "Tom", "Wehr", "Wil"
 		};
 
-		static String[] mcs = {    // male constructed suffix
+		static string[] mcs = {    // male constructed suffix
 			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
@@ -102,7 +102,7 @@ namespace KSPNameGen
 			"win", "wise", "zer", "zon", "zor"
 		};
 
-		static String[] mpr = {    // male proper name
+		static string[] mpr = {    // male proper name
 			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
@@ -110,7 +110,7 @@ namespace KSPNameGen
 			"Tom", "Will"
 		};
 
-		static String[] prompt = {
+		static string[] prompt = {
 			"Specify types of names to generate.\n" +
 			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
 			"Specify if you want to generate:\n" +
@@ -125,7 +125,7 @@ namespace KSPNameGen
 		// variable definitions
 
 		static Random random = new Random();
-		static String param = null;
+		static string param = null;
 		static uint inpar = 0;
 		static bool gen;
 
@@ -138,7 +138,7 @@ namespace KSPNameGen
 
 		static void Loop(bool gen)
 		{
-			String input;
+			string input;
 			for (;;)
 			{
 				if (gen)
@@ -164,7 +164,7 @@ namespace KSPNameGen
 			}
 		}
 
-		static String PromptS(String query, bool help)
+		static string PromptS(string query, bool help)
 		{
 			Console.WriteLine(query);
 			if (help)
@@ -174,11 +174,11 @@ namespace KSPNameGen
 			return Console.ReadLine().ToLower();
 		}
 
-		static uint PromptI(String query)
+		static uint PromptI(string query)
 		{
 			uint inputInt = 0;
 			Console.WriteLine(query);
-			String input = Console.ReadLine();
+			string input = Console.ReadLine();
 			if (!UInt32.TryParse(input, out inputInt))
 			{
 				Console.WriteLine("A number was not specified.");
@@ -219,9 +219,9 @@ namespace KSPNameGen
 			nameGen(param, inpar);
 		}
 
-		static void nameGen(String param, uint inpar)
+		static void nameGen(string param, uint inpar)
 		{
-			String input;
+			string input;
 			uint inint;
 
 			switch (inpar)
@@ -334,7 +334,7 @@ namespace KSPNameGen
 			}
 		}
 
-		static void Generate(String param)
+		static void Generate(string param)
 		{
 			bool toggle = random.Next(20) == 0;
 			switch (param)
