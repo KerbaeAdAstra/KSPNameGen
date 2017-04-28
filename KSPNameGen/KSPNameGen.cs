@@ -118,7 +118,7 @@ namespace KSPNameGen
 			" c: constructed names only, or\n" +
 			" p: proper names only", // CMBO
 			"Specify gender of generated names.\n" +
-			"Type 'm' for male, or 'f' for female", // GNDR
+			"Type 'm' for male, or 'f' for female.", // GNDR
 			"Specify number of names to generate." // NMBR
 		};
 
@@ -127,13 +127,18 @@ namespace KSPNameGen
 		static Random random = new Random();
 		static String param = null;
 		static uint inpar = 0;
+		static bool gen;
 
 		// application logic begins here
 
-		static void Loop()
+		static void Main()
+		{
+			Loop(true);
+		}
+
+		static void Loop(bool gen)
 		{
 			String input;
-			bool gen = true;
 			for (;;)
 			{
 				if (gen)
@@ -194,7 +199,25 @@ namespace KSPNameGen
 			Console.WriteLine();
 			Environment.Exit(0);
 		}
-
+		
+		static void Help()
+		{
+			switch (inpar)
+			{
+				case 0: // TYPE
+					Console.WriteLine("Standard names have a 'Kerman' surname, while Future-style names have randomly generated surnames.");
+					break;
+				case 1: // CMBO
+					Console.WriteLine("Proper names are chosen from a list, while constructed names are constructed from a list of prefixes and suffixes. If the option 'combination' is chosen, then there is a 1/20 chance that the generated name is proper.");
+					break;
+				// Help for gender and number of names are not included. They should be self-explanatory.
+				
+				default:
+					Console.WriteLine("Invalid help topic.");
+					break;
+			}
+			nameGen(param, inpar);
+		}
 
 		static void nameGen(String param, uint inpar)
 		{
@@ -236,6 +259,10 @@ namespace KSPNameGen
 							Kill();
 							break;
 
+						case "help":
+							Help();
+							break;
+
 						case "r":
 							param += "r";
 							inpar = 2; // GNDR
@@ -243,22 +270,71 @@ namespace KSPNameGen
 
 						case "c":
 							param += "c";
-							inpar = 2;  //GNDR
+							inpar = 2; // GNDR
 							break;
 
 						case "p":
 							param += "p";
-							inpar = 2;  //GNDR
+							inpar = 2; // GNDR
 							break;
 
 						default:
 							Console.WriteLine("Specified modifier is invalid.");
 							break;
 					}
+					break;
+
+				case 2: // GNDR
+					input = PromptS(prompt[inpar], false);
+					switch (input)
+					{
+						case "exit":
+							Kill();
+							break;
+
+						case "help":
+							Console.WriteLine("Help is not available for this topic.");
+							break;
+
+						case "f":
+							param += "f";
+							inpar = 3; // NMBR
+							break;
+
+						case "m":
+							param += "m";
+							inpar = 3; // NMBR
+							break;
+
+						default:
+							Console.WriteLine("Specified gender is invalid.");
+							break;
+					}
+					break;
+
+				case 3: // NMBR
+					inint = PromptI(prompt[inpar]);
+					if (inint < 0)
+					{
+						Console.WriteLine("Specified number must be a positive integer.");
+						break;
+					}
+					for (int i = 0; i < inint; i++)
+						Generate(param);
+					inpar = 4;
+					break;
+			}
+			if (inpar < 4)
+			{
+				nameGen(param, inpar);
+			}
+			else
+			{
+				Loop(false);
 			}
 		}
 
-		static void Generate()
+		static void Generate(String param)
 		{
 			bool toggle = random.Next(20) == 0;
 			switch (param)
@@ -343,5 +419,6 @@ namespace KSPNameGen
 					Console.WriteLine("Specified type is invalid.");
 					break;
 			}
+		}
 	}
 }
