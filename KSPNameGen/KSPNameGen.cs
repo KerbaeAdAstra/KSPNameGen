@@ -313,7 +313,7 @@ namespace KSPNameGen
 
 				case 3: // NMBR
 					inLong = PromptI(prompt[inpar]);
-					if (inLong < 0)
+					if (inLong = 0)
 					{
 						Console.WriteLine("Specified number must be nonzero.");
 						break;
