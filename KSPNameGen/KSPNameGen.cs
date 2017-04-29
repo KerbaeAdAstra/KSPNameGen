@@ -44,7 +44,7 @@ namespace KSPNameGen
 		};
 
 		static string[] fcs = {	// female constructed suffix
-       		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
+		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
 			"dia", "die", "dine", "dolin", "dra", "drien", "e", "edith", "ee",
@@ -110,7 +110,7 @@ namespace KSPNameGen
 			"Tom", "Will"
 		};
 
-		static string[] prompt = {
+		static string[] prompt = { // cache prompts
 			"Specify types of names to generate.\n" +
 			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
 			"Specify if you want to generate:\n" +
@@ -122,39 +122,45 @@ namespace KSPNameGen
 			"Specify number of names to generate." // NMBR
 		};
 
+		static string[] help = { // cache help topics
+			"Standard names have a 'Kerman' surname, while Future-style names have randomly generated surnames.", // TYPE
+			"Proper names are chosen from a list, while constructed names are constructed from a list of prefixes and suffixes.\n" +
+			"If the option 'combination' is chosen, then there is a 1/20 chance that the generated name is proper." // CMBO
+		};
+
 		// static version defs
 
-		static uint MAJOR = 0;
-		static uint MINOR = 1;
-		static uint PATCH = 0;
-		static string SUFFIX = "-rc1";
+		static ushort MAJOR = 0;
+		static ushort MINOR = 1;
+		static ushort PATCH = 0;
+		static string SUFFX = "-rc1";
 
 		// variable definitions
 
 		static Random random = new Random();
 		static string param = null;
-		static uint inpar = 0;
+		static ushort inpar = 0;
 		static bool gen;
 
 		// application logic begins here
 
 		static void Main()
 		{
-			Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFIX);
+			Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 			Loop(true);
 		}
 
 		static void Loop(bool gen)
 		{
-			string input;
+			string inString;
 			for (;;)
 			{
 				if (gen)
 				{
 					nameGen(param, inpar);
 				}
-				input = PromptS("Would you like to generate more names? (Y/N)", false);
-				switch (input)
+				inString = PromptS("Would you like to generate more names? (Y/N)", false);
+				switch (inString)
 				{
 					case "y":
 						gen = true;
@@ -182,17 +188,17 @@ namespace KSPNameGen
 			return Console.ReadLine().ToLower();
 		}
 
-		static uint PromptI(string query)
+		static ulong PromptI(string query)
 		{
-			uint inputInt = 0;
+			ulong inputLong = 0;
 			Console.WriteLine(query);
 			string input = Console.ReadLine();
-			if (!UInt32.TryParse(input, out inputInt))
+			if (!UInt64.TryParse(input, out inputLong))
 			{
-				Console.WriteLine("A number was not specified.");
+				Console.WriteLine("An integer was not specified.");
 				nameGen(param, 3);
 			}
-			return inputInt;
+			return inputLong;
 		}
 
 		static void Kill()
@@ -200,46 +206,31 @@ namespace KSPNameGen
 			Console.Write("Exiting");
 			for (int i = 0; i < 3; i++)
 			{
-				Thread.Sleep(1000);
+				Thread.Sleep(333);
 				Console.Write(". ");
 			}
 
 			Console.WriteLine();
 			Environment.Exit(0);
 		}
-		
-		static void Help()
-		{
-			switch (inpar)
-			{
-				case 0: // TYPE
-					Console.WriteLine("Standard names have a 'Kerman' surname, while Future-style names have randomly generated surnames.");
-					break;
-				case 1: // CMBO
-					Console.WriteLine("Proper names are chosen from a list, while constructed names are constructed from a list of prefixes and suffixes. If the option 'combination' is chosen, then there is a 1/20 chance that the generated name is proper.");
-					break;
-				// Help for gender and number of names are not included. They should be self-explanatory.
-				
-				default:
-					Console.WriteLine("Invalid help topic.");
-					break;
-			}
-			nameGen(param, inpar);
-		}
 
-		static void nameGen(string param, uint inpar)
+		static void nameGen(string param, ushort inpar)
 		{
-			string input;
-			uint inint;
+			string inString;
+			ulong inLong;
 
 			switch (inpar)
 			{
 				case 0: // TYPE
-					input = PromptS(prompt[inpar], true);
-					switch (input)
+					inString = PromptS(prompt[inpar], true);
+					switch (inString)
 					{
 						case "exit":
 							Kill();
+							break;
+
+						case "help":
+							Console.WriteLine(help[inpar]);
 							break;
 
 						case "f":
@@ -260,15 +251,15 @@ namespace KSPNameGen
 					break;
 
 				case 1: // CMBO
-					input = PromptS(prompt[inpar], true);
-					switch (input)
+					inString = PromptS(prompt[inpar], true);
+					switch (inString)
 					{
 						case "exit":
 							Kill();
 							break;
 
 						case "help":
-							Help();
+							Console.WriteLine(help[inpar]);
 							break;
 
 						case "r":
@@ -293,8 +284,8 @@ namespace KSPNameGen
 					break;
 
 				case 2: // GNDR
-					input = PromptS(prompt[inpar], false);
-					switch (input)
+					inString = PromptS(prompt[inpar], false);
+					switch (inString)
 					{
 						case "exit":
 							Kill();
@@ -321,13 +312,13 @@ namespace KSPNameGen
 					break;
 
 				case 3: // NMBR
-					inint = PromptI(prompt[inpar]);
-					if (inint < 0)
+					inLong = PromptI(prompt[inpar]);
+					if (inLong < 0)
 					{
-						Console.WriteLine("Specified number must be a positive integer.");
+						Console.WriteLine("Specified number must be nonzero.");
 						break;
 					}
-					for (int i = 0; i < inint; i++)
+					for (ulong i = 0; i < inLong; i++)
 						Generate(param);
 					inpar = 4;
 					break;
