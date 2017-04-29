@@ -133,7 +133,7 @@ namespace KSPNameGen
 		static ushort MAJOR = 0;
 		static ushort MINOR = 1;
 		static ushort PATCH = 0;
-		static string SUFFX = "-rc2";
+		static string SUFFX = "-rc3";
 
 		// variable definitions
 
@@ -313,7 +313,7 @@ namespace KSPNameGen
 
 				case 3: // NMBR
 					inLong = PromptI(prompt[inpar]);
-					if (inLong = 0)
+					if (inLong == 0)
 					{
 						Console.WriteLine("Specified number must be nonzero.");
 						break;
