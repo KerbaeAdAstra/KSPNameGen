@@ -133,47 +133,49 @@ namespace KSPNameGen
 		static ushort MAJOR = 0;
 		static ushort MINOR = 1;
 		static ushort PATCH = 0;
-		static string SUFFX = "-rc3";
+		static string SUFFX = "-rc4";
 
 		// variable definitions
 
 		static Random random = new Random();
-		static string param = null;
+		static string param = "";
 		static ushort inpar = 0;
-		static bool gen;
+		static bool gen = true;
 
 		// application logic begins here
 
 		static void Main()
 		{
 			Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-			Loop(true);
+			Loop();
 		}
 
-		static void Loop(bool gen)
+		static void Loop()
 		{
 			string inString;
 			for (;;)
 			{
 				if (gen)
 				{
-					nameGen(param, inpar);
-				}
-				inString = PromptS("Would you like to generate more names? (Y/N)", false);
-				switch (inString)
+					nameGen();
+					Draw();
+				}else
 				{
-					case "y":
-						gen = true;
-						break;
+					inString = PromptS("Would you like to generate more names? (Y/N)", false);
+					switch (inString)
+					{
+						case "y":
+							gen = true;
+							break;
 
-					case "n":
-						Kill();
-						break;
+						case "n":
+							Kill();
+							break;
 
-					default:
-						Console.WriteLine("Invalid response.");
-						gen = false;
-						break;
+						default:
+							Console.WriteLine("Invalid response.");
+							break;
+					}
 				}
 			}
 		}
@@ -196,7 +198,6 @@ namespace KSPNameGen
 			if (!UInt64.TryParse(input, out inputLong))
 			{
 				Console.WriteLine("An integer was not specified.");
-				nameGen(param, 3);
 			}
 			return inputLong;
 		}
@@ -206,7 +207,7 @@ namespace KSPNameGen
 			Console.Write("Exiting");
 			for (int i = 0; i < 3; i++)
 			{
-				Thread.Sleep(333);
+				Thread.Sleep(200);
 				Console.Write(". ");
 			}
 
@@ -214,7 +215,7 @@ namespace KSPNameGen
 			Environment.Exit(0);
 		}
 
-		static void nameGen(string param, ushort inpar)
+		static void nameGen()
 		{
 			string inString;
 			ulong inLong;
@@ -247,7 +248,6 @@ namespace KSPNameGen
 							Console.WriteLine("Specified type is invalid.");
 							break;
 					}
-					nameGen(param, inpar);
 					break;
 
 				case 1: // CMBO
@@ -320,17 +320,30 @@ namespace KSPNameGen
 					}
 					for (ulong i = 0; i < inLong; i++)
 						Generate(param);
-					inpar = 4;
+					gen = false;
+					param = "";
+					inpar = 0;
 					break;
 			}
-			if (inpar < 4)
-			{
-				nameGen(param, inpar);
-			}
-			else
-			{
-				Loop(false);
-			}
+		}
+		
+		static void Draw()
+		{
+			char[] breakdown = param.ToCharArray();
+			if(breakdown.Length == 0) //param is empty
+				return;
+			Console.Clear();
+			Console.WriteLine(breakdown[0] == 'f' ? "[Future]  Standard" : 
+													" Future  [Standard]");
+			if(breakdown.Length == 1) //param has only the type
+				return;
+			Console.WriteLine(breakdown[1] == 'r' ? " Proper  [Mixed]  Constructed" : 
+													breakdown[0] == 'p' ? "[Proper]  Mixed   Constructed" :
+																		  " Proper   Mixed  [Constructed]");
+			if(breakdown.Length == 2) //param has everything but the gender
+				return;
+			Console.WriteLine(breakdown[2] == 'm' ? "[Male]  Female" :
+													" Male  [Female]");
 		}
 
 		static void Generate(string param)
