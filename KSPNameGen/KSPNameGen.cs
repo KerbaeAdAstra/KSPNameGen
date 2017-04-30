@@ -141,12 +141,12 @@ namespace KSPNameGen
 		static string param = "";
 		static ushort inpar = 0;
 		static bool gen = true;
+		static bool firstRun = true;
 
 		// application logic begins here
 
 		static void Main()
 		{
-			Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 			Loop();
 		}
 
@@ -159,7 +159,8 @@ namespace KSPNameGen
 				{
 					nameGen();
 					Draw();
-				}else
+				}
+				else
 				{
 					inString = PromptS("Would you like to generate more names? (Y/N)", false);
 					switch (inString)
@@ -197,7 +198,7 @@ namespace KSPNameGen
 			string input = Console.ReadLine();
 			if (!UInt64.TryParse(input, out inputLong))
 			{
-				Console.WriteLine("An integer was not specified.");
+				Console.WriteLine("A positive integer was not specified.");
 			}
 			return inputLong;
 		}
@@ -223,6 +224,15 @@ namespace KSPNameGen
 			switch (inpar)
 			{
 				case 0: // TYPE
+					if (firstRun)
+					{
+						Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
+					}
+					else
+					{
+						Console.Clear();
+					}
+					firstRun = false;
 					inString = PromptS(prompt[inpar], true);
 					switch (inString)
 					{
@@ -326,7 +336,7 @@ namespace KSPNameGen
 					break;
 			}
 		}
-		
+
 		static void Draw()
 		{
 			char[] breakdown = param.ToCharArray();
