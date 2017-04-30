@@ -133,7 +133,7 @@ namespace KSPNameGen
 		static ushort MAJOR = 0;
 		static ushort MINOR = 1;
 		static ushort PATCH = 0;
-		static string SUFFX = "-rc4";
+		static string SUFFX = "-rc3";
 
 		// variable definitions
 
@@ -330,20 +330,24 @@ namespace KSPNameGen
 		static void Draw()
 		{
 			char[] breakdown = param.ToCharArray();
-			if(breakdown.Length == 0) //param is empty
+			if (breakdown.Length == 0) // param is empty
 				return;
 			Console.Clear();
-			Console.WriteLine(breakdown[0] == 'f' ? "[Future]  Standard" : 
-													" Future  [Standard]");
-			if(breakdown.Length == 1) //param has only the type
+			Console.WriteLine(breakdown[0] == 'f' ?
+					"[Future]  Standard" :
+					"Future  [Standard]");
+			if (breakdown.Length == 1) // param has only type
 				return;
-			Console.WriteLine(breakdown[1] == 'r' ? " Proper  [Mixed]  Constructed" : 
-													breakdown[0] == 'p' ? "[Proper]  Mixed   Constructed" :
-																		  " Proper   Mixed  [Constructed]");
-			if(breakdown.Length == 2) //param has everything but the gender
+			Console.WriteLine(breakdown[1] == 'r' ?
+					"Proper  [Mixed]  Constructed" :
+			breakdown[1] == 'p' ?
+					"[Proper]  Mixed  Constructed" :
+					"Proper  Mixed  [Constructed]");
+			if (breakdown.Length == 2) // param does not have gender
 				return;
-			Console.WriteLine(breakdown[2] == 'm' ? "[Male]  Female" :
-													" Male  [Female]");
+			Console.WriteLine(breakdown[2] == 'm' ?
+					"[Male]  Female" :
+					"Male  [Female]");
 		}
 
 		static void Generate(string param)
