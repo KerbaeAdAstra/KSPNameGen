@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.IO;
 using System.Threading;
 
 namespace KSPNameGen
@@ -145,9 +146,21 @@ namespace KSPNameGen
 
 		// application logic begins here
 
-		static void Main()
+		static void Main(string[] args)
 		{
-			Loop();
+			
+		}
+
+		static void Usage()
+		{
+			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]\n\n" +
+			             "-i, --interactive: interactive mode (default option)\n" +
+			             "-n, --non-interactive: non-interactive mode\n" +
+			             "-h, --help: show this help\n" +
+			             "PARAMETER: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
+			             "NUMBER: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
+			             "PARAMETER and NUMBER are only used with non-interactive mode.\n\n");
+			Environment.Exit(1);
 		}
 
 		static void Loop()
