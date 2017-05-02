@@ -384,6 +384,28 @@ namespace KSPNameGen
 						Console.WriteLine("Specified number must be nonzero.");
 						break;
 					}
+
+					if (inLong >= 256)
+					{
+						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
+						Console.WriteLine("Generating " + inLong + " names may take a long time.");
+						string genYN = Console.ReadLine().ToLower();
+						if (genYN == "n")
+						{
+							nameGen();
+						}
+					}
+
+					if (inLong >= 4096)
+					{
+						// TODO
+					}
+
+					if (inLong >= 65536)
+					{
+						// TODO
+					}
+
 					for (ulong i = 0; i < inLong; i++)
 						Generate(param, false);
 					gen = false;
