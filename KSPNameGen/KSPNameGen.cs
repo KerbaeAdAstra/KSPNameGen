@@ -153,7 +153,7 @@ namespace KSPNameGen
 				Loop();
 			}
 
-			else if (args[0] == "-i" || args[1] == "--interactive")
+			else if (args[0] == "-i" || args[0] == "--interactive")
 			{
 				Loop();
 			}
