@@ -362,10 +362,10 @@ namespace KSPNameGen
 			if (breakdown.Length == 1) // param has only type
 				return;
 			Console.WriteLine(breakdown[1] == 'r' ?
-					"Proper	[Mixed]	Constructed" :
+					"Proper  [Mixed]  Constructed" :
 			breakdown[1] == 'p' ?
 					"[Proper]  Mixed  Constructed" :
-					"Proper	Mixed  [Constructed]");
+					"Proper  Mixed  [Constructed]");
 			if (breakdown.Length == 2) // param does not have gender
 				return;
 			Console.WriteLine(breakdown[2] == 'm' ?
