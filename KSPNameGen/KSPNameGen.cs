@@ -133,7 +133,7 @@ namespace KSPNameGen
 
 		static ushort MAJOR = 0;
 		static ushort MINOR = 1;
-		static ushort PATCH = 0;
+		static ushort PATCH = 1;
 		static string SUFFX = "";
 
 		// variable definitions
