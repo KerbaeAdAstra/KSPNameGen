@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.IO;
 using System.Threading;
 
 namespace KSPNameGen
@@ -63,7 +64,7 @@ namespace KSPNameGen
 			"zie", "zy"
 		};
 
-		static string[] fpr = {    // female proper name
+		static string[] fpr = { // female proper name
 			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
@@ -73,7 +74,7 @@ namespace KSPNameGen
 			"Tatyana", "Valentina"
 		};
 
-		static string[] mcp = {    // male constructed prefix
+		static string[] mcp = { // male constructed prefix
 			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
@@ -86,7 +87,7 @@ namespace KSPNameGen
 			"Sid", "Sig", "Son", "Thom", "Thomp", "Tom", "Wehr", "Wil"
 		};
 
-		static string[] mcs = {    // male constructed suffix
+		static string[] mcs = { // male constructed suffix
 			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
@@ -102,7 +103,7 @@ namespace KSPNameGen
 			"win", "wise", "zer", "zon", "zor"
 		};
 
-		static string[] mpr = {    // male proper name
+		static string[] mpr = { // male proper name
 			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
@@ -132,12 +133,12 @@ namespace KSPNameGen
 
 		static ushort MAJOR = 0;
 		static ushort MINOR = 1;
-		static ushort PATCH = 0;
+		static ushort PATCH = 1;
 		static string SUFFX = "";
 
 		// variable definitions
 
-		static Random random = new Random();
+		static readonly Random random = new Random();
 		static string param = "";
 		static ushort inpar = 0;
 		static bool gen = true;
@@ -145,9 +146,65 @@ namespace KSPNameGen
 
 		// application logic begins here
 
-		static void Main()
+		static void Main(string[] args)
 		{
-			Loop();
+			if (args.Length == 0)
+			{
+				Loop();
+			}
+
+			else if (args[0] == "-i" || args[0] == "--interactive")
+			{
+				Loop();
+			}
+
+			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
+			{
+				
+				ulong inputLong;
+				if (!UInt64.TryParse(args[2], out inputLong))
+				{
+					Console.WriteLine("A positive integer was not specified.");
+					Kill(1);
+				}
+				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
+				for (ulong i = 0; i < inputLong; i++)
+					Generate(args[1], true);
+				Console.WriteLine("Complete.");
+			}
+
+			else if (args[0] == "-h" || args[0] == "--help")
+			{
+				Usage(false);
+			}
+
+			else
+			{
+				Usage(true);
+			}
+			
+			Console.ReadKey();
+			Console.WriteLine();
+			Kill(0);
+		}
+
+		static void Usage(bool error)
+		{
+			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]\n\n" +
+			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
+			"-n, --non-interactive: non-interactive mode\n" +
+			"-h, --help: show this help\n" +
+			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
+			"number: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
+			"`parameter' and `number' are only used with non-interactive mode.\n\n");
+			if (error)
+			{
+				Kill(1);
+			}
+			else
+			{
+				Kill(0);
+			}
 		}
 
 		static void Loop()
@@ -170,7 +227,7 @@ namespace KSPNameGen
 							break;
 
 						case "n":
-							Kill();
+							Kill(0);
 							break;
 
 						default:
@@ -203,7 +260,7 @@ namespace KSPNameGen
 			return inputLong;
 		}
 
-		static void Kill()
+		static void Kill(ushort exitCode)
 		{
 			Console.Write("Exiting");
 			for (int i = 0; i < 3; i++)
@@ -213,7 +270,7 @@ namespace KSPNameGen
 			}
 
 			Console.WriteLine();
-			Environment.Exit(0);
+			Environment.Exit(exitCode);
 		}
 
 		static void nameGen()
@@ -237,7 +294,7 @@ namespace KSPNameGen
 					switch (inString)
 					{
 						case "exit":
-							Kill();
+							Kill(0);
 							break;
 
 						case "help":
@@ -265,7 +322,7 @@ namespace KSPNameGen
 					switch (inString)
 					{
 						case "exit":
-							Kill();
+							Kill(0);
 							break;
 
 						case "help":
@@ -298,7 +355,7 @@ namespace KSPNameGen
 					switch (inString)
 					{
 						case "exit":
-							Kill();
+							Kill(0);
 							break;
 
 						case "help":
@@ -329,7 +386,7 @@ namespace KSPNameGen
 						break;
 					}
 					for (ulong i = 0; i < inLong; i++)
-						Generate(param);
+						Generate(param, false);
 					gen = false;
 					param = "";
 					inpar = 0;
@@ -360,7 +417,7 @@ namespace KSPNameGen
 					"Male  [Female]");
 		}
 
-		static void Generate(string param)
+		static void Generate(string param, bool ExitOnInvalidParam)
 		{
 			bool toggle = random.Next(20) == 0;
 			switch (param)
@@ -443,6 +500,10 @@ namespace KSPNameGen
 
 				default:
 					Console.WriteLine("Specified type is invalid.");
+					if (ExitOnInvalidParam == true)
+					{
+						Kill(1);
+					}
 					break;
 			}
 		}
