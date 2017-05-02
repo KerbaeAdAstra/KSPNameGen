@@ -148,29 +148,32 @@ namespace KSPNameGen
 
 		static void Main(string[] args)
 		{
-			if (args == null)
+			if (args.Length == 0)
 			{
 				Loop();
 			}
 
-			else if (args[1] == "-i" || args[1] == "--interactive")
+			else if (args[0] == "-i" || args[1] == "--interactive")
 			{
 				Loop();
 			}
 
-			else if (args[1] == "-n" || args[1] == "--non-interactive")
+			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
+				
 				ulong inputLong;
-				if (!UInt64.TryParse(args[3], out inputLong))
+				if (!UInt64.TryParse(args[2], out inputLong))
 				{
 					Console.WriteLine("A positive integer was not specified.");
-					Environment.Exit(1);
+					Kill();
 				}
+				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				for (ulong i = 0; i < inputLong; i++)
-					Generate(args[2], true);
+					Generate(args[1], true);
+				Console.WriteLine("Complete.");
 			}
 
-			else if (args[1] == "-h" || args[0] == "--help")
+			else if (args[0] == "-h" || args[0] == "--help")
 			{
 				Usage();
 			}
@@ -179,6 +182,10 @@ namespace KSPNameGen
 			{
 				Usage();
 			}
+			
+			Console.ReadKey();
+			Console.WriteLine();
+			Kill();
 		}
 
 		static void Usage()
