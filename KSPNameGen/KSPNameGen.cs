@@ -175,12 +175,12 @@ namespace KSPNameGen
 
 			else if (args[0] == "-h" || args[0] == "--help")
 			{
-				Usage();
+				Usage(false);
 			}
 
 			else
 			{
-				Usage();
+				Usage(true);
 			}
 			
 			Console.ReadKey();
@@ -188,7 +188,7 @@ namespace KSPNameGen
 			Kill();
 		}
 
-		static void Usage()
+		static void Usage(bool error)
 		{
 			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]\n\n" +
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
@@ -197,7 +197,14 @@ namespace KSPNameGen
 			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
 			"number: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
 			"`parameter' and `number' are only used with non-interactive mode.\n\n");
-			Environment.Exit(1);
+			if (error)
+			{
+				Environment.Exit(1);
+			}
+			else
+			{
+				Environment.Exit(0);
+			}
 		}
 
 		static void Loop()
