@@ -138,7 +138,7 @@ namespace KSPNameGen
 
 		// variable definitions
 
-		static Random random = new Random();
+		static readonly Random random = new Random();
 		static string param = "";
 		static ushort inpar = 0;
 		static bool gen = true;
@@ -148,7 +148,37 @@ namespace KSPNameGen
 
 		static void Main(string[] args)
 		{
+			if (args == null)
+			{
+				Loop();
+			}
 
+			else if (args[1] == "-i" || args[1] == "--interactive")
+			{
+				Loop();
+			}
+
+			else if (args[1] == "-n" || args[1] == "--non-interactive")
+			{
+				ulong inputLong;
+				if (!UInt64.TryParse(args[3], out inputLong))
+				{
+					Console.WriteLine("A positive integer was not specified.");
+					Environment.Exit(1);
+				}
+				for (ulong i = 0; i < inputLong; i++)
+					Generate(args[2], true);
+			}
+
+			else if (args[1] == "-h" || args[0] == "--help")
+			{
+				Usage();
+			}
+
+			else
+			{
+				Usage();
+			}
 		}
 
 		static void Usage()
@@ -157,9 +187,9 @@ namespace KSPNameGen
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +
-			"PARAMETER: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
-			"NUMBER: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
-			"PARAMETER and NUMBER are only used with non-interactive mode.\n\n");
+			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
+			"number: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
+			"`parameter' and `number' are only used with non-interactive mode.\n\n");
 			Environment.Exit(1);
 		}
 
@@ -342,7 +372,7 @@ namespace KSPNameGen
 						break;
 					}
 					for (ulong i = 0; i < inLong; i++)
-						Generate(param);
+						Generate(param, false);
 					gen = false;
 					param = "";
 					inpar = 0;
@@ -373,7 +403,7 @@ namespace KSPNameGen
 					"Male  [Female]");
 		}
 
-		static void Generate(string param)
+		static void Generate(string param, bool ExitOnInvalidParam)
 		{
 			bool toggle = random.Next(20) == 0;
 			switch (param)
@@ -456,6 +486,10 @@ namespace KSPNameGen
 
 				default:
 					Console.WriteLine("Specified type is invalid.");
+					if (ExitOnInvalidParam == true)
+					{
+						Environment.Exit(1);
+					}
 					break;
 			}
 		}
