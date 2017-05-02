@@ -165,7 +165,7 @@ namespace KSPNameGen
 				if (!UInt64.TryParse(args[2], out inputLong))
 				{
 					Console.WriteLine("A positive integer was not specified.");
-					Kill();
+					Kill(1);
 				}
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				for (ulong i = 0; i < inputLong; i++)
@@ -185,7 +185,7 @@ namespace KSPNameGen
 			
 			Console.ReadKey();
 			Console.WriteLine();
-			Kill();
+			Kill(0);
 		}
 
 		static void Usage(bool error)
@@ -199,11 +199,11 @@ namespace KSPNameGen
 			"`parameter' and `number' are only used with non-interactive mode.\n\n");
 			if (error)
 			{
-				Environment.Exit(1);
+				Kill(1);
 			}
 			else
 			{
-				Environment.Exit(0);
+				Kill(0);
 			}
 		}
 
@@ -227,7 +227,7 @@ namespace KSPNameGen
 							break;
 
 						case "n":
-							Kill();
+							Kill(0);
 							break;
 
 						default:
@@ -260,7 +260,7 @@ namespace KSPNameGen
 			return inputLong;
 		}
 
-		static void Kill()
+		static void Kill(ushort exitCode)
 		{
 			Console.Write("Exiting");
 			for (int i = 0; i < 3; i++)
@@ -270,7 +270,7 @@ namespace KSPNameGen
 			}
 
 			Console.WriteLine();
-			Environment.Exit(0);
+			Environment.Exit(exitCode);
 		}
 
 		static void nameGen()
@@ -294,7 +294,7 @@ namespace KSPNameGen
 					switch (inString)
 					{
 						case "exit":
-							Kill();
+							Kill(0);
 							break;
 
 						case "help":
@@ -322,7 +322,7 @@ namespace KSPNameGen
 					switch (inString)
 					{
 						case "exit":
-							Kill();
+							Kill(0);
 							break;
 
 						case "help":
@@ -355,7 +355,7 @@ namespace KSPNameGen
 					switch (inString)
 					{
 						case "exit":
-							Kill();
+							Kill(0);
 							break;
 
 						case "help":
@@ -502,7 +502,7 @@ namespace KSPNameGen
 					Console.WriteLine("Specified type is invalid.");
 					if (ExitOnInvalidParam == true)
 					{
-						Environment.Exit(1);
+						Kill(1);
 					}
 					break;
 			}
