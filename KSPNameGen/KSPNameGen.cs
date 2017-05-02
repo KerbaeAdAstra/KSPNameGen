@@ -64,7 +64,7 @@ namespace KSPNameGen
 			"zie", "zy"
 		};
 
-		static string[] fpr = {    // female proper name
+		static string[] fpr = { // female proper name
 			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
@@ -74,7 +74,7 @@ namespace KSPNameGen
 			"Tatyana", "Valentina"
 		};
 
-		static string[] mcp = {    // male constructed prefix
+		static string[] mcp = { // male constructed prefix
 			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
@@ -87,7 +87,7 @@ namespace KSPNameGen
 			"Sid", "Sig", "Son", "Thom", "Thomp", "Tom", "Wehr", "Wil"
 		};
 
-		static string[] mcs = {    // male constructed suffix
+		static string[] mcs = { // male constructed suffix
 			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
@@ -103,7 +103,7 @@ namespace KSPNameGen
 			"win", "wise", "zer", "zon", "zor"
 		};
 
-		static string[] mpr = {    // male proper name
+		static string[] mpr = { // male proper name
 			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
@@ -148,18 +148,18 @@ namespace KSPNameGen
 
 		static void Main(string[] args)
 		{
-			
+
 		}
 
 		static void Usage()
 		{
 			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]\n\n" +
-			             "-i, --interactive: interactive mode (default option)\n" +
-			             "-n, --non-interactive: non-interactive mode\n" +
-			             "-h, --help: show this help\n" +
-			             "PARAMETER: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
-			             "NUMBER: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
-			             "PARAMETER and NUMBER are only used with non-interactive mode.\n\n");
+			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
+			"-n, --non-interactive: non-interactive mode\n" +
+			"-h, --help: show this help\n" +
+			"PARAMETER: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
+			"NUMBER: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
+			"PARAMETER and NUMBER are only used with non-interactive mode.\n\n");
 			Environment.Exit(1);
 		}
 
@@ -362,10 +362,10 @@ namespace KSPNameGen
 			if (breakdown.Length == 1) // param has only type
 				return;
 			Console.WriteLine(breakdown[1] == 'r' ?
-					"Proper  [Mixed]  Constructed" :
+					"Proper	[Mixed]	Constructed" :
 			breakdown[1] == 'p' ?
 					"[Proper]  Mixed  Constructed" :
-					"Proper  Mixed  [Constructed]");
+					"Proper	Mixed  [Constructed]");
 			if (breakdown.Length == 2) // param does not have gender
 				return;
 			Console.WriteLine(breakdown[2] == 'm' ?
