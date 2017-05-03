@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
 
 namespace KSPNameGen
@@ -30,7 +31,7 @@ namespace KSPNameGen
 	{
 		// array definitions
 
-		static string[] fcp = {	// female constructed prefix
+		static readonly string[] fcp = {	// female constructed prefix
 			"Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
 			"Cer", "Clau", "Cris", "Da", "Dan", "Daph", "De", "Deb", "Di", "Eil",
 			"Eli", "Eri", "Fran", "Gem", "Ger", "Gi", "Gil", "Gle", "Gra", "Gwen",
@@ -43,7 +44,7 @@ namespace KSPNameGen
 			"Tra", "Tri", "Ur", "Val", "Ver", "Vir", "Wen", "Wil", "Zel"
 		};
 
-		static string[] fcs = {	// female constructed suffix
+		static readonly string[] fcs = {	// female constructed suffix
 		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
@@ -63,7 +64,7 @@ namespace KSPNameGen
 			"zie", "zy"
 		};
 
-		static string[] fpr = { // female proper name
+		static readonly string[] fpr = { // female proper name
 			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
@@ -73,7 +74,7 @@ namespace KSPNameGen
 			"Tatyana", "Valentina"
 		};
 
-		static string[] mcp = { // male constructed prefix
+		static readonly string[] mcp = { // male constructed prefix
 			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
@@ -86,7 +87,7 @@ namespace KSPNameGen
 			"Sid", "Sig", "Son", "Thom", "Thomp", "Tom", "Wehr", "Wil"
 		};
 
-		static string[] mcs = { // male constructed suffix
+		static readonly string[] mcs = { // male constructed suffix
 			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
@@ -102,7 +103,7 @@ namespace KSPNameGen
 			"win", "wise", "zer", "zon", "zor"
 		};
 
-		static string[] mpr = { // male proper name
+		static readonly string[] mpr = { // male proper name
 			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
@@ -110,7 +111,7 @@ namespace KSPNameGen
 			"Tom", "Will"
 		};
 
-		static string[] prompt = { // cache prompts
+		static readonly string[] prompt = { // cache prompts
 			"Specify types of names to generate.\n" +
 			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
 			"Specify if you want to generate:\n" +
@@ -122,7 +123,7 @@ namespace KSPNameGen
 			"Specify number of names to generate." // NMBR
 		};
 
-		static string[] help = { // cache help topics
+		static readonly string[] help = { // cache help topics
 			"Standard names have a 'Kerman' surname, while Future-style names have" +
 			" randomly generated surnames.", // TYPE
 			"Proper names are chosen from a list, while constructed names are" +
@@ -142,7 +143,7 @@ namespace KSPNameGen
 
 		static readonly Random random = new Random();
 		static string param = "";
-		static ushort inpar = 0;
+		static ushort inpar;
 		static bool gen = true;
 		static bool firstRun = true;
 
@@ -164,7 +165,7 @@ namespace KSPNameGen
 			{
 				
 				ulong inputLong;
-				if (!UInt64.TryParse(args[2], out inputLong))
+				if (!ulong.TryParse(args[2], out inputLong))
 				{
 					Console.WriteLine("A positive integer was not specified.");
 					Kill(1);
@@ -211,7 +212,9 @@ namespace KSPNameGen
 			}
 		}
 
+		#pragma warning disable RECS0135
 		static void Loop()
+		#pragma warning restore RECS0135
 		{
 			string inString;
 			for (;;)
@@ -242,7 +245,9 @@ namespace KSPNameGen
 			}
 		}
 
+#pragma warning disable RECS0082 // Parameter has the same name as a member and hides it
 		static string PromptS(string query, bool help)
+#pragma warning restore RECS0082 // Parameter has the same name as a member and hides it
 		{
 			Console.WriteLine(query);
 			if (help)
@@ -257,7 +262,7 @@ namespace KSPNameGen
 			ulong inputLong = 0;
 			Console.WriteLine(query);
 			string input = Console.ReadLine();
-			if (!UInt64.TryParse(input, out inputLong))
+			if (!ulong.TryParse(input, out inputLong))
 			{
 				Console.WriteLine("A positive integer was not specified.");
 			}
@@ -390,6 +395,11 @@ namespace KSPNameGen
 						break;
 					}
 
+					if (inLong >= 4294967296)
+					{
+						// TODO
+					}
+
 					if (inLong >= 256)
 					{
 						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
@@ -397,18 +407,39 @@ namespace KSPNameGen
 						string genYN = Console.ReadLine().ToLower();
 						if (genYN == "n")
 						{
-							nameGen();
+							gen = false;
+							Loop();
 						}
-					}
-
-					if (inLong >= 4096)
-					{
-						// TODO
+						else if (genYN == "y")
+						{
+							for (ulong i = 0; i < inLong; i++)
+								Generate(param, false);
+							gen = false;
+							param = "";
+							inpar = 0;
+							Loop();
+						}
 					}
 
 					if (inLong >= 65536)
 					{
-						// TODO
+						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
+						Console.WriteLine("Generating " + inLong + " names may take a long time.");
+						string genYN = Console.ReadLine().ToLower();
+						if (genYN == "n")
+						{
+							gen = false;
+							Loop();
+						}
+						else if (genYN == "y")
+						{
+							for (ulong i = 0; i<inLong; i++)
+								Generate(param, false);
+							gen = false;
+							param = "";
+							inpar = 0;
+							Loop();
+						}
 					}
 
 					for (ulong i = 0; i < inLong; i++)
@@ -443,8 +474,13 @@ namespace KSPNameGen
 					"Male  [Female]");
 		}
 
+		#pragma warning disable RECS0082
 		static void Generate(string param, bool ExitOnInvalidParam)
+		#pragma warning restore RECS0082
 		{
+			Contract.Requires(param != null);
+			if (param == null)
+				throw new ArgumentNullException(nameof(param));
 			bool toggle = random.Next(20) == 0;
 			switch (param)
 			{
