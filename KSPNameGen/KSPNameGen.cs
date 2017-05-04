@@ -245,9 +245,9 @@ namespace KSPNameGen
 			}
 		}
 
-#pragma warning disable RECS0082 // Parameter has the same name as a member and hides it
+		#pragma warning disable RECS0082
 		static string PromptS(string query, bool help)
-#pragma warning restore RECS0082 // Parameter has the same name as a member and hides it
+		#pragma warning restore RECS0082
 		{
 			Console.WriteLine(query);
 			if (help)
