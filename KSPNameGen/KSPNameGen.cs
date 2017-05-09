@@ -31,7 +31,7 @@ namespace KSPNameGen
 	{
 		// array definitions
 
-		static readonly string[] fcp = {	// female constructed prefix
+		static readonly string[] fcp = { // female constructed prefix
 			"Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
 			"Cer", "Clau", "Cris", "Da", "Dan", "Daph", "De", "Deb", "Di", "Eil",
 			"Eli", "Eri", "Fran", "Gem", "Ger", "Gi", "Gil", "Gle", "Gra", "Gwen",
@@ -44,7 +44,7 @@ namespace KSPNameGen
 			"Tra", "Tri", "Ur", "Val", "Ver", "Vir", "Wen", "Wil", "Zel"
 		};
 
-		static readonly string[] fcs = {	// female constructed suffix
+		static readonly string[] fcs = { // female constructed suffix
 		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
