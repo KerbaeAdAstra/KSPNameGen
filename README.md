@@ -32,6 +32,20 @@ Since KSPNameGen is a command-line application, in a command-line environment,
 the program can be invoked by `cd`ing to the directory, and typing `start 
 KSPNameGen.exe` (Windows).
 
+##### Command-Line Arguments
+KSPNameGen now comes with a non-interactive mode, for when you just want a
+couple of names and don't want to mess around with the interactive interface.
+
+```
+Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]
+-i, --interactive: interactive mode (default option if no parameter specified)
+-n, --non-interactive: non-interactive mode
+-h, --help: show this help
+parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.
+number: a nonzero integer less than 18,446,744,073,709,551,615 (2⁶⁴-1).
+"`parameter' and `number' are only used with non-interactive mode.
+```
+
 ##### License
 Also available in LICENSE.md.
 
