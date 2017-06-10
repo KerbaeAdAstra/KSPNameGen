@@ -1,7 +1,7 @@
 /*
  * KSPNameGen: name generator for Kerbal Space Program
  * Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
- * KSPNameGen is (c) 2016-2017 0111narwhalz & TotallyNotHuman_
+ * KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group.
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -131,6 +131,8 @@ namespace KSPNameGen
 			"If the option 'combination' is chosen, then there is a 1/20 chance" +
 			"that the generated name is proper." // CMBO
 		};
+
+		static readonly ConsoleColor[] colors = (ConsoleColor[]) ConsoleColor.GetValues(typeof(ConsoleColor));
 
 		// static version defs
 
@@ -389,18 +391,13 @@ namespace KSPNameGen
 
 				case 3: // NMBR
 					inLong = PromptI(prompt[inpar]);
-					if (inLong == 0)
-					{
-						Console.WriteLine("Specified number must be nonzero.");
-						break;
-					}
 
 					if (inLong >= 4294967296)
 					{
-						// TODO
+						Nyan(false, 0);
 					}
 
-					if (inLong >= 256)
+					if (inLong >= 65536)
 					{
 						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
 						Console.WriteLine("Generating " + inLong + " names may take a long time.");
@@ -412,16 +409,16 @@ namespace KSPNameGen
 						}
 						else if (genYN == "y")
 						{
-							for (ulong i = 0; i < inLong; i++)
-								Generate(param, false);
-							gen = false;
-							param = "";
-							inpar = 0;
-							Loop();
+							Nyan(true, inLong);
+						}
+						else
+						{
+							Console.WriteLine("Invalid selection.");
+							break;
 						}
 					}
 
-					if (inLong >= 65536)
+					if (inLong >= 256)
 					{
 						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
 						Console.WriteLine("Generating " + inLong + " names may take a long time.");
@@ -440,6 +437,17 @@ namespace KSPNameGen
 							inpar = 0;
 							Loop();
 						}
+						else
+						{
+							Console.WriteLine("Invalid selection.");
+							break;
+						}
+					}
+
+					if (inLong == 0)
+					{
+						Console.WriteLine("Specified number must be nonzero.");
+						break;
 					}
 
 					for (ulong i = 0; i < inLong; i++)
@@ -567,6 +575,31 @@ namespace KSPNameGen
 						Kill(1);
 					}
 					break;
+			}
+		}
+
+		static void Nyan(bool generateNames, ulong NyanLong)
+		{
+			ConsoleColor currentBackground = Console.BackgroundColor;
+			if (generateNames)
+			{
+
+				ulong forLong = NyanLong / 15;
+				for (ulong i = 0; i < forLong; i++)
+					foreach (var color in colors)
+					{
+						if (color == currentBackground) continue;
+						Console.ForegroundColor = color;
+						Generate(param, false);
+					}
+				gen = false;
+				param = "";
+				inpar = 0;
+				Loop();
+			}
+			else
+			{
+				// TODO
 			}
 		}
 	}
