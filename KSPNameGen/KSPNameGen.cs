@@ -22,6 +22,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Diagnostics.Contracts;
 using System.Threading;
 
@@ -131,8 +132,12 @@ namespace KSPNameGen
 			"If the option 'combination' is chosen, then there is a 1/20 chance" +
 			"that the generated name is proper." // CMBO
 		};
+		
+		static readonly string[] validParams = { // cache valid parameters
+			"spf", "spm", "scf", "scm", "srf", "srm", "fpf", "fpm", "fcf", "fcm", "frf", "frm"
+		};
 
-		static readonly ConsoleColor[] colors = (ConsoleColor[]) ConsoleColor.GetValues(typeof(ConsoleColor));
+		static readonly ConsoleColor[] colors = (ConsoleColor[]) ConsoleColor.GetValues(typeof(ConsoleColor)); // cache colors
 
 		// static version defs
 
@@ -144,7 +149,7 @@ namespace KSPNameGen
 		// variable definitions
 
 		static readonly Random random = new Random();
-		static string param = "";
+		static string param;
 		static ushort inpar;
 		static bool gen = true;
 		static bool firstRun = true;
@@ -173,8 +178,15 @@ namespace KSPNameGen
 					Kill(1);
 				}
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-				for (ulong i = 0; i < inputLong; i++)
-					Generate(args[1], true);
+				if (Array.Contains(validParams, args[1])
+				{
+					Iterator(args[2], args[1]);
+				}
+				else
+				{
+					Console.WriteLine("Specified type is invalid.");
+					Kill(1)
+				}
 				Console.WriteLine("Complete.");
 			}
 
@@ -392,11 +404,6 @@ namespace KSPNameGen
 				case 3: // NMBR
 					inLong = PromptI(prompt[inpar]);
 
-					if (inLong >= 4294967296)
-					{
-						Nyan(false, 0);
-					}
-
 					if (inLong >= 65536)
 					{
 						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
@@ -430,8 +437,7 @@ namespace KSPNameGen
 						}
 						else if (genYN == "y")
 						{
-							for (ulong i = 0; i<inLong; i++)
-								Generate(param, false);
+							Iterator(inLong, param);
 							gen = false;
 							param = "";
 							inpar = 0;
@@ -450,12 +456,11 @@ namespace KSPNameGen
 						break;
 					}
 
-					for (ulong i = 0; i < inLong; i++)
-						Generate(param, false);
+					Iterator(inLong, param);
 					gen = false;
 					param = "";
 					inpar = 0;
-					break;
+					Loop();
 			}
 		}
 
@@ -483,124 +488,124 @@ namespace KSPNameGen
 		}
 
 		#pragma warning disable RECS0082
-		static void Generate(string param, bool ExitOnInvalidParam)
+		static string Generate(string param)
 		#pragma warning restore RECS0082
 		{
 			Contract.Requires(param != null);
 			if (param == null)
 				throw new ArgumentNullException(nameof(param));
 			bool toggle = random.Next(20) == 0;
+			string returnString;
 			switch (param)
 			{
 				case "spf":
-					Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
+					returnString = fpr[random.Next(fpr.Length)] + " Kerman";
 					break;
 
 				case "spm":
-					Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
+					returnString = mpr[random.Next(mpr.Length)] + " Kerman";
 					break;
 
 				case "scf":
-					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
+					returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 					break;
 
 				case "scm":
-					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
+					returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 					break;
 
 				case "srf":
 					if (toggle)
 					{
-						Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
+						returnString = fpr[random.Next(fpr.Length)] + " Kerman";
 					}
 					else
 					{
-						Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
+						returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 					}
 					break;
 
 				case "srm":
 					if (toggle)
 					{
-						Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
+						returnString = mpr[random.Next(mpr.Length)] + " Kerman";
 					}
 					else
 					{
-						Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
+						returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 					}
 					break;
 
 				case "fpf":
-					Console.WriteLine(fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+					returnString = fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					break;
 
 				case "fpm":
-					Console.WriteLine(mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+					returnString = mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					break;
 
 				case "fcf":
-					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+					returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					break;
 
 				case "fcm":
-					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+					returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					break;
 
 				case "frf":
 					if (toggle)
 					{
-						Console.WriteLine(fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+						returnString = fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
 					else
 					{
-						Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+						returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
 					break;
 
 				case "frm":
 					if (toggle)
 					{
-						Console.WriteLine(mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+						returnString = mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
 					else
 					{
-						Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
-					}
-					break;
-
-				default:
-					Console.WriteLine("Specified type is invalid.");
-					if (ExitOnInvalidParam == true)
-					{
-						Kill(1);
+						returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
 					break;
 			}
+
+			return returnString;
 		}
 
-		static void Nyan(bool generateNames, ulong NyanLong)
+		static void Nyan(ulong NyanLong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
-			if (generateNames)
-			{
+			ulong forLong = NyanLong / 15;
+			for (ulong i = 0; i < forLong; i++)
+				foreach (var color in colors)
+				{
+					if (color == currentBackground) continue;
+					Console.ForegroundColor = color;
+					Generate(param, false);
+				}
+			gen = false;
+			param = "";
+			inpar = 0;
+			Loop();
+		}
 
-				ulong forLong = NyanLong / 15;
-				for (ulong i = 0; i < forLong; i++)
-					foreach (var color in colors)
-					{
-						if (color == currentBackground) continue;
-						Console.ForegroundColor = color;
-						Generate(param, false);
-					}
-				gen = false;
-				param = "";
-				inpar = 0;
-				Loop();
-			}
-			else
-			{
-				// TODO
-			}
+
+		static void Iterator(ulong inputLong, string param)
+		{
+			for (ulong i = 0; i < inputLong; i++)
+				string buffer;
+				buffer.Concat(Generate(param) + "\n");
+				if (i % 1024 == 0)
+				{
+					Console.Write(buffer);
+					buffer = "";
+				}
 		}
 	}
 }
