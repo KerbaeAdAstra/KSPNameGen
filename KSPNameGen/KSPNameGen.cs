@@ -22,8 +22,8 @@
  */
 
 using System;
-using System.Collections;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
 
 namespace KSPNameGen
@@ -132,12 +132,12 @@ namespace KSPNameGen
 			"If the option 'combination' is chosen, then there is a 1/20 chance" +
 			"that the generated name is proper." // CMBO
 		};
-		
+
 		static readonly string[] validParams = { // cache valid parameters
 			"spf", "spm", "scf", "scm", "srf", "srm", "fpf", "fpm", "fcf", "fcm", "frf", "frm"
 		};
 
-		static readonly ConsoleColor[] colors = (ConsoleColor[]) ConsoleColor.GetValues(typeof(ConsoleColor)); // cache colors
+		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
 		// static version defs
 
@@ -170,7 +170,7 @@ namespace KSPNameGen
 
 			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
-				
+
 				ulong inputLong;
 				if (!ulong.TryParse(args[2], out inputLong))
 				{
@@ -178,14 +178,14 @@ namespace KSPNameGen
 					Kill(1);
 				}
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-				if (Array.Contains(validParams, args[1])
+				if (validParams.Contains(args[1]))
 				{
-					Iterator(args[2], args[1]);
+					Iterator(inputLong, args[1]);
 				}
 				else
 				{
 					Console.WriteLine("Specified type is invalid.");
-					Kill(1)
+					Kill(1);
 				}
 				Console.WriteLine("Complete.");
 			}
@@ -199,7 +199,7 @@ namespace KSPNameGen
 			{
 				Usage(true);
 			}
-			
+
 			Console.ReadKey();
 			Console.WriteLine();
 			Kill(0);
@@ -226,9 +226,9 @@ namespace KSPNameGen
 			}
 		}
 
-		#pragma warning disable RECS0135
+#pragma warning disable RECS0135
 		static void Loop()
-		#pragma warning restore RECS0135
+#pragma warning restore RECS0135
 		{
 			string inString;
 			for (;;)
@@ -259,9 +259,9 @@ namespace KSPNameGen
 			}
 		}
 
-		#pragma warning disable RECS0082
+#pragma warning disable RECS0082
 		static string PromptS(string query, bool help)
-		#pragma warning restore RECS0082
+#pragma warning restore RECS0082
 		{
 			Console.WriteLine(query);
 			if (help)
@@ -404,7 +404,7 @@ namespace KSPNameGen
 				case 3: // NMBR
 					inLong = PromptI(prompt[inpar]);
 
-					if (inLong >= 65536)
+					if (inLong >= 281474976710656)
 					{
 						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
 						Console.WriteLine("Generating " + inLong + " names may take a long time.");
@@ -416,7 +416,7 @@ namespace KSPNameGen
 						}
 						else if (genYN == "y")
 						{
-							Nyan(true, inLong);
+							Nyan(inLong);
 						}
 						else
 						{
@@ -425,7 +425,7 @@ namespace KSPNameGen
 						}
 					}
 
-					if (inLong >= 256)
+					if (inLong >= 4294967296)
 					{
 						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
 						Console.WriteLine("Generating " + inLong + " names may take a long time.");
@@ -461,6 +461,7 @@ namespace KSPNameGen
 					param = "";
 					inpar = 0;
 					Loop();
+					break;
 			}
 		}
 
@@ -487,108 +488,99 @@ namespace KSPNameGen
 					"Male  [Female]");
 		}
 
-		#pragma warning disable RECS0082
+#pragma warning disable RECS0082
 		static string Generate(string param)
-		#pragma warning restore RECS0082
+#pragma warning restore RECS0082
 		{
 			Contract.Requires(param != null);
 			if (param == null)
 				throw new ArgumentNullException(nameof(param));
 			bool toggle = random.Next(20) == 0;
-			string returnString;
 			switch (param)
 			{
 				case "spf":
-					returnString = fpr[random.Next(fpr.Length)] + " Kerman";
-					break;
+					return fpr[random.Next(fpr.Length)] + " Kerman";
 
 				case "spm":
-					returnString = mpr[random.Next(mpr.Length)] + " Kerman";
-					break;
+					return mpr[random.Next(mpr.Length)] + " Kerman";
 
 				case "scf":
-					returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
-					break;
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 
 				case "scm":
-					returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
-					break;
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 
 				case "srf":
 					if (toggle)
 					{
-						returnString = fpr[random.Next(fpr.Length)] + " Kerman";
+						return fpr[random.Next(fpr.Length)] + " Kerman";
 					}
 					else
 					{
-						returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
+						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 					}
-					break;
 
 				case "srm":
 					if (toggle)
 					{
-						returnString = mpr[random.Next(mpr.Length)] + " Kerman";
+						return mpr[random.Next(mpr.Length)] + " Kerman";
 					}
 					else
 					{
-						returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
+						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 					}
-					break;
 
 				case "fpf":
-					returnString = fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
-					break;
+					return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fpm":
-					returnString = mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
-					break;
+					return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "fcf":
-					returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
-					break;
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fcm":
-					returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
-					break;
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "frf":
 					if (toggle)
 					{
-						returnString = fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+						return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
 					else
 					{
-						returnString = fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
-					break;
 
 				case "frm":
 					if (toggle)
 					{
-						returnString = mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+						return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
 					else
 					{
-						returnString = mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
-					break;
+				default:
+					return null;
 			}
-
-			return returnString;
 		}
 
 		static void Nyan(ulong NyanLong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
 			ulong forLong = NyanLong / 15;
+			string Generated = "";
 			for (ulong i = 0; i < forLong; i++)
+			{
 				foreach (var color in colors)
 				{
 					if (color == currentBackground) continue;
 					Console.ForegroundColor = color;
-					Generate(param, false);
+					Generated = Generate(param);
+					Console.WriteLine(Generated);
 				}
+			}
 			gen = false;
 			param = "";
 			inpar = 0;
@@ -598,14 +590,19 @@ namespace KSPNameGen
 
 		static void Iterator(ulong inputLong, string param)
 		{
+			string buffer = "";
+			string Generated = "";
 			for (ulong i = 0; i < inputLong; i++)
-				string buffer;
-				buffer.Concat(Generate(param) + "\n");
+			{
+				Generated = Generate(param);
+				buffer += Generated + "\n";
 				if (i % 1024 == 0)
 				{
 					Console.Write(buffer);
 					buffer = "";
 				}
+			}
+			Console.Write(buffer);
 		}
 	}
 }
