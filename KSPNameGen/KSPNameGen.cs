@@ -554,7 +554,7 @@ namespace KSPNameGen
 						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
 				default:
-					return null;
+					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
 			}
 		}
 
