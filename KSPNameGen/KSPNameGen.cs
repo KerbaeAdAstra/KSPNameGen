@@ -560,12 +560,11 @@ namespace KSPNameGen
 			}
 		}
 
-		static void Nyan(ulong NyanLong)
+		static void Nyan(ulong inputLong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
-			ulong forLong = NyanLong / 15;
 			string Generated = "";
-			for (ulong i = 0; i < forLong; i++)
+			for (ulong i = 0; i < inputLong / 15; i++)
 			{
 				foreach (var color in colors)
 				{
