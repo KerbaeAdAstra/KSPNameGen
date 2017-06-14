@@ -226,9 +226,7 @@ namespace KSPNameGen
 			}
 		}
 
-#pragma warning disable RECS0135
 		static void Loop()
-#pragma warning restore RECS0135
 		{
 			string inString;
 			for (;;)
@@ -259,9 +257,7 @@ namespace KSPNameGen
 			}
 		}
 
-#pragma warning disable RECS0082
 		static string PromptS(string query, bool help)
-#pragma warning restore RECS0082
 		{
 			Console.WriteLine(query);
 			if (help)
@@ -488,9 +484,7 @@ namespace KSPNameGen
 					"Male  [Female]");
 		}
 
-#pragma warning disable RECS0082
 		static string Generate(string param)
-#pragma warning restore RECS0082
 		{
 			Contract.Requires(param != null);
 			if (param == null)
