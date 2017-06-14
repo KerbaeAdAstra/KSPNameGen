@@ -207,13 +207,11 @@ namespace KSPNameGen
 
 		static void Usage(bool error)
 		{
-			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter" +
-			"number] [-h|--help]\n\n" +
+			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]\n\n" +
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +
-			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn" +
-			"more.\n" +
+			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
 			"number: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
 			"`parameter' and `number' are only used with non-interactive mode.\n\n");
 			if (error)
