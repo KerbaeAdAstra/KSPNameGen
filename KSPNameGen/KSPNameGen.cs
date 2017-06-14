@@ -149,8 +149,8 @@ namespace KSPNameGen
 		// variable definitions
 
 		static readonly Random random = new Random();
-		static string param;
-		static ushort inpar;
+		static string param = "";
+		static ushort inpar = 0;
 		static bool gen = true;
 		static bool firstRun = true;
 
