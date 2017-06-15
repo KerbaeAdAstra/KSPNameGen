@@ -171,8 +171,8 @@ namespace KSPNameGen
 			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
 
-				ulong inputLong;
-				if (!ulong.TryParse(args[2], out inputLong))
+				ulong inputULong;
+				if (!ulong.TryParse(args[2], out inputULong))
 				{
 					Console.WriteLine("A positive integer was not specified.");
 					Kill(1);
@@ -180,7 +180,7 @@ namespace KSPNameGen
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				if (validParams.Contains(args[1]))
 				{
-					Iterator(inputLong, args[1]);
+					Iterator(inputULong, args[1]);
 				}
 				else
 				{
@@ -201,7 +201,6 @@ namespace KSPNameGen
 			}
 
 			Console.ReadKey();
-			Console.WriteLine();
 			Kill(0);
 		}
 
@@ -265,16 +264,16 @@ namespace KSPNameGen
 			return Console.ReadLine().ToLower();
 		}
 
-		static ulong PromptI(string query)
+		static ulong PromptN(string query)
 		{
-			ulong inputLong = 0;
+			ulong inputULong = 0;
 			Console.WriteLine(query);
 			string input = Console.ReadLine();
-			if (!ulong.TryParse(input, out inputLong))
+			if (!ulong.TryParse(input, out inputULong))
 			{
 				Console.WriteLine("A positive integer was not specified.");
 			}
-			return inputLong;
+			return inputULong;
 		}
 
 		static void Kill(ushort exitCode)
@@ -293,7 +292,7 @@ namespace KSPNameGen
 		static void nameGen()
 		{
 			string inString;
-			ulong inLong;
+			ulong inULong;
 
 			switch (inpar)
 			{
@@ -396,12 +395,12 @@ namespace KSPNameGen
 					break;
 
 				case 3: // NMBR
-					inLong = PromptI(prompt[inpar]);
+					inULong = PromptN(prompt[inpar]);
 
-					if (inLong >= 281474976710656)
+					if (inULong >= 281474976710656)
 					{
-						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
-						Console.WriteLine("Generating " + inLong + " names may take a long time.");
+						Console.WriteLine("Are you sure you wish to generate " + inULong + " names? (Y/N)");
+						Console.WriteLine("Generating " + inULong + " names may take a long time.");
 						string genYN = Console.ReadLine().ToLower();
 						if (genYN == "n")
 						{
@@ -410,7 +409,7 @@ namespace KSPNameGen
 						}
 						else if (genYN == "y")
 						{
-							Nyan(inLong);
+							Nyan(inULong);
 						}
 						else
 						{
@@ -419,10 +418,10 @@ namespace KSPNameGen
 						}
 					}
 
-					if (inLong >= 4294967296)
+					if (inULong >= 4294967296)
 					{
-						Console.WriteLine("Are you sure you wish to generate " + inLong + " names? (Y/N)");
-						Console.WriteLine("Generating " + inLong + " names may take a long time.");
+						Console.WriteLine("Are you sure you wish to generate " + inULong + " names? (Y/N)");
+						Console.WriteLine("Generating " + inULong + " names may take a long time.");
 						string genYN = Console.ReadLine().ToLower();
 						if (genYN == "n")
 						{
@@ -431,7 +430,7 @@ namespace KSPNameGen
 						}
 						else if (genYN == "y")
 						{
-							Iterator(inLong, param);
+							Iterator(inULong, param);
 							gen = false;
 							param = "";
 							inpar = 0;
@@ -444,13 +443,13 @@ namespace KSPNameGen
 						}
 					}
 
-					if (inLong == 0)
+					if (inULong == 0)
 					{
 						Console.WriteLine("Specified number must be nonzero.");
 						break;
 					}
 
-					Iterator(inLong, param);
+					Iterator(inULong, param);
 					gen = false;
 					param = "";
 					inpar = 0;
@@ -461,23 +460,23 @@ namespace KSPNameGen
 
 		static void Draw()
 		{
-			char[] breakdown = param.ToCharArray();
-			if (breakdown.Length == 0) // param is empty
+			char[] paramCharArray = param.ToCharArray();
+			if (paramCharArray.Length == 0) // param is empty
 				return;
 			Console.Clear();
-			Console.WriteLine(breakdown[0] == 'f' ?
+			Console.WriteLine(paramCharArray[0] == 'f' ?
 					"[Future]  Standard" :
 					"Future  [Standard]");
-			if (breakdown.Length == 1) // param has only type
+			if (paramCharArray.Length == 1) // param has only type
 				return;
-			Console.WriteLine(breakdown[1] == 'r' ?
+			Console.WriteLine(paramCharArray[1] == 'r' ?
 					"Proper  [Mixed]  Constructed" :
-			breakdown[1] == 'p' ?
+			paramCharArray[1] == 'p' ?
 					"[Proper]  Mixed  Constructed" :
 					"Proper  Mixed  [Constructed]");
-			if (breakdown.Length == 2) // param does not have gender
+			if (paramCharArray.Length == 2) // param does not have gender
 				return;
-			Console.WriteLine(breakdown[2] == 'm' ?
+			Console.WriteLine(paramCharArray[2] == 'm' ?
 					"[Male]  Female" :
 					"Male  [Female]");
 		}
@@ -558,15 +557,18 @@ namespace KSPNameGen
 			}
 		}
 
-		static void Nyan(ulong inputLong)
+		static void Nyan(ulong inputULong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
 			string Generated = "";
-			for (ulong i = 0; i < inputLong / 15; i++)
+			for (ulong i = 0; i < inputULong / 15; i++)
 			{
 				foreach (var color in colors)
 				{
-					if (color == currentBackground) continue;
+					if (color == currentBackground)
+					{
+						continue;
+					}
 					Console.ForegroundColor = color;
 					Generated = Generate(param);
 					Console.WriteLine(Generated);
@@ -579,11 +581,11 @@ namespace KSPNameGen
 		}
 
 
-		static void Iterator(ulong inputLong, string param)
+		static void Iterator(ulong inputULong, string param)
 		{
 			string buffer = "";
 			string Generated = "";
-			for (ulong i = 0; i < inputLong; i++)
+			for (ulong i = 0; i < inputULong; i++)
 			{
 				Generated = Generate(param);
 				buffer += Generated + "\n";
