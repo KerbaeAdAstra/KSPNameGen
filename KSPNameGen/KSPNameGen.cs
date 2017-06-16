@@ -1,7 +1,7 @@
 /*
  * KSPNameGen: name generator for Kerbal Space Program
  * Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
- * KSPNameGen is (c) 2016-2017 0111narwhalz & TotallyNotHuman_
+ * KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group.
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -22,7 +22,8 @@
  */
 
 using System;
-using System.IO;
+using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading;
 
 namespace KSPNameGen
@@ -31,7 +32,7 @@ namespace KSPNameGen
 	{
 		// array definitions
 
-		static string[] fcp = {	// female constructed prefix
+		static readonly string[] fcp = { // female constructed prefix
 			"Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
 			"Cer", "Clau", "Cris", "Da", "Dan", "Daph", "De", "Deb", "Di", "Eil",
 			"Eli", "Eri", "Fran", "Gem", "Ger", "Gi", "Gil", "Gle", "Gra", "Gwen",
@@ -44,7 +45,7 @@ namespace KSPNameGen
 			"Tra", "Tri", "Ur", "Val", "Ver", "Vir", "Wen", "Wil", "Zel"
 		};
 
-		static string[] fcs = {	// female constructed suffix
+		static readonly string[] fcs = { // female constructed suffix
 		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
@@ -64,7 +65,7 @@ namespace KSPNameGen
 			"zie", "zy"
 		};
 
-		static string[] fpr = { // female proper name
+		static readonly string[] fpr = { // female proper name
 			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
@@ -74,7 +75,7 @@ namespace KSPNameGen
 			"Tatyana", "Valentina"
 		};
 
-		static string[] mcp = { // male constructed prefix
+		static readonly string[] mcp = { // male constructed prefix
 			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
@@ -87,7 +88,7 @@ namespace KSPNameGen
 			"Sid", "Sig", "Son", "Thom", "Thomp", "Tom", "Wehr", "Wil"
 		};
 
-		static string[] mcs = { // male constructed suffix
+		static readonly string[] mcs = { // male constructed suffix
 			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
@@ -103,7 +104,7 @@ namespace KSPNameGen
 			"win", "wise", "zer", "zon", "zor"
 		};
 
-		static string[] mpr = { // male proper name
+		static readonly string[] mpr = { // male proper name
 			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
@@ -111,7 +112,7 @@ namespace KSPNameGen
 			"Tom", "Will"
 		};
 
-		static string[] prompt = { // cache prompts
+		static readonly string[] prompt = { // cache prompts
 			"Specify types of names to generate.\n" +
 			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
 			"Specify if you want to generate:\n" +
@@ -123,17 +124,26 @@ namespace KSPNameGen
 			"Specify number of names to generate." // NMBR
 		};
 
-		static string[] help = { // cache help topics
-			"Standard names have a 'Kerman' surname, while Future-style names have randomly generated surnames.", // TYPE
-			"Proper names are chosen from a list, while constructed names are constructed from a list of prefixes and suffixes.\n" +
-			"If the option 'combination' is chosen, then there is a 1/20 chance that the generated name is proper." // CMBO
+		static readonly string[] help = { // cache help topics
+			"Standard names have a 'Kerman' surname, while Future-style names have" +
+			" randomly generated surnames.", // TYPE
+			"Proper names are chosen from a list, while constructed names are" +
+			"constructed from a list of prefixes and suffixes.\n" +
+			"If the option 'combination' is chosen, then there is a 1/20 chance" +
+			"that the generated name is proper." // CMBO
 		};
+
+		static readonly string[] validParams = { // cache valid parameters
+			"spf", "spm", "scf", "scm", "srf", "srm", "fpf", "fpm", "fcf", "fcm", "frf", "frm"
+		};
+
+		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
 		// static version defs
 
 		static ushort MAJOR = 0;
 		static ushort MINOR = 1;
-		static ushort PATCH = 1;
+		static ushort PATCH = 2;
 		static string SUFFX = "";
 
 		// variable definitions
@@ -160,16 +170,23 @@ namespace KSPNameGen
 
 			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
-				
-				ulong inputLong;
-				if (!UInt64.TryParse(args[2], out inputLong))
+
+				ulong inputULong;
+				if (!ulong.TryParse(args[2], out inputULong))
 				{
 					Console.WriteLine("A positive integer was not specified.");
 					Kill(1);
 				}
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-				for (ulong i = 0; i < inputLong; i++)
-					Generate(args[1], true);
+				if (validParams.Contains(args[1]))
+				{
+					Iterator(inputULong, args[1]);
+				}
+				else
+				{
+					Console.WriteLine("Specified type is invalid.");
+					Kill(1);
+				}
 				Console.WriteLine("Complete.");
 			}
 
@@ -182,9 +199,8 @@ namespace KSPNameGen
 			{
 				Usage(true);
 			}
-			
+
 			Console.ReadKey();
-			Console.WriteLine();
 			Kill(0);
 		}
 
@@ -248,16 +264,16 @@ namespace KSPNameGen
 			return Console.ReadLine().ToLower();
 		}
 
-		static ulong PromptI(string query)
+		static ulong PromptN(string query)
 		{
-			ulong inputLong = 0;
+			ulong inputULong = 0;
 			Console.WriteLine(query);
 			string input = Console.ReadLine();
-			if (!UInt64.TryParse(input, out inputLong))
+			if (!ulong.TryParse(input, out inputULong))
 			{
 				Console.WriteLine("A positive integer was not specified.");
 			}
-			return inputLong;
+			return inputULong;
 		}
 
 		static void Kill(ushort exitCode)
@@ -276,7 +292,7 @@ namespace KSPNameGen
 		static void nameGen()
 		{
 			string inString;
-			ulong inLong;
+			ulong inULong;
 
 			switch (inpar)
 			{
@@ -379,133 +395,207 @@ namespace KSPNameGen
 					break;
 
 				case 3: // NMBR
-					inLong = PromptI(prompt[inpar]);
-					if (inLong == 0)
+					inULong = PromptN(prompt[inpar]);
+
+					if (inULong >= 281474976710656)
+					{
+						Console.WriteLine("Are you sure you wish to generate " + inULong + " names? (Y/N)");
+						Console.WriteLine("Generating " + inULong + " names may take a long time.");
+						string genYN = Console.ReadLine().ToLower();
+						if (genYN == "n")
+						{
+							gen = false;
+							Loop();
+						}
+						else if (genYN == "y")
+						{
+							Nyan(inULong);
+						}
+						else
+						{
+							Console.WriteLine("Invalid selection.");
+							break;
+						}
+					}
+
+					if (inULong >= 4294967296)
+					{
+						Console.WriteLine("Are you sure you wish to generate " + inULong + " names? (Y/N)");
+						Console.WriteLine("Generating " + inULong + " names may take a long time.");
+						string genYN = Console.ReadLine().ToLower();
+						if (genYN == "n")
+						{
+							gen = false;
+							Loop();
+						}
+						else if (genYN == "y")
+						{
+							Iterator(inULong, param);
+							gen = false;
+							param = "";
+							inpar = 0;
+							Loop();
+						}
+						else
+						{
+							Console.WriteLine("Invalid selection.");
+							break;
+						}
+					}
+
+					if (inULong == 0)
 					{
 						Console.WriteLine("Specified number must be nonzero.");
 						break;
 					}
-					for (ulong i = 0; i < inLong; i++)
-						Generate(param, false);
+
+					Iterator(inULong, param);
 					gen = false;
 					param = "";
 					inpar = 0;
+					Loop();
 					break;
 			}
 		}
 
 		static void Draw()
 		{
-			char[] breakdown = param.ToCharArray();
-			if (breakdown.Length == 0) // param is empty
+			char[] paramCharArray = param.ToCharArray();
+			if (paramCharArray.Length == 0) // param is empty
 				return;
 			Console.Clear();
-			Console.WriteLine(breakdown[0] == 'f' ?
+			Console.WriteLine(paramCharArray[0] == 'f' ?
 					"[Future]  Standard" :
 					"Future  [Standard]");
-			if (breakdown.Length == 1) // param has only type
+			if (paramCharArray.Length == 1) // param has only type
 				return;
-			Console.WriteLine(breakdown[1] == 'r' ?
+			Console.WriteLine(paramCharArray[1] == 'r' ?
 					"Proper  [Mixed]  Constructed" :
-			breakdown[1] == 'p' ?
+			paramCharArray[1] == 'p' ?
 					"[Proper]  Mixed  Constructed" :
 					"Proper  Mixed  [Constructed]");
-			if (breakdown.Length == 2) // param does not have gender
+			if (paramCharArray.Length == 2) // param does not have gender
 				return;
-			Console.WriteLine(breakdown[2] == 'm' ?
+			Console.WriteLine(paramCharArray[2] == 'm' ?
 					"[Male]  Female" :
 					"Male  [Female]");
 		}
 
-		static void Generate(string param, bool ExitOnInvalidParam)
+		static string Generate(string param)
 		{
+			Contract.Requires(param != null);
+			if (param == null)
+				throw new ArgumentNullException(nameof(param));
 			bool toggle = random.Next(20) == 0;
 			switch (param)
 			{
 				case "spf":
-					Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
-					break;
+					return fpr[random.Next(fpr.Length)] + " Kerman";
 
 				case "spm":
-					Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
-					break;
+					return mpr[random.Next(mpr.Length)] + " Kerman";
 
 				case "scf":
-					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
-					break;
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 
 				case "scm":
-					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
-					break;
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 
 				case "srf":
 					if (toggle)
 					{
-						Console.WriteLine(fpr[random.Next(fpr.Length)] + " Kerman");
+						return fpr[random.Next(fpr.Length)] + " Kerman";
 					}
 					else
 					{
-						Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman");
+						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 					}
-					break;
 
 				case "srm":
 					if (toggle)
 					{
-						Console.WriteLine(mpr[random.Next(mpr.Length)] + " Kerman");
+						return mpr[random.Next(mpr.Length)] + " Kerman";
 					}
 					else
 					{
-						Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman");
+						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 					}
-					break;
 
 				case "fpf":
-					Console.WriteLine(fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
-					break;
+					return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fpm":
-					Console.WriteLine(mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
-					break;
+					return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "fcf":
-					Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
-					break;
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fcm":
-					Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
-					break;
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "frf":
 					if (toggle)
 					{
-						Console.WriteLine(fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+						return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
 					else
 					{
-						Console.WriteLine(fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)]);
+						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
-					break;
 
 				case "frm":
 					if (toggle)
 					{
-						Console.WriteLine(mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+						return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
 					else
 					{
-						Console.WriteLine(mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)]);
+						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
-					break;
-
 				default:
-					Console.WriteLine("Specified type is invalid.");
-					if (ExitOnInvalidParam == true)
-					{
-						Kill(1);
-					}
-					break;
+					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
 			}
+		}
+
+		static void Nyan(ulong inputULong)
+		{
+			ConsoleColor currentBackground = Console.BackgroundColor;
+			string Generated = "";
+			for (ulong i = 0; i < inputULong / 15; i++)
+			{
+				foreach (var color in colors)
+				{
+					if (color == currentBackground)
+					{
+						continue;
+					}
+					Console.ForegroundColor = color;
+					Generated = Generate(param);
+					Console.WriteLine(Generated);
+				}
+			}
+			gen = false;
+			param = "";
+			inpar = 0;
+			Loop();
+		}
+
+
+		static void Iterator(ulong inputULong, string param)
+		{
+			string buffer = "";
+			string Generated = "";
+			for (ulong i = 0; i < inputULong; i++)
+			{
+				Generated = Generate(param);
+				buffer += Generated + "\n";
+				if (i % 48 == 0)
+				{
+					Console.Write(buffer);
+					buffer = "";
+				}
+			}
+			Console.Write(buffer);
 		}
 	}
 }
