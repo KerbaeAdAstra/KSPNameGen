@@ -141,10 +141,10 @@ namespace KSPNameGen
 
 		// static version defs
 
-		static ushort MAJOR = 0;
-		static ushort MINOR = 1;
-		static ushort PATCH = 2;
-		static string SUFFX = "";
+		static readonly ushort MAJOR = 0;
+		static readonly ushort MINOR = 1;
+		static readonly ushort PATCH = 2;
+		static readonly string SUFFX = "";
 
 		// variable definitions
 
@@ -297,13 +297,10 @@ namespace KSPNameGen
 			switch (inpar)
 			{
 				case 0: // TYPE
+					Console.Clear();
 					if (firstRun)
 					{
 						Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-					}
-					else
-					{
-						Console.Clear();
 					}
 					firstRun = false;
 					inString = PromptS(prompt[inpar], true);
