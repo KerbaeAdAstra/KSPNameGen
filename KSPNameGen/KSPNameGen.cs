@@ -589,7 +589,7 @@ namespace KSPNameGen
 			{
 				Generated = Generate(param);
 				buffer += Generated + "\n";
-				if (i % 1024 == 0)
+				if (i % 48 == 0)
 				{
 					Console.Write(buffer);
 					buffer = "";
