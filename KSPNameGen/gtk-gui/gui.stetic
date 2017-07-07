@@ -7,13 +7,233 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/KSPNameGen.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
+  <widget class="Gtk.Window" id="MainWindow" design-size="482 300">
+    <action-group name="Default">
+      <action id="OptionsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Options</property>
+        <property name="ShortLabel" translatable="yes">Parameters</property>
+      </action>
+      <action id="TypeAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Type</property>
+        <property name="ShortLabel" translatable="yes">Type</property>
+        <signal name="Activated" handler="OnSetType" />
+      </action>
+      <action id="CombinationAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Combination</property>
+        <property name="ShortLabel" translatable="yes">Combination</property>
+        <signal name="Activated" handler="OnSetCmbo" />
+      </action>
+      <action id="GenderAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Gender</property>
+        <property name="ShortLabel" translatable="yes">Gender</property>
+        <signal name="Activated" handler="OnSetGndr" />
+      </action>
+      <action id="NumberAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Number</property>
+        <property name="ShortLabel" translatable="yes">Number</property>
+        <signal name="Activated" handler="OnSetNmbr" />
+      </action>
+      <action id="HelpAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes">Help</property>
+      </action>
+      <action id="AboutAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">About</property>
+        <property name="ShortLabel" translatable="yes">About</property>
+        <signal name="Activated" handler="OnAbout" />
+      </action>
+      <action id="ExitAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Exit</property>
+        <property name="ShortLabel" translatable="yes">Exit</property>
+        <signal name="Activated" handler="OnExit" />
+      </action>
+      <action id="GenerateAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Generate</property>
+        <property name="ShortLabel" translatable="yes">Generate</property>
+        <signal name="Activated" handler="OnGenerate" />
+      </action>
+    </action-group>
     <property name="MemberName" />
-    <property name="Title" translatable="yes">MainWindow</property>
+    <property name="Title" translatable="yes">KSPNameGen</property>
+    <property name="Icon">stock:gtk-bold Menu</property>
     <property name="WindowPosition">CenterOnParent</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
-      <placeholder />
+      <widget class="Gtk.VBox" id="ngVBox">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.MenuBar" id="ngMenuBar">
+            <property name="MemberName" />
+            <node name="ngMenuBar" type="Menubar">
+              <node type="Menu" action="OptionsAction">
+                <node type="Menuitem" action="TypeAction" />
+                <node type="Menuitem" action="CombinationAction" />
+                <node type="Menuitem" action="GenderAction" />
+                <node type="Menuitem" action="NumberAction" />
+                <node type="Menuitem" action="GenerateAction" />
+              </node>
+              <node type="Menu" action="HelpAction">
+                <node type="Menuitem" action="AboutAction" />
+              </node>
+              <node type="Menuitem" action="ExitAction" />
+            </node>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="ngScrolledWindow">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="ngTextView">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Editable">False</property>
+                <property name="CursorVisible">False</property>
+                <property name="AcceptsTab">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="ngMainWindow" design-size="482 300">
+    <action-group name="Default">
+      <action id="OptionsAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Options</property>
+        <property name="ShortLabel" translatable="yes">Parameters</property>
+      </action>
+      <action id="TypeAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Type</property>
+        <property name="ShortLabel" translatable="yes">Type</property>
+        <signal name="Activated" handler="OnSetType" />
+      </action>
+      <action id="CombinationAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Combination</property>
+        <property name="ShortLabel" translatable="yes">Combination</property>
+        <signal name="Activated" handler="OnSetCmbo" />
+      </action>
+      <action id="GenderAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Gender</property>
+        <property name="ShortLabel" translatable="yes">Gender</property>
+        <signal name="Activated" handler="OnSetGndr" />
+      </action>
+      <action id="NumberAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Number</property>
+        <property name="ShortLabel" translatable="yes">Number</property>
+        <signal name="Activated" handler="OnSetNmbr" />
+      </action>
+      <action id="HelpAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes">Help</property>
+      </action>
+      <action id="AboutAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">About</property>
+        <property name="ShortLabel" translatable="yes">About</property>
+        <signal name="Activated" handler="OnAbout" />
+      </action>
+      <action id="ExitAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Exit</property>
+        <property name="ShortLabel" translatable="yes">Exit</property>
+        <signal name="Activated" handler="OnExit" />
+      </action>
+      <action id="GenerateAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Generate</property>
+        <property name="ShortLabel" translatable="yes">Generate</property>
+        <signal name="Activated" handler="OnGenerate" />
+      </action>
+      <action id="ExitAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Exit</property>
+        <property name="ShortLabel" translatable="yes">Exit</property>
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">KSPNameGen</property>
+    <property name="Icon">stock:gtk-bold Menu</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <child>
+      <widget class="Gtk.VBox" id="ngVBox">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.MenuBar" id="ngMenuBar">
+            <property name="MemberName" />
+            <node name="ngMenuBar" type="Menubar">
+              <node type="Menu" action="OptionsAction">
+                <node type="Menuitem" action="TypeAction" />
+                <node type="Menuitem" action="CombinationAction" />
+                <node type="Menuitem" action="GenderAction" />
+                <node type="Menuitem" action="NumberAction" />
+                <node type="Menuitem" action="GenerateAction" />
+              </node>
+              <node type="Menu" action="HelpAction">
+                <node type="Menuitem" action="AboutAction" />
+              </node>
+              <node type="Menuitem" action="ExitAction1" />
+            </node>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="ngScrolledWindow">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="ngTextView">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Editable">False</property>
+                <property name="CursorVisible">False</property>
+                <property name="AcceptsTab">False</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
     </child>
   </widget>
 </stetic-interface>

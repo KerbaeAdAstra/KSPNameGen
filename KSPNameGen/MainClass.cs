@@ -33,11 +33,6 @@ namespace KSPNameGen
     {
         // version defs
 
-        public static readonly ushort MAJOR = 0;
-        public static readonly ushort MINOR = 1;
-        public static readonly ushort PATCH = 2;
-        public static readonly string SUFFX = "";
-
 		// variable definitions
 
 		public static readonly Random random = new Random();
@@ -71,7 +66,7 @@ namespace KSPNameGen
 					Console.WriteLine("A positive integer was not specified.");
 					Environment.Exit(1);
 				}
-				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
+				Console.WriteLine("KSPNameGen v0.1.2");
 				if (NameGen.validParams.Contains(args[1]))
 				{
 					NameGen.Iterator(inputULong, args[1]);
