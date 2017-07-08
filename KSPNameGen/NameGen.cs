@@ -147,20 +147,14 @@ namespace KSPNameGen
 					{
 						return fpr[random.Next(fpr.Length)] + " Kerman";
 					}
-					else
-					{
-						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
-					}
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 
 				case "srm":
 					if (toggle)
 					{
 						return mpr[random.Next(mpr.Length)] + " Kerman";
 					}
-					else
-					{
-						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
-					}
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 
 				case "fpf":
 					return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
@@ -179,30 +173,24 @@ namespace KSPNameGen
 					{
 						return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 					}
-					else
-					{
-						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
-					}
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "frm":
 					if (toggle)
 					{
 						return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 					}
-					else
-					{
-						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
-					}
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
 					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
 			}
 		}
 
-		public static void Iterator(ulong inputULong, string param)
+		public static void Iterator(ulong inputInt64, string param)
 		{
 			string buffer = "";
 			string Generated = "";
-			for (ulong i = 0; i < inputULong; i++)
+			for (ulong i = 0; i < inputInt64; i++)
 			{
 				Generated = Generate(param);
 				buffer += Generated + "\n";

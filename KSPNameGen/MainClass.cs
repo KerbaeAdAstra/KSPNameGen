@@ -30,9 +30,7 @@ using Gtk;
 namespace KSPNameGen
 {
     public class MainClass
-    {
-        // version defs
-
+	{
 		// variable definitions
 
 		public static readonly Random random = new Random();
@@ -44,7 +42,7 @@ namespace KSPNameGen
 			if (args.Length == 0)
 			{
 				Application.Init();
-				MainWindow win = new MainWindow();
+				var win = new MainWindow();
 				win.Show();
 				Application.Run();
 			}
@@ -52,7 +50,7 @@ namespace KSPNameGen
 			else if (args[0] == "-i" || args[0] == "--interactive")
 			{
 				Application.Init();
-				MainWindow win = new MainWindow();
+				var win = new MainWindow();
 				win.Show();
 				Application.Run();
 			}

@@ -91,7 +91,7 @@ public partial class MainWindow : Gtk.Window
 
 	protected void OnAbout(object sender, EventArgs e)
     {
-        AboutDialog about = new AboutDialog()
+        var about = new AboutDialog()
         {
             Authors = authors,
             Copyright = "Copyright (c) 2017 the Kerbae ad Astra group.",
