@@ -5,31 +5,45 @@ public partial class MainWindow
 {
 	private global::Gtk.UIManager UIManager;
 
-	private global::Gtk.Action OptionsAction;
-
-	private global::Gtk.Action TypeAction;
-
-	private global::Gtk.Action CombinationAction;
-
-	private global::Gtk.Action GenderAction;
-
-	private global::Gtk.Action NumberAction;
-
 	private global::Gtk.Action HelpAction;
 
 	private global::Gtk.Action AboutAction;
 
 	private global::Gtk.Action ExitAction;
 
-	private global::Gtk.Action GenerateAction;
-
 	private global::Gtk.VBox ngVBox;
 
 	private global::Gtk.MenuBar ngMenuBar;
 
-	private global::Gtk.ScrolledWindow ngScrolledWindow;
+	private global::Gtk.RadioButton ngRadioButtonFuture;
 
-	private global::Gtk.TextView ngTextView;
+	private global::Gtk.RadioButton ngRadioButtonStandard;
+
+	private global::Gtk.HSeparator ngHSeparator1;
+
+	private global::Gtk.RadioButton ngRadioButtonProper;
+
+	private global::Gtk.RadioButton ngRadioButtonMixed;
+
+	private global::Gtk.RadioButton ngRadioButtonConstructed;
+
+	private global::Gtk.HSeparator ngHSeparator2;
+
+	private global::Gtk.RadioButton ngRadioButtonMale;
+
+	private global::Gtk.RadioButton ngRadioButtonFemale;
+
+	private global::Gtk.HBox ngHBox;
+
+	private global::Gtk.SpinButton ngSpinButton;
+
+	private global::Gtk.VSeparator ngVSeparator3;
+
+	private global::Gtk.Button ngButtonGenerate;
+
+	private global::Gtk.VSeparator ngVSeparator2;
+
+	private global::Gtk.Button ngButtonAdvanced;
 
 	protected virtual void Build()
 	{
@@ -37,21 +51,6 @@ public partial class MainWindow
 		// Widget MainWindow
 		this.UIManager = new global::Gtk.UIManager();
 		global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup("Default");
-		this.OptionsAction = new global::Gtk.Action("OptionsAction", global::Mono.Unix.Catalog.GetString("Options"), null, null);
-		this.OptionsAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Parameters");
-		w1.Add(this.OptionsAction, null);
-		this.TypeAction = new global::Gtk.Action("TypeAction", global::Mono.Unix.Catalog.GetString("Type"), null, null);
-		this.TypeAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Type");
-		w1.Add(this.TypeAction, null);
-		this.CombinationAction = new global::Gtk.Action("CombinationAction", global::Mono.Unix.Catalog.GetString("Combination"), null, null);
-		this.CombinationAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Combination");
-		w1.Add(this.CombinationAction, null);
-		this.GenderAction = new global::Gtk.Action("GenderAction", global::Mono.Unix.Catalog.GetString("Gender"), null, null);
-		this.GenderAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Gender");
-		w1.Add(this.GenderAction, null);
-		this.NumberAction = new global::Gtk.Action("NumberAction", global::Mono.Unix.Catalog.GetString("Number"), null, null);
-		this.NumberAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Number");
-		w1.Add(this.NumberAction, null);
 		this.HelpAction = new global::Gtk.Action("HelpAction", global::Mono.Unix.Catalog.GetString("Help"), null, null);
 		this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Help");
 		w1.Add(this.HelpAction, null);
@@ -61,9 +60,6 @@ public partial class MainWindow
 		this.ExitAction = new global::Gtk.Action("ExitAction", global::Mono.Unix.Catalog.GetString("Exit"), null, null);
 		this.ExitAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Exit");
 		w1.Add(this.ExitAction, null);
-		this.GenerateAction = new global::Gtk.Action("GenerateAction", global::Mono.Unix.Catalog.GetString("Generate"), null, null);
-		this.GenerateAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Generate");
-		w1.Add(this.GenerateAction, null);
 		this.UIManager.InsertActionGroup(w1, 0);
 		this.AddAccelGroup(this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -75,7 +71,7 @@ public partial class MainWindow
 		this.ngVBox.Name = "ngVBox";
 		this.ngVBox.Spacing = 6;
 		// Container child ngVBox.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString("<ui><menubar name='ngMenuBar'><menu name='OptionsAction' action='OptionsAction'><menuitem name='TypeAction' action='TypeAction'/><menuitem name='CombinationAction' action='CombinationAction'/><menuitem name='GenderAction' action='GenderAction'/><menuitem name='NumberAction' action='NumberAction'/><menuitem name='GenerateAction' action='GenerateAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu><menuitem name='ExitAction' action='ExitAction'/></menubar></ui>");
+		this.UIManager.AddUiFromString("<ui><menubar name='ngMenuBar'><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/></menu><menuitem name='ExitAction' action='ExitAction'/></menubar></ui>");
 		this.ngMenuBar = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/ngMenuBar")));
 		this.ngMenuBar.Name = "ngMenuBar";
 		this.ngVBox.Add(this.ngMenuBar);
@@ -84,21 +80,172 @@ public partial class MainWindow
 		w2.Expand = false;
 		w2.Fill = false;
 		// Container child ngVBox.Gtk.Box+BoxChild
-		this.ngScrolledWindow = new global::Gtk.ScrolledWindow();
-		this.ngScrolledWindow.CanFocus = true;
-		this.ngScrolledWindow.Name = "ngScrolledWindow";
-		this.ngScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child ngScrolledWindow.Gtk.Container+ContainerChild
-		this.ngTextView = new global::Gtk.TextView();
-		this.ngTextView.CanFocus = true;
-		this.ngTextView.Name = "ngTextView";
-		this.ngTextView.Editable = false;
-		this.ngTextView.CursorVisible = false;
-		this.ngTextView.AcceptsTab = false;
-		this.ngScrolledWindow.Add(this.ngTextView);
-		this.ngVBox.Add(this.ngScrolledWindow);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngScrolledWindow]));
-		w4.Position = 1;
+		this.ngRadioButtonFuture = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Future-style"));
+		this.ngRadioButtonFuture.CanFocus = true;
+		this.ngRadioButtonFuture.Name = "ngRadioButtonFuture";
+		this.ngRadioButtonFuture.Active = false;
+		this.ngRadioButtonFuture.DrawIndicator = true;
+		this.ngRadioButtonFuture.UseUnderline = true;
+		this.ngRadioButtonFuture.Group = new global::GLib.SList(global::System.IntPtr.Zero);
+		this.ngVBox.Add(this.ngRadioButtonFuture);
+		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonFuture]));
+		w3.Position = 1;
+		w3.Expand = false;
+		w3.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngRadioButtonStandard = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Standard"));
+		this.ngRadioButtonStandard.CanFocus = true;
+		this.ngRadioButtonStandard.Name = "ngRadioButtonStandard";
+		this.ngRadioButtonStandard.Active = false;
+		this.ngRadioButtonStandard.DrawIndicator = true;
+		this.ngRadioButtonStandard.UseUnderline = true;
+		this.ngRadioButtonStandard.Group = this.ngRadioButtonFuture.Group;
+		this.ngVBox.Add(this.ngRadioButtonStandard);
+		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonStandard]));
+		w4.Position = 2;
+		w4.Expand = false;
+		w4.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngHSeparator1 = new global::Gtk.HSeparator();
+		this.ngHSeparator1.Name = "ngHSeparator1";
+		this.ngVBox.Add(this.ngHSeparator1);
+		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngHSeparator1]));
+		w5.Position = 3;
+		w5.Expand = false;
+		w5.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngRadioButtonProper = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Proper"));
+		this.ngRadioButtonProper.CanFocus = true;
+		this.ngRadioButtonProper.Name = "ngRadioButtonProper";
+		this.ngRadioButtonProper.Active = false;
+		this.ngRadioButtonProper.DrawIndicator = true;
+		this.ngRadioButtonProper.UseUnderline = true;
+		this.ngRadioButtonProper.Group = new global::GLib.SList(global::System.IntPtr.Zero);
+		this.ngVBox.Add(this.ngRadioButtonProper);
+		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonProper]));
+		w6.Position = 4;
+		w6.Expand = false;
+		w6.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngRadioButtonMixed = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Mixed"));
+		this.ngRadioButtonMixed.CanFocus = true;
+		this.ngRadioButtonMixed.Name = "ngRadioButtonMixed";
+		this.ngRadioButtonMixed.Active = false;
+		this.ngRadioButtonMixed.DrawIndicator = true;
+		this.ngRadioButtonMixed.UseUnderline = true;
+		this.ngRadioButtonMixed.Group = this.ngRadioButtonProper.Group;
+		this.ngVBox.Add(this.ngRadioButtonMixed);
+		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonMixed]));
+		w7.Position = 5;
+		w7.Expand = false;
+		w7.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngRadioButtonConstructed = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Constructed"));
+		this.ngRadioButtonConstructed.CanFocus = true;
+		this.ngRadioButtonConstructed.Name = "ngRadioButtonConstructed";
+		this.ngRadioButtonConstructed.Active = false;
+		this.ngRadioButtonConstructed.DrawIndicator = true;
+		this.ngRadioButtonConstructed.UseUnderline = true;
+		this.ngRadioButtonConstructed.Group = this.ngRadioButtonProper.Group;
+		this.ngVBox.Add(this.ngRadioButtonConstructed);
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonConstructed]));
+		w8.Position = 6;
+		w8.Expand = false;
+		w8.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngHSeparator2 = new global::Gtk.HSeparator();
+		this.ngHSeparator2.Name = "ngHSeparator2";
+		this.ngVBox.Add(this.ngHSeparator2);
+		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngHSeparator2]));
+		w9.Position = 7;
+		w9.Expand = false;
+		w9.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngRadioButtonMale = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Male"));
+		this.ngRadioButtonMale.CanFocus = true;
+		this.ngRadioButtonMale.Name = "ngRadioButtonMale";
+		this.ngRadioButtonMale.Active = false;
+		this.ngRadioButtonMale.DrawIndicator = true;
+		this.ngRadioButtonMale.UseUnderline = true;
+		this.ngRadioButtonMale.Group = new global::GLib.SList(global::System.IntPtr.Zero);
+		this.ngVBox.Add(this.ngRadioButtonMale);
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonMale]));
+		w10.Position = 8;
+		w10.Expand = false;
+		w10.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngRadioButtonFemale = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Female"));
+		this.ngRadioButtonFemale.CanFocus = true;
+		this.ngRadioButtonFemale.Name = "ngRadioButtonFemale";
+		this.ngRadioButtonFemale.Active = false;
+		this.ngRadioButtonFemale.DrawIndicator = true;
+		this.ngRadioButtonFemale.UseUnderline = true;
+		this.ngRadioButtonFemale.Group = this.ngRadioButtonMale.Group;
+		this.ngVBox.Add(this.ngRadioButtonFemale);
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngRadioButtonFemale]));
+		w11.Position = 9;
+		w11.Expand = false;
+		w11.Fill = false;
+		// Container child ngVBox.Gtk.Box+BoxChild
+		this.ngHBox = new global::Gtk.HBox();
+		this.ngHBox.Name = "ngHBox";
+		this.ngHBox.Spacing = 6;
+		// Container child ngHBox.Gtk.Box+BoxChild
+		this.ngSpinButton = new global::Gtk.SpinButton(0, 4294967295, 1);
+		this.ngSpinButton.CanFocus = true;
+		this.ngSpinButton.Name = "ngSpinButton";
+		this.ngSpinButton.Adjustment.PageIncrement = 10;
+		this.ngSpinButton.ClimbRate = 1;
+		this.ngSpinButton.Numeric = true;
+		this.ngSpinButton.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
+		this.ngHBox.Add(this.ngSpinButton);
+		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.ngHBox[this.ngSpinButton]));
+		w12.Position = 0;
+		w12.Expand = false;
+		w12.Fill = false;
+		// Container child ngHBox.Gtk.Box+BoxChild
+		this.ngVSeparator3 = new global::Gtk.VSeparator();
+		this.ngVSeparator3.Name = "ngVSeparator3";
+		this.ngHBox.Add(this.ngVSeparator3);
+		global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.ngHBox[this.ngVSeparator3]));
+		w13.Position = 1;
+		w13.Expand = false;
+		w13.Fill = false;
+		// Container child ngHBox.Gtk.Box+BoxChild
+		this.ngButtonGenerate = new global::Gtk.Button();
+		this.ngButtonGenerate.CanFocus = true;
+		this.ngButtonGenerate.Name = "ngButtonGenerate";
+		this.ngButtonGenerate.UseUnderline = true;
+		this.ngButtonGenerate.Label = global::Mono.Unix.Catalog.GetString("Generate");
+		this.ngHBox.Add(this.ngButtonGenerate);
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.ngHBox[this.ngButtonGenerate]));
+		w14.Position = 2;
+		w14.Expand = false;
+		w14.Fill = false;
+		// Container child ngHBox.Gtk.Box+BoxChild
+		this.ngVSeparator2 = new global::Gtk.VSeparator();
+		this.ngVSeparator2.Name = "ngVSeparator2";
+		this.ngHBox.Add(this.ngVSeparator2);
+		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.ngHBox[this.ngVSeparator2]));
+		w15.Position = 3;
+		w15.Expand = false;
+		w15.Fill = false;
+		// Container child ngHBox.Gtk.Box+BoxChild
+		this.ngButtonAdvanced = new global::Gtk.Button();
+		this.ngButtonAdvanced.CanFocus = true;
+		this.ngButtonAdvanced.Name = "ngButtonAdvanced";
+		this.ngButtonAdvanced.UseUnderline = true;
+		this.ngButtonAdvanced.Label = global::Mono.Unix.Catalog.GetString("Advanced…");
+		this.ngHBox.Add(this.ngButtonAdvanced);
+		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.ngHBox[this.ngButtonAdvanced]));
+		w16.Position = 4;
+		w16.Expand = false;
+		w16.Fill = false;
+		this.ngVBox.Add(this.ngHBox);
+		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.ngVBox[this.ngHBox]));
+		w17.Position = 10;
+		w17.Expand = false;
+		w17.Fill = false;
 		this.Add(this.ngVBox);
 		if ((this.Child != null))
 		{
@@ -108,12 +255,8 @@ public partial class MainWindow
 		this.DefaultHeight = 300;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
-		this.TypeAction.Activated += new global::System.EventHandler(this.OnSetType);
-		this.CombinationAction.Activated += new global::System.EventHandler(this.OnSetCmbo);
-		this.GenderAction.Activated += new global::System.EventHandler(this.OnSetGndr);
-		this.NumberAction.Activated += new global::System.EventHandler(this.OnSetNmbr);
 		this.AboutAction.Activated += new global::System.EventHandler(this.OnAbout);
 		this.ExitAction.Activated += new global::System.EventHandler(this.OnExit);
-		this.GenerateAction.Activated += new global::System.EventHandler(this.OnGenerate);
+		this.ngRadioButtonFuture.AccelCanActivate += new global::Gtk.AccelCanActivateHandler(this.FuturePressedEvent);
 	}
 }

@@ -186,15 +186,15 @@ namespace KSPNameGen
 			}
 		}
 
-		public static void Iterator(ulong inputInt64, string param)
+		public static void Iterator(uint inputInt, string param, uint buffsize)
 		{
 			string buffer = "";
 			string Generated = "";
-			for (ulong i = 0; i < inputInt64; i++)
+			for (uint i = 0; i < inputInt; i++)
 			{
 				Generated = Generate(param);
 				buffer += Generated + "\n";
-				if (i % 48 == 0)
+				if (i % buffsize == 0)
 				{
 					Console.Write(buffer);
 					buffer = "";

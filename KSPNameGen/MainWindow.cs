@@ -39,29 +39,9 @@ public partial class MainWindow : Gtk.Window
         a.RetVal = true;
     }
 
-    protected void OnSetType(object sender, EventArgs e)
-    {
-
-    }
-
-    protected void OnSetGndr(object sender, EventArgs e)
-    {
-
-    }
-
-    protected void OnSetNmbr(object sender, EventArgs e)
-    {
-
-    }
-
     protected void OnExit(object sender, EventArgs e)
     {
         Application.Quit();
-    }
-
-    protected void OnGenerate(object sender, EventArgs e)
-    {
-
     }
 
     protected string[] authors = {
@@ -105,8 +85,11 @@ public partial class MainWindow : Gtk.Window
         about.Destroy();
     }
 
-    protected void OnSetCmbo(object sender, EventArgs e)
+    protected void FuturePressedEvent(object o, AccelCanActivateArgs args)
     {
+    }
 
+    protected void SpinButtonOutput(object o, OutputArgs args)
+    {
     }
 }

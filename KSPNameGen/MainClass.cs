@@ -55,19 +55,18 @@ namespace KSPNameGen
 				Application.Run();
 			}
 
-			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
+			else if (args.Length == 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
 
-				ulong inputULong;
-				if (!ulong.TryParse(args[2], out inputULong))
-				{
-					Console.WriteLine("A positive integer was not specified.");
-					Environment.Exit(1);
-				}
-				Console.WriteLine("KSPNameGen v0.1.2");
+                if (!uint.TryParse(args[2], out uint inputInt))
+                {
+                    Console.WriteLine("A positive integer was not specified.");
+                    Environment.Exit(1);
+                }
+                Console.WriteLine("KSPNameGen v0.1.2");
 				if (NameGen.validParams.Contains(args[1]))
 				{
-					NameGen.Iterator(inputULong, args[1]);
+					NameGen.Iterator(inputInt, args[1], 48);
 				}
 				else
 				{
@@ -77,16 +76,62 @@ namespace KSPNameGen
 				Console.WriteLine("Complete.");
 			}
 
+            else if (args.Length == 4 && (args[0] == "-n" || args[0] == "--non-interactive"))
+            {
+				if (!uint.TryParse(args[2], out uint inputInt))
+				{
+					Console.WriteLine("A positive integer was not specified.");
+					Environment.Exit(1);
+				}
+				if (!uint.TryParse(args[3], out uint inputInt2))
+				{
+					Console.WriteLine("A positive integer was not specified.");
+					Environment.Exit(1);
+				}
+				Console.WriteLine("KSPNameGen v0.1.2");
+				if (NameGen.validParams.Contains(args[1]))
+				{
+					NameGen.Iterator(inputInt, args[1], inputInt2);
+				}
+				else
+				{
+					Console.WriteLine("Specified type is invalid.");
+					Environment.Exit(1);
+				}
+				Console.WriteLine("Complete.");
+            }
+
 			else if (args[0] == "-h" || args[0] == "--help")
 			{
-				Utils.Usage(false);
+				Usage(false);
 			}
 
 			else
 			{
-				Utils.Usage(true);
+				Usage(true);
 			}
             Environment.Exit(0);
+		}
+		public static void Usage(bool error)
+		{
+			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter inputInt [inputInt2]] [-h|--help]\n\n" +
+			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
+			"-n, --non-interactive: non-interactive mode\n" +
+			"-h, --help: show this help\n" +
+			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
+			"inputInt: how many names to generate at once.\n" +
+			"inputInt2: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
+			"inputInt and inputInt2 must be nonzero integers less than 4294967295 (2^32-1).\n" +
+			"`inputInt2' is optional; if not given, the default is 48.\n" +
+			"`parameter', `inputInt', and `inputInt2' are only used with non-interactive mode.\n\n");
+			if (error)
+			{
+				Environment.Exit(1);
+			}
+			else
+			{
+				Environment.Exit(0);
+			}
 		}
     }
 }
