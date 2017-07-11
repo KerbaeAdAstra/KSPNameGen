@@ -2,7 +2,7 @@
 // NameGen.cs
 //
 // Author:
-//       Kerbae ad Astra <kerbaeadastra@gmail.com>
+//	   Kerbae ad Astra <kerbaeadastra@gmail.com>
 //
 // Copyright (c) 2017 the Kerbae ad Astra group
 //

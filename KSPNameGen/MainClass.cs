@@ -2,7 +2,7 @@
 // MainClass.cs
 //
 // Author:
-//       Kerbae ad Astra <kerbaeadastra@gmail.com>
+//	   Kerbae ad Astra <kerbaeadastra@gmail.com>
 //
 // Copyright (c) 2017 the Kerbae ad Astra group
 //
@@ -29,13 +29,13 @@ using Gtk;
 
 namespace KSPNameGen
 {
-    public class MainClass
+	public class MainClass
 	{
 		// variable definitions
 
 		public static readonly Random random = new Random();
 
-        // application logic begins here
+		// application logic begins here
 
 		public static void Main(string[] args)
 		{
@@ -58,12 +58,12 @@ namespace KSPNameGen
 			else if (args.Length == 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
 
-                if (!uint.TryParse(args[2], out uint inputInt))
-                {
-                    Console.WriteLine("A positive integer was not specified.");
-                    Environment.Exit(1);
-                }
-                Console.WriteLine("KSPNameGen v0.1.2");
+				if (!uint.TryParse(args[2], out uint inputInt))
+				{
+					Console.WriteLine("A positive integer was not specified.");
+					Environment.Exit(1);
+				}
+				Console.WriteLine("KSPNameGen v0.1.2");
 				if (NameGen.validParams.Contains(args[1]))
 				{
 					NameGen.Iterator(inputInt, args[1], 48);
@@ -76,8 +76,8 @@ namespace KSPNameGen
 				Console.WriteLine("Complete.");
 			}
 
-            else if (args.Length == 4 && (args[0] == "-n" || args[0] == "--non-interactive"))
-            {
+			else if (args.Length == 4 && (args[0] == "-n" || args[0] == "--non-interactive"))
+			{
 				if (!uint.TryParse(args[2], out uint inputInt))
 				{
 					Console.WriteLine("A positive integer was not specified.");
@@ -99,7 +99,7 @@ namespace KSPNameGen
 					Environment.Exit(1);
 				}
 				Console.WriteLine("Complete.");
-            }
+			}
 
 			else if (args[0] == "-h" || args[0] == "--help")
 			{
@@ -110,7 +110,7 @@ namespace KSPNameGen
 			{
 				Usage(true);
 			}
-            Environment.Exit(0);
+			Environment.Exit(0);
 		}
 		public static void Usage(bool error)
 		{
@@ -133,5 +133,5 @@ namespace KSPNameGen
 				Environment.Exit(0);
 			}
 		}
-    }
+	}
 }
