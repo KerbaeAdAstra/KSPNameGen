@@ -7,7 +7,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/KSPNameGen.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="482 300">
+  <widget class="Gtk.Window" id="MainWindow" design-size="482 307">
     <action-group name="Default">
       <action id="HelpAction">
         <property name="Type">Action</property>
@@ -58,11 +58,11 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Future-style</property>
+            <property name="Active">True</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
             <property name="Group">ngGroupType</property>
-            <signal name="AccelCanActivate" handler="FuturePressedEvent" />
           </widget>
           <packing>
             <property name="Position">1</property>
@@ -76,7 +76,6 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Standard</property>
-            <property name="Active">False</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
@@ -105,6 +104,7 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Proper</property>
+            <property name="Active">True</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
@@ -122,7 +122,6 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Mixed</property>
-            <property name="Active">False</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
@@ -140,7 +139,6 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Constructed</property>
-            <property name="Active">False</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
@@ -169,6 +167,7 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Male</property>
+            <property name="Active">True</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
@@ -186,7 +185,6 @@
             <property name="MemberName" />
             <property name="CanFocus">True</property>
             <property name="Label" translatable="yes">Female</property>
-            <property name="Active">False</property>
             <property name="DrawIndicator">True</property>
             <property name="HasLabel">True</property>
             <property name="UseUnderline">True</property>
@@ -207,12 +205,14 @@
               <widget class="Gtk.SpinButton" id="ngSpinButton">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
+                <property name="Lower">1</property>
                 <property name="Upper">4294967295</property>
                 <property name="PageIncrement">10</property>
                 <property name="StepIncrement">1</property>
                 <property name="ClimbRate">1</property>
                 <property name="Numeric">True</property>
-                <property name="UpdatePolicy">IfValid</property>
+                <property name="Value">1</property>
+                <signal name="ValueChanged" handler="SpinButtonValue" />
               </widget>
               <packing>
                 <property name="Position">0</property>

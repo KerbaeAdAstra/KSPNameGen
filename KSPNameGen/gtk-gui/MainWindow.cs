@@ -83,7 +83,6 @@ public partial class MainWindow
 		this.ngRadioButtonFuture = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Future-style"));
 		this.ngRadioButtonFuture.CanFocus = true;
 		this.ngRadioButtonFuture.Name = "ngRadioButtonFuture";
-		this.ngRadioButtonFuture.Active = false;
 		this.ngRadioButtonFuture.DrawIndicator = true;
 		this.ngRadioButtonFuture.UseUnderline = true;
 		this.ngRadioButtonFuture.Group = new global::GLib.SList(global::System.IntPtr.Zero);
@@ -96,7 +95,6 @@ public partial class MainWindow
 		this.ngRadioButtonStandard = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Standard"));
 		this.ngRadioButtonStandard.CanFocus = true;
 		this.ngRadioButtonStandard.Name = "ngRadioButtonStandard";
-		this.ngRadioButtonStandard.Active = false;
 		this.ngRadioButtonStandard.DrawIndicator = true;
 		this.ngRadioButtonStandard.UseUnderline = true;
 		this.ngRadioButtonStandard.Group = this.ngRadioButtonFuture.Group;
@@ -117,7 +115,6 @@ public partial class MainWindow
 		this.ngRadioButtonProper = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Proper"));
 		this.ngRadioButtonProper.CanFocus = true;
 		this.ngRadioButtonProper.Name = "ngRadioButtonProper";
-		this.ngRadioButtonProper.Active = false;
 		this.ngRadioButtonProper.DrawIndicator = true;
 		this.ngRadioButtonProper.UseUnderline = true;
 		this.ngRadioButtonProper.Group = new global::GLib.SList(global::System.IntPtr.Zero);
@@ -130,7 +127,6 @@ public partial class MainWindow
 		this.ngRadioButtonMixed = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Mixed"));
 		this.ngRadioButtonMixed.CanFocus = true;
 		this.ngRadioButtonMixed.Name = "ngRadioButtonMixed";
-		this.ngRadioButtonMixed.Active = false;
 		this.ngRadioButtonMixed.DrawIndicator = true;
 		this.ngRadioButtonMixed.UseUnderline = true;
 		this.ngRadioButtonMixed.Group = this.ngRadioButtonProper.Group;
@@ -143,7 +139,6 @@ public partial class MainWindow
 		this.ngRadioButtonConstructed = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Constructed"));
 		this.ngRadioButtonConstructed.CanFocus = true;
 		this.ngRadioButtonConstructed.Name = "ngRadioButtonConstructed";
-		this.ngRadioButtonConstructed.Active = false;
 		this.ngRadioButtonConstructed.DrawIndicator = true;
 		this.ngRadioButtonConstructed.UseUnderline = true;
 		this.ngRadioButtonConstructed.Group = this.ngRadioButtonProper.Group;
@@ -164,7 +159,6 @@ public partial class MainWindow
 		this.ngRadioButtonMale = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Male"));
 		this.ngRadioButtonMale.CanFocus = true;
 		this.ngRadioButtonMale.Name = "ngRadioButtonMale";
-		this.ngRadioButtonMale.Active = false;
 		this.ngRadioButtonMale.DrawIndicator = true;
 		this.ngRadioButtonMale.UseUnderline = true;
 		this.ngRadioButtonMale.Group = new global::GLib.SList(global::System.IntPtr.Zero);
@@ -177,7 +171,6 @@ public partial class MainWindow
 		this.ngRadioButtonFemale = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Female"));
 		this.ngRadioButtonFemale.CanFocus = true;
 		this.ngRadioButtonFemale.Name = "ngRadioButtonFemale";
-		this.ngRadioButtonFemale.Active = false;
 		this.ngRadioButtonFemale.DrawIndicator = true;
 		this.ngRadioButtonFemale.UseUnderline = true;
 		this.ngRadioButtonFemale.Group = this.ngRadioButtonMale.Group;
@@ -191,13 +184,13 @@ public partial class MainWindow
 		this.ngHBox.Name = "ngHBox";
 		this.ngHBox.Spacing = 6;
 		// Container child ngHBox.Gtk.Box+BoxChild
-		this.ngSpinButton = new global::Gtk.SpinButton(0, 4294967295, 1);
+		this.ngSpinButton = new global::Gtk.SpinButton(1, 4294967295, 1);
 		this.ngSpinButton.CanFocus = true;
 		this.ngSpinButton.Name = "ngSpinButton";
 		this.ngSpinButton.Adjustment.PageIncrement = 10;
 		this.ngSpinButton.ClimbRate = 1;
 		this.ngSpinButton.Numeric = true;
-		this.ngSpinButton.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
+		this.ngSpinButton.Value = 1;
 		this.ngHBox.Add(this.ngSpinButton);
 		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.ngHBox[this.ngSpinButton]));
 		w12.Position = 0;
@@ -252,11 +245,11 @@ public partial class MainWindow
 			this.Child.ShowAll();
 		}
 		this.DefaultWidth = 482;
-		this.DefaultHeight = 300;
+		this.DefaultHeight = 307;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 		this.AboutAction.Activated += new global::System.EventHandler(this.OnAbout);
 		this.ExitAction.Activated += new global::System.EventHandler(this.OnExit);
-		this.ngRadioButtonFuture.AccelCanActivate += new global::Gtk.AccelCanActivateHandler(this.FuturePressedEvent);
+		this.ngSpinButton.ValueChanged += new global::System.EventHandler(this.SpinButtonValue);
 	}
 }
