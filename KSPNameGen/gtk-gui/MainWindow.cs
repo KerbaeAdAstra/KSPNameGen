@@ -251,5 +251,6 @@ public partial class MainWindow
 		this.AboutAction.Activated += new global::System.EventHandler(this.OnAbout);
 		this.ExitAction.Activated += new global::System.EventHandler(this.OnExit);
 		this.ngSpinButton.ValueChanged += new global::System.EventHandler(this.SpinButtonValue);
+		this.ngButtonGenerate.Activated += new global::System.EventHandler(this.OnGenerate);
 	}
 }

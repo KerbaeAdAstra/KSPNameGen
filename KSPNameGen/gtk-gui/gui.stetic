@@ -239,6 +239,7 @@
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Generate</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Activated" handler="OnGenerate" />
               </widget>
               <packing>
                 <property name="Position">2</property>
@@ -280,6 +281,27 @@
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="KSPNameGen.DisplayWindow" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">DisplayWindow</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <widget class="Gtk.ScrolledWindow" id="ngScrolledWindow">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="ShadowType">In</property>
+        <child>
+          <widget class="Gtk.TextView" id="ngTextView">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Editable">False</property>
+            <property name="AcceptsTab">False</property>
+            <property name="Text" translatable="yes" />
+          </widget>
         </child>
       </widget>
     </child>

@@ -55,39 +55,27 @@ namespace KSPNameGen
 				Application.Run();
 			}
 
-			else if (args.Length == 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
+			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
 
 				if (!uint.TryParse(args[2], out uint inputInt))
 				{
-					Console.WriteLine("A positive integer was not specified.");
+					Console.WriteLine("A positive integer was not specified for `number'.");
 					Environment.Exit(1);
 				}
-				Console.WriteLine("KSPNameGen v0.1.2");
-				if (NameGen.validParams.Contains(args[1]))
-				{
-					NameGen.Iterator(inputInt, args[1], 48);
-				}
-				else
-				{
-					Console.WriteLine("Specified type is invalid.");
-					Environment.Exit(1);
-				}
-				Console.WriteLine("Complete.");
-			}
-
-			else if (args.Length == 4 && (args[0] == "-n" || args[0] == "--non-interactive"))
-			{
-				if (!uint.TryParse(args[2], out uint inputInt))
-				{
-					Console.WriteLine("A positive integer was not specified.");
-					Environment.Exit(1);
-				}
-				if (!uint.TryParse(args[3], out uint inputInt2))
-				{
-					Console.WriteLine("A positive integer was not specified.");
-					Environment.Exit(1);
-				}
+                uint inputInt2;
+                if (args[3] == null)
+                {
+                    inputInt2 = 48;
+                }
+                else
+                {
+					if (!uint.TryParse(args[3], out inputInt2))
+					{
+						Console.WriteLine("A positive integer was not specified for `buffsize'.");
+						Environment.Exit(1);
+					}
+                }
 				Console.WriteLine("KSPNameGen v0.1.2");
 				if (NameGen.validParams.Contains(args[1]))
 				{
@@ -114,7 +102,7 @@ namespace KSPNameGen
 		}
 		public static void Usage(bool error)
 		{
-			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter inputInt [inputInt2]] [-h|--help]\n\n" +
+			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +

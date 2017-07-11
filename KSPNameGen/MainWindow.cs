@@ -25,10 +25,13 @@
 // THE SOFTWARE.
 using System;
 using Gtk;
+using KSPNameGen;
 
 public partial class MainWindow : Window
 {
     public uint inputInt;
+    public string param;
+    public uint buffsize = 48;
     public MainWindow() : base(WindowType.Toplevel)
     {
         Build();
@@ -90,5 +93,10 @@ public partial class MainWindow : Window
     {
         var ngSpinButton = sender as SpinButton;
         inputInt = (uint)ngSpinButton.Value;
+    }
+
+    protected void OnGenerate(object sender, EventArgs e)
+    {
+        var DisplayWindow = new DisplayWindow(inputInt, param, buffsize);
     }
 }
