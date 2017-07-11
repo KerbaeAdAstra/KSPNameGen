@@ -119,11 +119,11 @@ namespace KSPNameGen
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +
 			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
-			"inputInt: how many names to generate at once.\n" +
-			"inputInt2: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
-			"inputInt and inputInt2 must be nonzero integers less than 4294967295 (2^32-1).\n" +
-			"`inputInt2' is optional; if not given, the default is 48.\n" +
-			"`parameter', `inputInt', and `inputInt2' are only used with non-interactive mode.\n\n");
+			"number: how many names to generate at once.\n" +
+			"buffsize: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
+			"number and buffsize must be nonzero integers less than 4294967295 (2^32-1).\n" +
+			"`buffsize' is optional; if not given, the default is 48.\n" +
+			"`parameter', `number', and `buffsize' are only used with non-interactive mode.\n\n");
 			if (error)
 			{
 				Environment.Exit(1);
