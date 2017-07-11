@@ -2,7 +2,6 @@
 
 [![GitHub (pre-)release](https://img.shields.io/github/release/KerbaeAdAstra/KSPNameGen/all.svg)]()
 [![license](https://img.shields.io/github/license/KerbaeAdAstra/KSPNameGen.svg)]()
-[![Build Status](https://travis-ci.org/KerbaeAdAstra/KSPNameGen.svg?branch=develop)](https://travis-ci.org/KerbaeAdAstra/KSPNameGen)
 
 ---
 
