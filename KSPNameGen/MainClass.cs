@@ -58,7 +58,8 @@ namespace KSPNameGen
 			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
 
-				if (!uint.TryParse(args[2], out uint inputInt))
+                uint inputInt;
+                if (!uint.TryParse(args[2], out inputInt))
 				{
 					Console.WriteLine("A positive integer was not specified for `number'.");
 					Environment.Exit(1);
