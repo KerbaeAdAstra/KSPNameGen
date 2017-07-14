@@ -175,16 +175,27 @@ namespace KSPNameGen
 				ulong inputLong2;
 				if (!ulong.TryParse(args[2], out inputLong))
 				{
-					Console.WriteLine("A positive integer was not specified for `number'.");
+					Console.WriteLine("A positive nonzero integer was not specified for `number'.");
 					Kill(1);
 				}
-				if (args[3] == null)
+				else if (inputLong == 0)
+				{
+					Console.WriteLine("A positive nonzero integer was not specified for `number'.");
+					Kill(1);
+				}
+				if (args.Length == 3)
 				{
 					inputLong2 = 48;
 				}
 				else if (!ulong.TryParse(args[3], out inputLong2))
 				{
-					Console.WriteLine("A positive integer was not specified for `buffsize'.");
+					Console.WriteLine("A positive nonzero integer was not specified for `buffsize'.");
+					Kill(1);
+				}
+				else if (inputLong2 == 0)
+				{
+					Console.WriteLine("A positive nonzero integer was not specified for `buffsize'.");
+					Kill(1);
 				}
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				if (validParams.Contains(args[1]))
@@ -222,7 +233,7 @@ namespace KSPNameGen
 			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
 			"number: how many names to generate at once.\n" +
 			"buffsize: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
-			"number and buffsize must be nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).\n" +
+			"number and buffsize must be positive nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).\n" +
 			"`buffsize' is optional; if not given, the default is 48.\n" +
 			"`parameter', `number', and `buffsize' are only used with non-interactive mode.\n\n");
 			if (error) //
