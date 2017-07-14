@@ -143,7 +143,7 @@ namespace KSPNameGen
 
 		static readonly ushort MAJOR = 0;
 		static readonly ushort MINOR = 1;
-		static readonly ushort PATCH = 2;
+		static readonly ushort PATCH = 3;
 		static readonly string SUFFX = "";
 
 		// variable definitions
