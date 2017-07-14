@@ -141,10 +141,10 @@ namespace KSPNameGen
 
 		// static version defs
 
-		static ushort MAJOR = 0;
-		static ushort MINOR = 1;
-		static ushort PATCH = 2;
-		static string SUFFX = "";
+		static readonly ushort MAJOR = 0;
+		static readonly ushort MINOR = 1;
+		static readonly ushort PATCH = 3;
+		static readonly string SUFFX = "";
 
 		// variable definitions
 
@@ -171,16 +171,36 @@ namespace KSPNameGen
 			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
 			{
 
-				ulong inputULong;
-				if (!ulong.TryParse(args[2], out inputULong))
+				ulong inputLong;
+				ulong inputLong2;
+				if (!ulong.TryParse(args[2], out inputLong))
 				{
-					Console.WriteLine("A positive integer was not specified.");
+					Console.WriteLine("A positive nonzero integer was not specified for `number'.");
+					Kill(1);
+				}
+				else if (inputLong == 0)
+				{
+					Console.WriteLine("A positive nonzero integer was not specified for `number'.");
+					Kill(1);
+				}
+				if (args.Length == 3)
+				{
+					inputLong2 = 48;
+				}
+				else if (!ulong.TryParse(args[3], out inputLong2))
+				{
+					Console.WriteLine("A positive nonzero integer was not specified for `buffsize'.");
+					Kill(1);
+				}
+				else if (inputLong2 == 0)
+				{
+					Console.WriteLine("A positive nonzero integer was not specified for `buffsize'.");
 					Kill(1);
 				}
 				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				if (validParams.Contains(args[1]))
 				{
-					Iterator(inputULong, args[1]);
+					Iterator(inputLong, args[1], inputLong2);
 				}
 				else
 				{
@@ -206,14 +226,17 @@ namespace KSPNameGen
 
 		static void Usage(bool error)
 		{
-			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]\n\n" +
+			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +
 			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
-			"number: a nonzero integer less than 18,446,744,073,709,551,615 (2^64-1).\n" +
-			"`parameter' and `number' are only used with non-interactive mode.\n\n");
-			if (error)
+			"number: how many names to generate at once.\n" +
+			"buffsize: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
+			"number and buffsize must be positive nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).\n" +
+			"`buffsize' is optional; if not given, the default is 48.\n" +
+			"`parameter', `number', and `buffsize' are only used with non-interactive mode.\n\n");
+			if (error) //
 			{
 				Kill(1);
 			}
@@ -266,14 +289,14 @@ namespace KSPNameGen
 
 		static ulong PromptN(string query)
 		{
-			ulong inputULong = 0;
+			ulong inputLong = 0;
 			Console.WriteLine(query);
 			string input = Console.ReadLine();
-			if (!ulong.TryParse(input, out inputULong))
+			if (!ulong.TryParse(input, out inputLong))
 			{
 				Console.WriteLine("A positive integer was not specified.");
 			}
-			return inputULong;
+			return inputLong;
 		}
 
 		static void Kill(ushort exitCode)
@@ -297,13 +320,10 @@ namespace KSPNameGen
 			switch (inpar)
 			{
 				case 0: // TYPE
+					Console.Clear();
 					if (firstRun)
 					{
 						Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-					}
-					else
-					{
-						Console.Clear();
 					}
 					firstRun = false;
 					inString = PromptS(prompt[inpar], true);
@@ -430,7 +450,7 @@ namespace KSPNameGen
 						}
 						else if (genYN == "y")
 						{
-							Iterator(inULong, param);
+							Iterator(inULong, param, 48);
 							gen = false;
 							param = "";
 							inpar = 0;
@@ -449,7 +469,7 @@ namespace KSPNameGen
 						break;
 					}
 
-					Iterator(inULong, param);
+					Iterator(inULong, param, 48);
 					gen = false;
 					param = "";
 					inpar = 0;
@@ -557,11 +577,11 @@ namespace KSPNameGen
 			}
 		}
 
-		static void Nyan(ulong inputULong)
+		static void Nyan(ulong inputLong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
 			string Generated = "";
-			for (ulong i = 0; i < inputULong / 15; i++)
+			for (ulong i = 0; i < inputLong / 15; i++)
 			{
 				foreach (var color in colors)
 				{
@@ -581,15 +601,15 @@ namespace KSPNameGen
 		}
 
 
-		static void Iterator(ulong inputULong, string param)
+		static void Iterator(ulong number, string param, ulong buffsize)
 		{
 			string buffer = "";
 			string Generated = "";
-			for (ulong i = 0; i < inputULong; i++)
+			for (ulong i = 0; i < number; i++)
 			{
 				Generated = Generate(param);
 				buffer += Generated + "\n";
-				if (i % 48 == 0)
+				if (i % buffsize == 0)
 				{
 					Console.Write(buffer);
 					buffer = "";
