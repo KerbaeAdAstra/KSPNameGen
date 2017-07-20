@@ -125,7 +125,7 @@ namespace KSPNameGen
 			"Type 'm' for male, or 'f' for female.", // GNDR
 			"Specify number of names to generate.", // NMBR
 			"Specify buffer size.", //Buffer
-			"Specify full filepath." //Filepath
+			"Specify filepath (absolute or relative)." //Filepath
 		};
 
 		static readonly string[] help = { // cache help topics
@@ -148,7 +148,7 @@ namespace KSPNameGen
 		static readonly ushort MAJOR = 0;
 		static readonly ushort MINOR = 2;
 		static readonly ushort PATCH = 0;
-		static readonly string SUFFX = "-indev";
+		static readonly string SUFFX = "";
 
 		// variable definitions
 
@@ -412,6 +412,10 @@ namespace KSPNameGen
 
 								case 2: //Exit
 									writeFile = !writeFile;
+									if(!Accessible())
+									{
+										writeFile = false;
+									}
 									break;
 								
 								case 3: //Apply
@@ -488,7 +492,7 @@ namespace KSPNameGen
 					
 					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
 					Console.WriteLine("File Path:                     ");
-					Console.BackgroundColor = File.Exists(filePath) ? fexBack : dneBack;
+					Console.BackgroundColor = Accessible() ? fexBack : dneBack;
 					Console.WriteLine("{0,31}", filePath);
 					
 					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
@@ -504,6 +508,22 @@ namespace KSPNameGen
 					Console.BackgroundColor = oldBack;
 					break;
 			}
+		}
+		
+		static bool Accessible()
+		{
+			if(!File.Exists(filePath))
+				return false;
+			try
+			{
+				File.OpenWrite(filePath).Close();
+			}
+			catch
+			{
+				return false;
+			}
+			
+			return true;
 		}
 		
 		static ulong PromptN(string query)
