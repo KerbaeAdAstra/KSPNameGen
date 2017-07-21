@@ -29,7 +29,6 @@ using System.Threading;
 
 namespace KSPNameGen
 {
-	enum Modes {Main, Options};
 	class KSPNameGen
 	{
 		// array definitions
@@ -143,6 +142,10 @@ namespace KSPNameGen
 			"spf", "spm", "scf", "scm", "srf", "srm", "fpf", "fpm", "fcf", "fcm", "frf", "frm"
 		};
 
+		// enum defs
+
+		enum Modes {Main, Options};
+
 		// static version defs
 
 		static readonly ushort MAJOR = 0;
@@ -154,14 +157,14 @@ namespace KSPNameGen
 
 		static readonly Random random = new Random();
 		static bool gen = true;
-		static int[] cursor = new int[2]{0,0};
-		static int[] param = new int[4]{0,0,0,0};
+		static int[] cursor = {0,0};
+		static int[] param = {0,0,0,0};
 		static bool state = true;
-		static bool writeHelp = false;
+		static bool writeHelp;
 		static Modes drawMode = Modes.Main;
 		static ulong bufferSize = 48;
 		static string filePath = "";
-		static bool writeFile = false;
+		static bool writeFile;
 		static ConsoleKeyInfo input;
 
 		// application logic begins here
