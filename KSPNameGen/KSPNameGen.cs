@@ -23,7 +23,6 @@
 
 using System;
 using System.IO;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 
@@ -553,9 +552,6 @@ namespace KSPNameGen
 
 		static string Generate(string param)
 		{
-			Contract.Requires(param != null);
-			if (param == null)
-				return null;
 			bool toggle = random.Next(20) == 0;
 			switch (param)
 			{
