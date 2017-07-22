@@ -126,15 +126,6 @@ namespace KSPNameGen
 			"Specify filepath (absolute or relative)." // Filepath
 		};
 
-		static readonly string[] help = { // cache help topics
-			"Standard names have a 'Kerman' surname, while Future-style names have" +
-			"\nrandomly generated surnames.", // TYPE
-			"Proper names are chosen from a list, while constructed names are" +
-			"\nconstructed from a list of prefixes and suffixes.\n" +
-			"If the option 'combination' is chosen, then there is a 1/20 chance" +
-			"\nthat the generated name is proper." // CMBO
-		};
-
 		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
 		static readonly string[] validParams = { // cache valid parameters
@@ -165,6 +156,12 @@ namespace KSPNameGen
 		static string filePath = "";
 		static bool writeFile;
 		static ConsoleKeyInfo input;
+        static readonly string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
+            "\nrandomly generated surnames." + // TYPE
+            "Proper names are chosen from a list, while constructed names are" +
+            "\nconstructed from a list of prefixes and suffixes.\n" +
+            "If the option 'combination' is chosen, then there is a 1/20 chance" +
+            "\nthat the generated name is proper."; // CMBO
 
 		// application logic begins here
 
@@ -454,7 +451,7 @@ namespace KSPNameGen
 					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
 					Console.WriteLine(param[1] == 0 ?
 							"[Proper] Mixed  Constructed    " :
-					param[1] == 1 ?
+					                    param[1] == 1 ?
 							" Proper [Mixed] Constructed    " :
 							" Proper  Mixed [Constructed]   ");
 
@@ -466,17 +463,16 @@ namespace KSPNameGen
 					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
 					Console.WriteLine(param[3] == 0 ?
 							"[Generate] Help  Exit  Options " :
-					param[3] == 1 ?
+					                    param[3] == 1 ?
 							" Generate [Help] Exit  Options " :
-					param[3] == 2 ?
+					                    param[3] == 2 ?
 							" Generate  Help [Exit] Options " :
 							" Generate  Help  Exit [Options]");
 
 					Console.BackgroundColor = oldBack;
 					if (writeHelp)
 					{
-						Console.WriteLine(help[0]);
-						Console.WriteLine(help[1]);
+                    Console.WriteLine(help);
 						writeHelp = false;
 					}
 					break;
@@ -615,7 +611,7 @@ namespace KSPNameGen
 				}
 			}
 			gen = false;
-			param = new int[]{0,0,0};
+			param = new int[]{ 0, 0, 0 };
 			Loop();
 		}
 
