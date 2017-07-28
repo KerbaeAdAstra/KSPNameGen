@@ -113,14 +113,6 @@ namespace KSPNameGen
 		};
 
 		static readonly string[] prompt = { // cache prompts
-			"Specify types of names to generate.\n" +
-			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
-			"Specify if you want to generate:\n" +
-			" r: a combination of constructed and proper names\n" +
-			" c: constructed names only, or\n" +
-			" p: proper names only", // CMBO
-			"Specify gender of generated names.\n" +
-			"Type 'm' for male, or 'f' for female.", // GNDR
 			"Specify number of names to generate.", // NMBR
 			"Specify buffer size.", // Buffer
 			"Specify filepath (absolute or relative)." // Filepath
@@ -138,10 +130,10 @@ namespace KSPNameGen
 
 		// static version defs
 
-		static readonly ushort MAJOR = 0;
-		static readonly ushort MINOR = 2;
-		static readonly ushort PATCH = 0;
-		static readonly string SUFFX = "";
+		const ushort MAJOR = 0;
+		const ushort MINOR = 2;
+		const ushort PATCH = 0;
+		const string SUFFX = "";
 
 		// variable definitions
 
@@ -156,7 +148,7 @@ namespace KSPNameGen
 		static string filePath = "";
 		static bool writeFile;
 		static ConsoleKeyInfo input;
-		static readonly string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
+		const string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
 			"\nrandomly generated surnames." + // TYPE
 			"Proper names are chosen from a list, while constructed names are" +
 			"\nconstructed from a list of prefixes and suffixes.\n" +
@@ -377,7 +369,7 @@ namespace KSPNameGen
 						param[cursor[0]] = cursor[1];
 						return;
 					}
-					Iterator(PromptN(prompt[3]), Stringify(param), bufferSize);
+					Iterator(PromptN(prompt[0]), Stringify(param), bufferSize);
 					gen = false;
 					state = true;
 					break;
@@ -400,11 +392,11 @@ namespace KSPNameGen
 							switch (cursor[0])
 							{
 								case 0: //Buffer size
-									bufferSize = PromptN(prompt[4]);
+									bufferSize = PromptN(prompt[1]);
 									return;
 
 								case 1: //Filepath
-									filePath = PromptS(prompt[5], false);
+									filePath = PromptS(prompt[2], false);
 									break;
 
 								case 2: //Exit
