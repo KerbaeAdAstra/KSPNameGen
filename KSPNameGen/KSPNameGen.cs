@@ -23,13 +23,11 @@
 
 using System;
 using System.IO;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 
 namespace KSPNameGen
 {
-	enum Modes {Main, Options};
 	class KSPNameGen
 	{
 		// array definitions
@@ -115,54 +113,47 @@ namespace KSPNameGen
 		};
 
 		static readonly string[] prompt = { // cache prompts
-			"Specify types of names to generate.\n" +
-			"Type 'f' for Future-style names, or 's' for standard names.", // TYPE
-			"Specify if you want to generate:\n" +
-			" r: a combination of constructed and proper names\n" +
-			" c: constructed names only, or\n" +
-			" p: proper names only", // CMBO
-			"Specify gender of generated names.\n" +
-			"Type 'm' for male, or 'f' for female.", // GNDR
 			"Specify number of names to generate.", // NMBR
-			"Specify buffer size.", //Buffer
-			"Specify filepath (absolute or relative)." //Filepath
+			"Specify buffer size.", // Buffer
+			"Specify filepath (absolute or relative)." // Filepath
 		};
 
-		static readonly string[] help = { // cache help topics
-			"Standard names have a 'Kerman' surname, while Future-style names have" +
-			"\nrandomly generated surnames.", // TYPE
-			"Proper names are chosen from a list, while constructed names are" +
-			"\nconstructed from a list of prefixes and suffixes.\n" +
-			"If the option 'combination' is chosen, then there is a 1/20 chance" +
-			"\nthat the generated name is proper." // CMBO
-		};
-		
 		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
 		static readonly string[] validParams = { // cache valid parameters
 			"spf", "spm", "scf", "scm", "srf", "srm", "fpf", "fpm", "fcf", "fcm", "frf", "frm"
 		};
 
+		// enum defs
+
+		enum Modes { Main, Options };
+
 		// static version defs
 
-		static readonly ushort MAJOR = 0;
-		static readonly ushort MINOR = 2;
-		static readonly ushort PATCH = 0;
-		static readonly string SUFFX = "";
+		const ushort MAJOR = 0;
+		const ushort MINOR = 2;
+		const ushort PATCH = 0;
+		const string SUFFX = "";
 
 		// variable definitions
 
 		static readonly Random random = new Random();
 		static bool gen = true;
-		static int[] cursor = new int[2]{0,0};
-		static int[] param = new int[4]{0,0,0,0};
+		static int[] cursor = { 0, 0 };
+		static int[] param = { 0, 0, 0, 0 };
 		static bool state = true;
-		static bool writeHelp = false;
+		static bool writeHelp;
 		static Modes drawMode = Modes.Main;
 		static ulong bufferSize = 48;
 		static string filePath = "";
-		static bool writeFile = false;
+		static bool writeFile;
 		static ConsoleKeyInfo input;
+		const string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
+			"\nrandomly generated surnames." + // TYPE
+			"Proper names are chosen from a list, while constructed names are" +
+			"\nconstructed from a list of prefixes and suffixes.\n" +
+			"If the option 'combination' is chosen, then there is a 1/20 chance" +
+			"\nthat the generated name is proper."; // CMBO
 
 		// application logic begins here
 
@@ -303,121 +294,116 @@ namespace KSPNameGen
 
 		static void NameGen()
 		{
-			switch(drawMode)
+			switch (drawMode)
 			{
 				case Modes.Main:
-					if(state)
+					if (state)
 					{
 						input = Console.ReadKey(false);
-						switch(input.Key)
+						switch (input.Key)
 						{
 							case ConsoleKey.DownArrow:
 								cursor[0]++;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
 								break;
-			
+
 							case ConsoleKey.UpArrow:
 								cursor[0]--;
-								cursor[0]+= 4;
+								cursor[0] += 4;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
 								break;
-		
+
 							case ConsoleKey.RightArrow:
 								cursor[1]++;
 								break;
-		
+
 							case ConsoleKey.LeftArrow:
 								cursor[1]--;
 								break;
-					
+
 							case ConsoleKey.Enter:
-								switch(param[3])
+								switch (param[3])
 								{
-									case 0: //Generate
+									case 0: // Generate
 										state = false; //NMBR
 										return;
 
-									case 1: //Help
+									case 1: // Help
 										writeHelp = true;
 										break;
 
-									case 2: //Exit
+									case 2: // Exit
 										Kill(0);
 										break;
-									
-									case 3: //Options
+
+									case 3: // Options
 										drawMode = Modes.Options;
 										break;
 								}
 								break;
 						}
-						switch(cursor[0])
+						switch (cursor[0])
 						{
-							case 0: //TYPE
-								cursor[1] += 2;
-								cursor[1] %= 2;
-								break;
-		
-							case 1: //CMBO
-								cursor[1] += 3;
-								cursor[1] %= 3;
-								break;
-		
-							case 2: //GNDR
+							case 0: // TYPE
 								cursor[1] += 2;
 								cursor[1] %= 2;
 								break;
 
-							case 3: //ACTS
+							case 1: // CMBO
+								cursor[1] += 3;
+								cursor[1] %= 3;
+								break;
+
+							case 2: // GNDR
+								cursor[1] += 2;
+								cursor[1] %= 2;
+								break;
+
+							case 3: // ACTS
 								cursor[1] += 4;
 								cursor[1] %= 4;
 								break;
 						}
 						param[cursor[0]] = cursor[1];
 						return;
-					}else
-					{
-						Iterator(PromptN(prompt[3]), Stringify(param), bufferSize);
-						gen = false;
-						state = true;
 					}
+					Iterator(PromptN(prompt[0]), Stringify(param), bufferSize);
+					gen = false;
+					state = true;
 					break;
 				case Modes.Options:
 					input = Console.ReadKey(false);
-					switch(input.Key)
+					switch (input.Key)
 					{
 						case ConsoleKey.DownArrow:
 							cursor[0]++;
 							cursor[0] %= 4;
 							break;
-		
+
 						case ConsoleKey.UpArrow:
 							cursor[0]--;
-							cursor[0]+= 4;
+							cursor[0] += 4;
 							cursor[0] %= 4;
 							break;
-				
+
 						case ConsoleKey.Enter:
-							switch(cursor[0])
+							switch (cursor[0])
 							{
 								case 0: //Buffer size
-									bufferSize = PromptN(prompt[4]);
+									bufferSize = PromptN(prompt[1]);
 									return;
 
 								case 1: //Filepath
-									filePath = PromptS(prompt[5], false);
+									filePath = PromptS(prompt[2], false);
 									break;
 
 								case 2: //Exit
 									writeFile = !writeFile;
-									if(!Accessible())
-									{
-										writeFile = false;
-									}
+									writeFile &= Accessible();
 									break;
-								
+
 								case 3: //Apply
 									drawMode = Modes.Main;
 									break;
@@ -427,7 +413,7 @@ namespace KSPNameGen
 					break;
 			}
 		}
-		
+
 		static string Stringify(int[] param)
 		{
 			string output = param[0] == 0 ? "f" : "s";
@@ -442,77 +428,76 @@ namespace KSPNameGen
 			ConsoleColor newBack = ConsoleColor.DarkRed;
 			ConsoleColor fexBack = ConsoleColor.Green;
 			ConsoleColor dneBack = ConsoleColor.Red;
-			
+
 			Console.Clear();
-			switch(drawMode)
+			switch (drawMode)
 			{
 				case Modes.Main:
 					Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-			
+
 					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
 					Console.WriteLine(param[0] == 0 ?
 							"[Future] Standard              " :
 							" Future [Standard]             ");
-					
+
 					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
 					Console.WriteLine(param[1] == 0 ?
 							"[Proper] Mixed  Constructed    " :
-					param[1] == 1 ?
+										param[1] == 1 ?
 							" Proper [Mixed] Constructed    " :
 							" Proper  Mixed [Constructed]   ");
-					
+
 					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
 					Console.WriteLine(param[2] == 0 ?
 							"[Male] Female                  " :
 							" Male [Female]                 ");
-					
+
 					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
 					Console.WriteLine(param[3] == 0 ?
 							"[Generate] Help  Exit  Options " :
-					param[3] == 1 ?
+										param[3] == 1 ?
 							" Generate [Help] Exit  Options " :
-					param[3] == 2 ?
+										param[3] == 2 ?
 							" Generate  Help [Exit] Options " :
 							" Generate  Help  Exit [Options]");
-			
+
 					Console.BackgroundColor = oldBack;
-					if(writeHelp)
+					if (writeHelp)
 					{
-						Console.WriteLine(help[0]);
-						Console.WriteLine(help[1]);
+					Console.WriteLine(help);
 						writeHelp = false;
 					}
 					break;
-				
+
 				case Modes.Options:
 					Console.WriteLine("Options");
-					
+
 					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
 					Console.WriteLine("Buffer Size:   {0,16}", bufferSize);
-					
+
 					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
 					Console.WriteLine("File Path:                     ");
 					Console.BackgroundColor = Accessible() ? fexBack : dneBack;
 					Console.WriteLine("{0,31}", filePath);
-					
+
 					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
-					Console.WriteLine(writeFile ? 
+					Console.WriteLine(writeFile ?
 						"Write to File               [x]" :
 						"Write to File               [ ]");
-					
+
 					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
 					Console.WriteLine(cursor[0] == 3 ?
 						" Apply                         " :
 						"[Apply]                        ");
-					
+
 					Console.BackgroundColor = oldBack;
 					break;
 			}
 		}
-		
+
 		static bool Accessible()
 		{
-			if(!File.Exists(filePath))
+			if (!File.Exists(filePath))
 				return false;
 			try
 			{
@@ -522,22 +507,21 @@ namespace KSPNameGen
 			{
 				return false;
 			}
-			
+
 			return true;
 		}
-		
+
 		static ulong PromptN(string query)
 		{
 			ulong inputLong = 0;
 			Console.WriteLine(query);
-			string input = Console.ReadLine();
-			if (!ulong.TryParse(input, out inputLong))
+			if (!ulong.TryParse(Console.ReadLine(), out inputLong))
 			{
 				Console.WriteLine("A positive integer was not specified.");
 			}
 			return inputLong;
 		}
-		
+
 		static string PromptS(string query, bool help)
 		{
 			Console.WriteLine(query);
@@ -550,9 +534,6 @@ namespace KSPNameGen
 
 		static string Generate(string param)
 		{
-			Contract.Requires(param != null);
-			if (param == null)
-				return null;
 			bool toggle = random.Next(20) == 0;
 			switch (param)
 			{
@@ -570,23 +551,13 @@ namespace KSPNameGen
 
 				case "srf":
 					if (toggle)
-					{
 						return fpr[random.Next(fpr.Length)] + " Kerman";
-					}
-					else
-					{
-						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
-					}
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 
 				case "srm":
 					if (toggle)
-					{
 						return mpr[random.Next(mpr.Length)] + " Kerman";
-					}
-					else
-					{
-						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
-					}
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 
 				case "fpf":
 					return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
@@ -602,23 +573,13 @@ namespace KSPNameGen
 
 				case "frf":
 					if (toggle)
-					{
 						return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
-					}
-					else
-					{
-						return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
-					}
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "frm":
 					if (toggle)
-					{
 						return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
-					}
-					else
-					{
-						return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
-					}
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
 					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
 			}
@@ -642,22 +603,22 @@ namespace KSPNameGen
 				}
 			}
 			gen = false;
-			param = new int[3]{0,0,0};
+			param = new int[]{ 0, 0, 0 };
 			Loop();
 		}
 
 
 		static void Iterator(ulong number, string param, ulong buffsize)
 		{
-			if(number > uint.MaxValue)
+			if (number > uint.MaxValue)
 			{
 				Nyan(number);
 				return;
 			}
-			if(writeFile)
+			if (writeFile)
 			{
 				StreamWriter sr = File.CreateText(filePath);
-				for(ulong i = 0; i < number; i++)
+				for (ulong i = 0; i < number; i++)
 				{
 					sr.WriteLine(Generate(param));
 				}
@@ -665,7 +626,7 @@ namespace KSPNameGen
 				Console.WriteLine("Complete.");
 				return;
 			}
-			
+
 			string buffer = "";
 			string Generated = "";
 			for (ulong i = 0; i < number; i++)
