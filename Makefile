@@ -10,18 +10,18 @@ ifeq ($(platform),Darwin)
 endif
 
 KSPNameGen.exe: $(src)
-	$(CSC) $(src) -o $@
+	$(CSC) $(src) -out:$@
 
 .PHONY: clean
 clean:
-	rm -vf KSPNameGen.exe
+	rm -f KSPNameGen.exe
 
 .PHONY: install
 install: KSPNameGen.exe KSPNameGen/kspng
-	cp -vf KSPNameGen.exe $(libexec)/
-	cp -vf KSPNameGen/kspng /usr/local/bin
+	cp -f KSPNameGen.exe $(libexec)
+	cp -f KSPNameGen/kspng /usr/local/bin
 
 .PHONY: uninstall
 uninstall:
-	rm -vf $(libexec)/KSPNameGen.exe
-	rm -vf /usr/local/bin/kspng
+	rm -f $(libexec)/KSPNameGen.exe
+	rm -f /usr/local/bin/kspng
