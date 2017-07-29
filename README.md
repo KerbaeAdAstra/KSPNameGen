@@ -21,17 +21,6 @@
 KSPNameGen is a free (both gratis and libre) random name generator for the
 popular PC game Kerbal Space Program. Now rewritten in C#!
 
-##### Using KSPNameGen
-Windows users: double click `KSPNameGen.exe`. Make sure you have .NET 4.5
-installed before running.
-
-macOS/Linux: execute `mono KSPNameGen.exe` in a command-line. Make sure you
-have Mono installed before running.
-
-Since KSPNameGen is a command-line application, in a command-line environment,
-the program can be invoked by `cd`ing to the directory, and typing `start 
-KSPNameGen.exe` (Windows).
-
 ##### Command-Line Arguments
 KSPNameGen now comes with a non-interactive mode, for when you just want a
 couple of names and don't want to mess around with the interactive interface.
