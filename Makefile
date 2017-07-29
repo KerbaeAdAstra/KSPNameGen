@@ -6,14 +6,14 @@ KSPNameGen.exe: $(src)
 
 .PHONY: clean
 clean:
-	rm -f KSPNameGen.exe
+	rm -vf KSPNameGen.exe
 
 .PHONY: install
 install: KSPNameGen.exe KSPNameGen/kspng
-	cp KSPNameGen.exe /usr/libexec
-	cp KSPNameGen/kspng /usr/local/bin
+	cp -vf KSPNameGen.exe /usr/libexec
+	cp -vf KSPNameGen/kspng /usr/local/bin
 
 .PHONY: uninstall
 uninstall:
-	rm -f /usr/libexec/KSPNameGen.exe
-	rm -f /usr/local/bin/kspng
+	rm -vf /usr/libexec/KSPNameGen.exe
+	rm -vf /usr/local/bin/kspng
