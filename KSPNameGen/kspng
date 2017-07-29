@@ -8,6 +8,12 @@ if ! which mono &> /dev/null; then
     exit 1
 fi
 
-# sanity check complete - run mono now
+# sanity check - are we running on macOS?
+if [ "$(uname -s)" = "Darwin "]; then
+    libexec="/usr/local/libexec"
+else
+    libexec="/usr/libexec"
+fi
 
-exec $(which mono) /usr/libexec/KSPNameGen.exe "$@"
+# sanity check complete - run mono now
+    exec $(which mono) ${libexec}/KSPNameGen.exe "$@"
