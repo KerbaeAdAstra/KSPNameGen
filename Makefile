@@ -18,6 +18,7 @@ clean:
 
 .PHONY: install
 install: KSPNameGen.exe KSPNameGen/kspng
+	mkdir -pf $(libexec) /usr/local/bin
 	cp -f KSPNameGen.exe $(libexec)
 	cp -f KSPNameGen/kspng /usr/local/bin
 
