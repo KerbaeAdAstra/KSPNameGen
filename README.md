@@ -26,13 +26,16 @@ KSPNameGen now comes with a non-interactive mode, for when you just want a
 couple of names and don't want to mess around with the interactive interface.
 
 ```
-Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number] [-h|--help]
+Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]
 -i, --interactive: interactive mode (default option if no parameter specified)
 -n, --non-interactive: non-interactive mode
 -h, --help: show this help
 parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.
-number: a nonzero integer less than 18,446,744,073,709,551,615 (2⁶⁴-1).
-"`parameter' and `number' are only used with non-interactive mode.
+number: how many names to generate at once.
+buffsize: the size of the buffer (i.e. how many names to write to stdout at once).
+number and buffsize must be positive nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).
+`buffsize' is optional; if not given, the default is 48.
+`parameter', `number', and `buffsize' are only used with non-interactive mode.
 ```
 
 ##### License
