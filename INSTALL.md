@@ -30,14 +30,14 @@ Note that if you are running those commands as a non-root user, simply prepend `
 
 ### FreeBSD and derivatives
 
-FreeBSD (pkg):
+Through `pkg`:
 
 ```
 # pkg update
 # pkg install mono
 ```
 
-FreeBSD (ports):
+Through the Ports Collection:
 
 ```
 # cd /usr/ports/lang/mono
