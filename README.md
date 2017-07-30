@@ -64,8 +64,6 @@ Also available in LICENSE.md.
 > SOFTWARE.
 
 ##### Contact Us
-Kerbal Space Program Forum users: feel free to contact us via private message!
-Our handles are 0111narwhalz and TotallyNotHuman\_.
 
 If you're feeling nostalgic, don't hesitate to hit us up on IRC. We have our
 own channel (#kerbaeadastra @ irc.freenode.net).
