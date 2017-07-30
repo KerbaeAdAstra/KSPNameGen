@@ -6,6 +6,7 @@
 CSC = $(shell which mcs)
 bin = KSPNameGen.exe
 src = KSPNameGen/KSPNameGen.cs
+script = KSPNameGen/kspng
 platform = $(shell uname -s)
 
 ifeq ($(platform),Linux)
@@ -23,10 +24,10 @@ all: $(src)
 clean:
 	rm -f $(bin)
 
-install: $(bin) KSPNameGen/kspng
+install: $(bin) $(script)
 	mkdir -pf $(libexec) /usr/local/bin
 	cp -f $(bin) $(libexec)
-	cp -f KSPNameGen/kspng /usr/local/bin
+	cp -f $(script) /usr/local/bin
 
 .PHONY: uninstall
 uninstall:
