@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # sanity check - is Mono installed and in the PATH?
-
 if ! which mono &> /dev/null; then
     >&2 echo "Mono was not located in the PATH! Please ensure that it was installed properly."
     exit 1
