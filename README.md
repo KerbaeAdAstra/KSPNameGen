@@ -38,9 +38,9 @@ number: a nonzero integer less than 18,446,744,073,709,551,615 (2⁶⁴-1).
 ##### License
 Also available in LICENSE.md.
 
-> MIT License
+> # MIT License
 
-> Copyright (c) 2017 Kerbae ad Astra
+> `Copyright (c) 2016-17 Kerbae ad Astra`
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
