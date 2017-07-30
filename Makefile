@@ -26,3 +26,4 @@ install: KSPNameGen.exe KSPNameGen/kspng
 uninstall:
 	rm -f $(libexec)/KSPNameGen.exe
 	rm -f /usr/local/bin/kspng
+
