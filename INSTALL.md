@@ -14,19 +14,28 @@ Debian (and derivatives):
 
 RHEL (and derivatives, but **NOT** Fedora 22 and later):
 
-`# yum install mono-devel`
+```
+# yum update
+# yum install mono-devel
+```
 
 Fedora 22 and later:
 
-`# dnf install mono-devel`
+```
+# dnf update
+# dnf install mono-devel
+```
 
 Note that if you are running those commands as a non-root user, simply prepend `sudo` to the commands.
 
-### Major BSD derivatives
+### FreeBSD and derivatives
 
 FreeBSD (pkg):
 
-`# pkg install mono`
+```
+# pkg update
+# pkg install mono
+```
 
 FreeBSD (ports):
 
@@ -35,9 +44,13 @@ FreeBSD (ports):
 # make install clean
 ```
 
-NetBSD: WIP
-
-OpenBSD: WIP
+Note that if you are running those commands as a non-root user, and the system does not have the utility `sudo` installed, run this command:
+```
+% su
+Password:
+#
+```
+You must be part of the system's `wheel` group to do this, however.
 
 ## Setting up
 
@@ -80,3 +93,7 @@ The next step would be to run `make install`, which will copy a script and the e
 If at any time you wish to uninstall KSPNameGen, simply run `make uninstall`. This command also requires root privileges or sudo.
 
 If you only wish to delete the compiled executable in the current directory (for instance, after a `make install`), run `make clean`.
+
+## Additional notes for macOS users
+
+As macOS has System Integrity Protection turned on by default, the `/usr` tree is not writable, even by the root user. Therefore, `make` will detect your platform, and then attempt to install the KSPNameGen binary to `/usr/local/libexec`, instead of `/usr/libexec`.
