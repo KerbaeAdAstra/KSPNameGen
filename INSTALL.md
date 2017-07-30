@@ -93,7 +93,3 @@ The next step would be to run `make install`, which will copy a script and the e
 If at any time you wish to uninstall KSPNameGen, simply run `make uninstall`. This command also requires root privileges or sudo.
 
 If you only wish to delete the compiled executable in the current directory (for instance, after a `make install`), run `make clean`.
-
-## Additional notes for macOS users
-
-As macOS has System Integrity Protection turned on by default, the `/usr` tree is not writable, even by the root user. Therefore, `make` will detect your platform, and then attempt to install the KSPNameGen binary to `/usr/local/libexec`, instead of `/usr/libexec`.

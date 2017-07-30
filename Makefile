@@ -7,14 +7,8 @@ CSC = $(shell which mcs)
 bin = KSPNameGen.exe
 src = KSPNameGen/KSPNameGen.cs
 script = KSPNameGen/kspng
+libexec = /usr/local/libexec
 platform = $(shell uname -s)
-
-ifeq ($(platform),Linux)
-    libexec = /usr/libexec
-endif
-ifeq ($(platform),Darwin)
-    libexec = /usr/local/libexec
-endif
 
 .PHONY: all
 all: $(src)
