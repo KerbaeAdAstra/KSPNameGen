@@ -23,7 +23,6 @@ projdir = KSPNameGen
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
 
-.PHONY: all
 all: $(projdir)/$(src)
 	$(csc) $(projdir)/$(src) $(cscflags)$(bin)
 
@@ -31,7 +30,7 @@ all: $(projdir)/$(src)
 clean:
 	$(rm) $(cprmflags) $(bin)
 
-install: $(bin) $(projdir)/$(script)
+install: all $(projdir)/$(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
 	$(cp) $(cprmflags) $(bin) $(libexec)
 	$(cp) $(cprmflags) $(projdir)/$(script) $(localbin)
