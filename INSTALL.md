@@ -2,66 +2,15 @@
 
 Unlike most projects out there written for Unix-like OSes, `KSPNameGen` comes with a `Makefile`, but no `configure` script. One must, however, ensure that the core dependency, Mono, is installed, or the `make` process will fail.
 
-## Obtaining Mono
-
-### Major Linux distributions
-
-Debian (and derivatives):
-
-```plaintext
-# apt-get update
-# apt-get install mono-devel
-```
-
-RHEL (and derivatives, but **NOT** Fedora 22 and later):
-
-```plaintext
-# yum update
-# yum install mono-devel
-```
-
-Fedora 22 and later:
-
-```plaintext
-# dnf update
-# dnf install mono-devel
-```
-
-Note that if you are running those commands as a non-root user, simply prepend `sudo` to the commands.
-
-### FreeBSD and derivatives
-
-Through `pkg`:
-
-```plaintext
-# pkg update
-# pkg install mono
-```
-
-Through the Ports Collection:
-
-```plaintext
-# cd /usr/ports/lang/mono
-# make install clean
-```
-
-Note that if you are running those commands as a non-root user, and the system does not have the utility `sudo` installed, run this command:
-
-```plaintext
-% su
-Password:
-#
-```
-
-You must be part of the system's `wheel` group to do this, however.
+Mono can be obtained here: <<http://www.mono-project.com/download/>>
 
 ## Setting up
 
 First, clone the repository from GitHub:
 
-```
-$ git clone https://github.com/KerbaeAdAstra/KSPNameGen.git
-$ cd KSPNameGen
+```plaintext
+git clone https://github.com/KerbaeAdAstra/KSPNameGen.git
+cd KSPNameGen
 ```
 
 If you wish to attempt to build directly from the `develop` branch (that is, potentially unstable and under active development), do not do anything here. If you're feeling less ambitious, run the following command to obtain the latest stable source code (v0.2.1 at the time of this writing) instead:
