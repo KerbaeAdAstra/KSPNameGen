@@ -17,7 +17,7 @@ libexec = /usr/local/libexec
 
 .PHONY: all
 all: $(src)
-	$(CSC) $(src) -out:$(bin)
+	$(csc) $(src) -out:$(bin)
 
 .PHONY: clean
 clean:
