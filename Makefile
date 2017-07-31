@@ -21,14 +21,14 @@ all: $(src)
 
 .PHONY: clean
 clean:
-	rm -f $(bin)
+	$(rm) -f $(bin)
 
 install: $(bin) $(script)
-	mkdir -p $(libexec) /usr/local/bin
-	cp -f $(bin) $(libexec)
-	cp -f $(script) /usr/local/bin
+	$(mkdir) -p $(libexec) /usr/local/bin
+	$(cp) -f $(bin) $(libexec)
+	$(cp) -f $(script) /usr/local/bin
 
 .PHONY: uninstall
 uninstall:
-	rm -f $(libexec)/$(bin)
-	rm -f /usr/local/bin/kspng
+	$(rm) -f $(libexec)/$(bin)
+	$(rm) -f /usr/local/bin/kspng
