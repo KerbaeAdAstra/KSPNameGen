@@ -10,5 +10,3 @@ fi
 lockfile=/tmp/kspng.lock
 touch $lockfile
 exec $(which mono) /usr/local/libexec/KSPNameGen.exe "$@"
-wait $!
-rm -f $lockfile

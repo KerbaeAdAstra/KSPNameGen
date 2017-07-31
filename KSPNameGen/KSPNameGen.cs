@@ -213,11 +213,13 @@ namespace KSPNameGen
 
 			else if (args[0] == "-h" || args[0] == "--help")
 			{
+				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				Usage(false);
 			}
 
 			else
 			{
+				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
 				Usage(true);
 			}
 
@@ -232,6 +234,7 @@ namespace KSPNameGen
 			if (File.Exists(lockfile))
 			{
 				basename = "kspng";
+				File.Delete(lockfile);
 			}
 			else
 			{
@@ -297,8 +300,7 @@ namespace KSPNameGen
 				Thread.Sleep(200);
 				Console.Write(".");
 			}
-
-			Console.Clear();
+			Console.WriteLine();
 			Environment.Exit(exitCode);
 		}
 
