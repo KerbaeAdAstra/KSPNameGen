@@ -1,6 +1,6 @@
 # Makefile for KSPNameGen v0.2.1
 
-# Shell command variables
+# Command definitions
 
 cp = $(shell which cp)
 rm = $(shell which rm)
@@ -8,27 +8,35 @@ csc = $(shell which mcs)
 mkdir = $(shell which mkdir)
 platform = $(shell uname -s)
 
-# Other variable definitions
+# Flag definitions
+
+cscflags = -out:
+cprmflags = -f
+mkdirflags = -p
+
+# Path definitions
 
 bin = KSPNameGen.exe
-src = KSPNameGen/KSPNameGen.cs
-script = KSPNameGen/kspng
+src = KSPNameGen.cs
+script = kspng
+projdir = KSPNameGen
 libexec = /usr/local/libexec
+localbin = /usr/local/bin
 
 .PHONY: all
-all: $(src)
-	$(csc) $(src) -out:$(bin)
+all: $(projdir)/$(src)
+	$(csc) $(projdir)/$(src) $(cscflags)$(bin)
 
 .PHONY: clean
 clean:
-	$(rm) -f $(bin)
+	$(rm) $(cprmflags) $(bin)
 
-install: $(bin) $(script)
-	$(mkdir) -p $(libexec) /usr/local/bin
-	$(cp) -f $(bin) $(libexec)
-	$(cp) -f $(script) /usr/local/bin
+install: $(bin) $(projdir)/$(script)
+	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
+	$(cp) $(cprmflags) $(bin) $(libexec)
+	$(cp) $(cprmflags) $(projdir)/$(script) $(localbin)
 
 .PHONY: uninstall
 uninstall:
-	$(rm) -f $(libexec)/$(bin)
-	$(rm) -f /usr/local/bin/kspng
+	$(rm) $(cprmflags) $(libexec)/$(bin)
+	$(rm) $(cprmflags) $(localbin)/$(script)
