@@ -227,7 +227,14 @@ namespace KSPNameGen
 
 		static void Usage(bool error)
 		{
-			Console.Write("Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
+            string basename;
+            string lockfile = "/tmp/kspng.lock";
+            if (File.Exists(lockfile))
+            {
+                basename = "kspng";
+            }
+            basename = "KSPNameGen.exe";
+            Console.Write("Usage: {0} [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +
@@ -236,7 +243,7 @@ namespace KSPNameGen
 			"buffsize: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
 			"number and buffsize must be positive nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).\n" +
 			"`buffsize' is optional; if not given, the default is 48.\n" +
-			"`parameter', `number', and `buffsize' are only used with non-interactive mode.\n\n");
+			"`parameter', `number', and `buffsize' are only used with non-interactive mode.\n\n", basename);
 			if (error) //
 			{
 				Kill(1);
