@@ -7,4 +7,8 @@ if ! which mono &> /dev/null; then
 fi
 
 # sanity check complete - run mono now
+lockfile=/tmp/kspng.lock
+touch $lockfile
 exec $(which mono) /usr/local/libexec/KSPNameGen.exe "$@"
+wait $!
+rm -f $lockfile
