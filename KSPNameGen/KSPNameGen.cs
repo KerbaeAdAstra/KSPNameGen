@@ -227,17 +227,17 @@ namespace KSPNameGen
 
 		static void Usage(bool error)
 		{
-            string basename;
-            string lockfile = "/tmp/kspng.lock";
-            if (File.Exists(lockfile))
-            {
-                basename = "kspng";
-            }
-            else
-            {
+			string basename;
+			string lockfile = "/tmp/kspng.lock";
+			if (File.Exists(lockfile))
+			{
+				basename = "kspng";
+			}
+			else
+			{
 				basename = "KSPNameGen.exe";
-            }
-            Console.Write("Usage: {0} [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
+			}
+			Console.Write("Usage: {0} [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
 			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
 			"-n, --non-interactive: non-interactive mode\n" +
 			"-h, --help: show this help\n" +
