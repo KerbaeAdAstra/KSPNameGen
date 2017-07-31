@@ -1,7 +1,4 @@
 # Makefile for KSPNameGen v0.2.1
-# Tested with:
-# Mono JIT compiler 5.0.1.1
-# Mono C# compiler 5.0.1.0
 
 CSC = $(shell which mcs)
 bin = KSPNameGen.exe
@@ -27,4 +24,3 @@ install: $(bin) $(script)
 uninstall:
 	rm -f $(libexec)/$(bin)
 	rm -f /usr/local/bin/kspng
-
