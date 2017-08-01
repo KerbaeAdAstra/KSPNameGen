@@ -25,9 +25,62 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Collections;
 
 namespace KSPNameGen
 {
+	class Util
+	{
+		public static bool FlagExists(string[] arr, string flag)
+		{
+			return Array.Exists(arr, element => element == flag);
+		}
+		
+		public static bool FlagParse(string[] arr, string flag, out ulong product, ulong def)
+		{
+			product = def;
+			
+			if(!Array.Exists(arr, element => element == flag))
+			{
+				return false;
+			}
+			int index = Array.IndexOf(arr, flag);
+			if(index == arr.Length - 1)
+			{
+				return false;
+			}
+			ulong prod;
+			if(!ulong.TryParse(arr[index + 1], out prod))
+			{
+				return false;
+			}
+			product = prod;
+			return true;
+		}
+		
+		public static bool FlagParse(string[] arr, string flag, out string product, string def)
+		{
+			product = def;
+			
+			if(!Array.Exists(arr, element => element == flag))
+			{
+				product = product;
+				return false;
+			}
+			int index = Array.IndexOf(arr, flag);
+			if(index == arr.Length - 1)
+			{
+				return false;
+			}
+			if(arr[index + 1].ToCharArray()[0] == '-')
+			{
+				return false;
+			}
+			product = arr[index + 1];
+			return true;
+		}
+	}
+		
 	class KSPNameGen
 	{
 		// array definitions
@@ -163,64 +216,63 @@ namespace KSPNameGen
 			{
 				Loop();
 			}
-
-			else if (args[0] == "-i" || args[0] == "--interactive")
+			
+			if(Util.FlagExists(args, "-h") || Util.FlagExists(args, "--help"))
+			{
+				Usage(false);
+			}
+			
+			string argument = "fpm";
+			
+			if(Util.FlagExists(args, "-t") || Util.FlagExists(args, "--type"))
+			{
+				if(Util.FlagParse(args, "-t", out argument, argument) || Util.FlagParse(args, "--type", out argument, argument))
+				{
+					param = IntArrayify(argument);
+				}else
+				{
+					Usage(true);
+				}
+			}
+			
+			Util.FlagParse(args, "-b", out bufferSize, bufferSize);
+			Util.FlagParse(args, "--buffer", out bufferSize, bufferSize);
+			
+			if(Util.FlagExists(args, "-f") || Util.FlagExists(args, "--file"))
+			{
+				if(Util.FlagParse(args, "-f", out filePath, filePath) || Util.FlagParse(args, "--file", out filePath, filePath))
+				{
+					if(Accessible())
+					{
+						writeFile = true;
+					}else
+					{
+						Console.WriteLine("Invalid file.");
+					}
+				}else
+				{
+					Usage(true);
+				}
+			}
+			if (Util.FlagExists(args, "-i") || Util.FlagExists(args, "--interactive"))
 			{
 				Loop();
 			}
-
-			else if (args.Length >= 3 && (args[0] == "-n" || args[0] == "--non-interactive"))
+			
+			ulong genNum = 0;
+			
+			if(Util.FlagExists(args, "-n") || Util.FlagExists(args, "--number"))
 			{
-
-				ulong inputLong;
-				ulong inputLong2;
-				if (!ulong.TryParse(args[2], out inputLong))
+				if(Util.FlagParse(args, "-n", out genNum, genNum) || Util.FlagParse(args, "--number", out genNum, genNum))
 				{
-					Console.WriteLine("A positive nonzero integer was not specified for `number'.");
-					Kill(1);
-				}
-				else if (inputLong == 0)
+					Iterator(genNum, Stringify(param), bufferSize);
+				}else
 				{
-					Console.WriteLine("A positive nonzero integer was not specified for `number'.");
-					Kill(1);
+					Usage(true);
 				}
-				if (args.Length == 3)
-				{
-					inputLong2 = 48;
-				}
-				else if (!ulong.TryParse(args[3], out inputLong2))
-				{
-					Console.WriteLine("A positive nonzero integer was not specified for `buffsize'.");
-					Kill(1);
-				}
-				else if (inputLong2 == 0)
-				{
-					Console.WriteLine("A positive nonzero integer was not specified for `buffsize'.");
-					Kill(1);
-				}
-				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-				if (validParams.Contains(args[1]))
-				{
-					Iterator(inputLong, args[1], inputLong2);
-				}
-				else
-				{
-					Console.WriteLine("Specified type is invalid.");
-					Kill(1);
-				}
-				Console.WriteLine("Complete.");
-			}
-
-			else if (args[0] == "-h" || args[0] == "--help")
+			}else
 			{
-				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-				Usage(false);
-			}
-
-			else
-			{
-				Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
-				Usage(true);
+				Loop();
 			}
 
 			Console.ReadKey();
@@ -240,23 +292,23 @@ namespace KSPNameGen
 			{
 				basename = "KSPNameGen.exe";
 			}
-			Console.Write("Usage: {0} [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]\n\n" +
-			"-i, --interactive: interactive mode (default option if no parameter specified)\n" +
-			"-n, --non-interactive: non-interactive mode\n" +
-			"-h, --help: show this help\n" +
-			"parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.\n" +
-			"number: how many names to generate at once.\n" +
-			"buffsize: the size of the buffer (i.e. how many names to write to stdout at once).\n" +
-			"number and buffsize must be positive nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).\n" +
-			"`buffsize' is optional; if not given, the default is 48.\n" +
-			"`parameter', `number', and `buffsize' are only used with non-interactive mode.\n\n", basename);
+			Console.Clear();
+			Console.Write(
+				"Usage:\n" +
+				" -h --help:        No argument. Displays this message." +
+				" -t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
+				" -b --buffer:      An integer indicating the number of names to write to stdout per frame.\n" +
+				" -f --file:        A string indicating the output file, using either relative or absolute paths.\n" +
+				" -i --interactive: No argument. Forces interactive mode; default.\n" +
+				" -n --number:      An integer indicating the number of names to generate. Also noninteractive.\n"
+				, basename);
 			if (error) //
 			{
 				Kill(1);
 			}
 			else
 			{
-				Kill(0);
+				Console.ReadKey();
 			}
 		}
 
@@ -433,6 +485,21 @@ namespace KSPNameGen
 			output += param[2] == 0 ? "m" : "f";
 			return output;
 		}
+		
+		static int[] IntArrayify(string par)
+		{
+			int[] output = new int[4]{0,0,0,0};
+			char[] parArr = par.ToCharArray();
+			if(parArr.Length != 3)
+			{
+				Usage(true);
+			}
+			output[0] = parArr[0] == 'f' ? 0 : 1;
+			output[1] = parArr[1] == 'p' ? 0 : parArr[1] == 'r' ? 1 : 2;
+			output[2] = parArr[2] == 'm' ? 0 : 1;
+			output[3] = 0;
+			return output;
+		}
 
 		static void Draw()
 		{
@@ -499,8 +566,8 @@ namespace KSPNameGen
 
 					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
 					Console.WriteLine(cursor[0] == 3 ?
-						" Apply                         " :
-						"[Apply]                        ");
+						"[Apply]                        " :
+						" Apply                         ");
 
 					Console.BackgroundColor = oldBack;
 					break;
