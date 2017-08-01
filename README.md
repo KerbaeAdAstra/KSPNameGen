@@ -29,7 +29,7 @@ couple of names and don't want to mess around with the interactive interface.
 
 ```plaintext
 Usage: KSPNameGen.exe [ARGUMENTS]
-A list of valid arguments and their parameters follow.
+A list of valid flags and their arguments follow.
 -h --help:        No argument. Displays this message.
 -t --type:        A string indicating the type of name to generate. Defaults to fpm.
 -b --buffer:      An integer indicating the number of names to write to stdout per frame.

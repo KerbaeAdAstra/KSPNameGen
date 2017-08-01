@@ -299,7 +299,7 @@ namespace KSPNameGen
 			Console.Clear();
 			Console.Write(
 				"Usage: {0} [ARGUMENTS]\n" +
-				"A list of valid arguments and their parameters follow.\n" +
+				"A list of valid flags and their arguments follow.\n" +
 				"-h --help:        No argument. Displays this message.\n" +
 				"-t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
 				"-b --buffer:      An integer indicating the number of names to write to stdout per frame.\n" +
