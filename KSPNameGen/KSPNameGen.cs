@@ -23,9 +23,7 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Collections;
 
 namespace KSPNameGen
 {
@@ -64,7 +62,9 @@ namespace KSPNameGen
 			
 			if(!Array.Exists(arr, element => element == flag))
 			{
+				#pragma warning disable CS1717
 				product = product;
+				#pragma warning restore CS1717
 				return false;
 			}
 			int index = Array.IndexOf(arr, flag);
@@ -72,7 +72,7 @@ namespace KSPNameGen
 			{
 				return false;
 			}
-			if(arr[index + 1].ToCharArray()[0] == '-')
+			if(arr[index + 1][0] == '-')
 			{
 				return false;
 			}
@@ -173,10 +173,6 @@ namespace KSPNameGen
 
 		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
-		static readonly string[] validParams = { // cache valid parameters
-			"spf", "spm", "scf", "scm", "srf", "srm", "fpf", "fpm", "fcf", "fcm", "frf", "frm"
-		};
-
 		// enum defs
 
 		enum Modes { Main, Options };
@@ -229,7 +225,8 @@ namespace KSPNameGen
 				if(Util.FlagParse(args, "-t", out argument, argument) || Util.FlagParse(args, "--type", out argument, argument))
 				{
 					param = IntArrayify(argument);
-				}else
+				}
+				else
 				{
 					Usage(true);
 				}
@@ -245,11 +242,13 @@ namespace KSPNameGen
 					if(Accessible())
 					{
 						writeFile = true;
-					}else
+					}
+					else
 					{
 						Console.WriteLine("Invalid file.");
 					}
-				}else
+				}
+				else
 				{
 					Usage(true);
 				}
@@ -266,16 +265,18 @@ namespace KSPNameGen
 				if(Util.FlagParse(args, "-n", out genNum, genNum) || Util.FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
-				}else
+				}
+				else
 				{
 					Usage(true);
 				}
-			}else
+			}
+			else
 			{
-				Loop();
+				Usage(true);
 			}
 
-			Console.ReadKey();
+			Console.ReadKey(true);
 			Kill(0);
 		}
 
@@ -294,13 +295,15 @@ namespace KSPNameGen
 			}
 			Console.Clear();
 			Console.Write(
-				"Usage:\n" +
-				" -h --help:        No argument. Displays this message." +
-				" -t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
-				" -b --buffer:      An integer indicating the number of names to write to stdout per frame.\n" +
-				" -f --file:        A string indicating the output file, using either relative or absolute paths.\n" +
-				" -i --interactive: No argument. Forces interactive mode; default.\n" +
-				" -n --number:      An integer indicating the number of names to generate. Also noninteractive.\n"
+				"Usage: {0} [ARGUMENTS]\n" +
+				"A list of valid arguments and their parameters follow.\n" +
+				"-h --help:        No argument. Displays this message.\n" +
+				"-t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
+				"-b --buffer:      An integer indicating the number of names to write to stdout per frame.\n" +
+				"-f --file:        A string indicating the output file, using either relative or absolute paths.\n" +
+				"-i --interactive: No argument. Forces interactive mode; default.\n" +
+				"-n --number:      An integer indicating the number of names to generate. Also noninteractive.\n" +
+				"All other arguments will result in this message being shown.\n"
 				, basename);
 			if (error) //
 			{
@@ -308,7 +311,7 @@ namespace KSPNameGen
 			}
 			else
 			{
-				Console.ReadKey();
+				Kill(0);
 			}
 		}
 
@@ -488,7 +491,7 @@ namespace KSPNameGen
 		
 		static int[] IntArrayify(string par)
 		{
-			int[] output = new int[4]{0,0,0,0};
+			int[] output = { 0, 0, 0, 0 };
 			char[] parArr = par.ToCharArray();
 			if(parArr.Length != 3)
 			{
