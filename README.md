@@ -27,17 +27,16 @@ popular PC game Kerbal Space Program. Now rewritten in C#!
 KSPNameGen now comes with a non-interactive mode, for when you just want a
 couple of names and don't want to mess around with the interactive interface.
 
-```
-Usage: KSPNameGen.exe [-i|--interactive] [-n|--non-interactive parameter number [buffsize]] [-h|--help]
--i, --interactive: interactive mode (default option if no parameter specified)
--n, --non-interactive: non-interactive mode
--h, --help: show this help
-parameter: either of [f|s] [r|c|p] [m|f] in this order. Run in interactive mode to learn more.
-number: how many names to generate at once.
-buffsize: the size of the buffer (i.e. how many names to write to stdout at once).
-number and buffsize must be positive nonzero integers less than 18,446,744,073,709,551,615 (2^64-1).
-`buffsize' is optional; if not given, the default is 48.
-`parameter', `number', and `buffsize' are only used with non-interactive mode.
+```plaintext
+Usage: KSPNameGen.exe [ARGUMENTS]
+A list of valid arguments and their parameters follow.
+-h --help:        No argument. Displays this message.
+-t --type:        A string indicating the type of name to generate. Defaults to fpm.
+-b --buffer:      An integer indicating the number of names to write to stdout per frame.
+-f --file:        A string indicating the output file, using either relative or absolute paths.
+-i --interactive: No argument. Forces interactive mode; default.
+-n --number:      An integer indicating the number of names to generate. Also noninteractive.
+All other arguments will result in this message being shown.
 ```
 
 ## License
