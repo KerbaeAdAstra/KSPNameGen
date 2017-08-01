@@ -8,5 +8,5 @@ fi
 
 # sanity check complete - run mono now
 lockfile=/tmp/kspng.lock
-touch $lockfile
-exec $(which mono) /usr/local/libexec/KSPNameGen.exe "$@"
+echo "$(basename $0)" > $lockfile
+exec "$(which mono)" /usr/local/libexec/KSPNameGen.exe "$@"

@@ -23,6 +23,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 
 namespace KSPNameGen
@@ -286,12 +287,14 @@ namespace KSPNameGen
 			string lockfile = "/tmp/kspng.lock";
 			if (File.Exists(lockfile))
 			{
-				basename = "kspng";
+				StreamReader sr = new StreamReader(lockfile);
+				basename = sr.ReadLine();
+				sr.Dispose();
 				File.Delete(lockfile);
 			}
 			else
 			{
-				basename = "KSPNameGen.exe";
+				basename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
 			}
 			Console.Clear();
 			Console.Write(
