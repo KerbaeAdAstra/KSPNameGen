@@ -296,7 +296,6 @@ namespace KSPNameGen
 			{
 				basename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
 			}
-			Console.Clear();
 			Console.Write(
 				"Usage: {0} [ARGUMENTS]\n" +
 				"A list of valid flags and their arguments follow.\n" +
