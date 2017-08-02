@@ -40,6 +40,8 @@ As it is, the executable can be run from the current directory by executing `mon
 
 However, if one wished to be able to run if without invoking `mono`, the next step would be to run `make install`, which will copy a script and the executable under the `/usr/local` tree. As this involves `root`-owned directories, it must be run with root privileges or sudo.
 
+After running `make install`, KSPNameGen may be run by executing `kspng`. If it returns `command not found` or similar, try invoking it directly via `/usr/local/bin/kspng`.
+
 If at any time you wish to uninstall KSPNameGen, simply run `make uninstall`. This command also requires root privileges or sudo.
 
 If you only wish to delete the compiled executable in the current directory (for instance, after a `make install`), run `make clean`.
