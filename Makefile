@@ -39,7 +39,7 @@ mkdirflags = -p
 # Path definitions
 
 bin = KSPNameGen.exe
-src = KSPNameGen.cs
+src = *.cs
 script = kspng
 projdir = KSPNameGen
 libexec = /usr/local/libexec
