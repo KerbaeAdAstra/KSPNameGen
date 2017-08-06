@@ -32,62 +32,9 @@ using System.Threading;
 // warning suppression declarations
 
 #pragma warning disable RECS0135
-#pragma warning disable CS1717
 
 namespace KSPNameGen
 {
-	class Utils
-	{
-		public static bool FlagExists(string[] arr, string flag)
-		{
-			return Array.Exists(arr, element => element == flag);
-		}
-		
-		public static bool FlagParse(string[] arr, string flag, out ulong product, ulong def)
-		{
-			product = def;
-			
-			if(!Array.Exists(arr, element => element == flag))
-			{
-				return false;
-			}
-			int index = Array.IndexOf(arr, flag);
-			if(index == arr.Length - 1)
-			{
-				return false;
-			}
-			ulong prod;
-			if(!ulong.TryParse(arr[index + 1], out prod))
-			{
-				return false;
-			}
-			product = prod;
-			return true;
-		}
-		
-		public static bool FlagParse(string[] arr, string flag, out string product, string def)
-		{
-			product = def;
-			
-			if(!Array.Exists(arr, element => element == flag))
-			{
-
-				product = product;
-				return false;
-			}
-			int index = Array.IndexOf(arr, flag);
-			if(index == arr.Length - 1)
-			{
-				return false;
-			}
-			if(arr[index + 1][0] == '-')
-			{
-				return false;
-			}
-			product = arr[index + 1];
-			return true;
-		}
-	}
 		
 	class KSPNameGen
 	{
