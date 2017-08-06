@@ -1,34 +1,42 @@
-/*
- * KSPNameGen: name generator for Kerbal Space Program
- * Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
- * KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group.
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+// KSPNameGen.cs
+//
+// This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+// Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
+// KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+// using statements
 
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 
+// warning suppression declarations
+
+#pragma warning disable RECS0135
+#pragma warning disable CS1717
+
 namespace KSPNameGen
 {
-	class Util
+	class Utils
 	{
 		public static bool FlagExists(string[] arr, string flag)
 		{
@@ -63,9 +71,8 @@ namespace KSPNameGen
 			
 			if(!Array.Exists(arr, element => element == flag))
 			{
-				#pragma warning disable CS1717
+
 				product = product;
-				#pragma warning restore CS1717
 				return false;
 			}
 			int index = Array.IndexOf(arr, flag);
@@ -214,16 +221,16 @@ namespace KSPNameGen
 				Loop();
 			}
 			
-			if(Util.FlagExists(args, "-h") || Util.FlagExists(args, "--help"))
+			if(Utils.FlagExists(args, "-h") || Utils.FlagExists(args, "--help"))
 			{
 				Usage(false);
 			}
 			
 			string argument = "fpm";
 			
-			if(Util.FlagExists(args, "-t") || Util.FlagExists(args, "--type"))
+			if(Utils.FlagExists(args, "-t") || Utils.FlagExists(args, "--type"))
 			{
-				if(Util.FlagParse(args, "-t", out argument, argument) || Util.FlagParse(args, "--type", out argument, argument))
+				if(Utils.FlagParse(args, "-t", out argument, argument) || Utils.FlagParse(args, "--type", out argument, argument))
 				{
 					param = IntArrayify(argument);
 				}
@@ -233,12 +240,12 @@ namespace KSPNameGen
 				}
 			}
 			
-			Util.FlagParse(args, "-b", out bufferSize, bufferSize);
-			Util.FlagParse(args, "--buffer", out bufferSize, bufferSize);
+			Utils.FlagParse(args, "-b", out bufferSize, bufferSize);
+			Utils.FlagParse(args, "--buffer", out bufferSize, bufferSize);
 			
-			if(Util.FlagExists(args, "-f") || Util.FlagExists(args, "--file"))
+			if(Utils.FlagExists(args, "-f") || Utils.FlagExists(args, "--file"))
 			{
-				if(Util.FlagParse(args, "-f", out filePath, filePath) || Util.FlagParse(args, "--file", out filePath, filePath))
+				if(Utils.FlagParse(args, "-f", out filePath, filePath) || Utils.FlagParse(args, "--file", out filePath, filePath))
 				{
 					if(Accessible())
 					{
@@ -254,16 +261,16 @@ namespace KSPNameGen
 					Usage(true);
 				}
 			}
-			if (Util.FlagExists(args, "-i") || Util.FlagExists(args, "--interactive"))
+			if (Utils.FlagExists(args, "-i") || Utils.FlagExists(args, "--interactive"))
 			{
 				Loop();
 			}
 			
 			ulong genNum = 0;
 			
-			if(Util.FlagExists(args, "-n") || Util.FlagExists(args, "--number"))
+			if(Utils.FlagExists(args, "-n") || Utils.FlagExists(args, "--number"))
 			{
-				if(Util.FlagParse(args, "-n", out genNum, genNum) || Util.FlagParse(args, "--number", out genNum, genNum))
+				if(Utils.FlagParse(args, "-n", out genNum, genNum) || Utils.FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -317,8 +324,9 @@ namespace KSPNameGen
 			}
 		}
 
-		static void Loop()
-		{
+
+        static void Loop()
+        {
 			string inString;
 			Draw();
 			for (;;)
@@ -483,11 +491,11 @@ namespace KSPNameGen
 			}
 		}
 
-		static string Stringify(int[] param)
+		static string Stringify(int[] _param)
 		{
-			string output = param[0] == 0 ? "f" : "s";
-			output += param[1] == 0 ? "p" : param[1] == 1 ? "r" : "c";
-			output += param[2] == 0 ? "m" : "f";
+			string output = _param[0] == 0 ? "f" : "s";
+			output += _param[1] == 0 ? "p" : _param[1] == 1 ? "r" : "c";
+			output += _param[2] == 0 ? "m" : "f";
 			return output;
 		}
 		
@@ -612,10 +620,10 @@ namespace KSPNameGen
 			return Console.ReadLine().ToLower();
 		}
 
-		static string Generate(string param)
+		static string Generate(string _param)
 		{
 			bool toggle = random.Next(20) == 0;
-			switch (param)
+			switch (_param)
 			{
 				case "spf":
 					return fpr[random.Next(fpr.Length)] + " Kerman";
@@ -688,7 +696,7 @@ namespace KSPNameGen
 		}
 
 
-		static void Iterator(ulong number, string param, ulong buffsize)
+		static void Iterator(ulong number, string _param, ulong buffsize)
 		{
 			if (number > uint.MaxValue)
 			{
@@ -700,7 +708,7 @@ namespace KSPNameGen
 				StreamWriter sr = File.CreateText(filePath);
 				for (ulong i = 0; i < number; i++)
 				{
-					sr.WriteLine(Generate(param));
+					sr.WriteLine(Generate(_param));
 				}
 				sr.Dispose();
 				Console.WriteLine("Complete.");
@@ -711,7 +719,7 @@ namespace KSPNameGen
 			string Generated = "";
 			for (ulong i = 0; i < number; i++)
 			{
-				Generated = Generate(param);
+				Generated = Generate(_param);
 				buffer += Generated + "\n";
 				if (i % buffsize == 0)
 				{
