@@ -31,10 +31,10 @@ platform := $(shell uname -s)
 
 # Flag definitions
 
-cprmflags = -f
+cprmflags = -rf
 mkdirflags = -p
 
-# Path definitions
+# Path/File definitions
 
 bin = KSPNameGen.exe
 sln = KSPNameGen.sln
@@ -42,6 +42,7 @@ pdb = KSPNameGen.pdb
 script = kspng
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
+buildcache = KSPNameGen/obj
 
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
@@ -63,6 +64,7 @@ all: $(sln)
 clean:
 	$(rm) $(cprmflags) $(bin)
 	$(rm) $(cprmflags) $(pdb)
+	$(rm) $(cprmflags) $(buildcache)
 
 install: all $(projdir)/$(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
