@@ -45,5 +45,4 @@ See LICENSE.md.
 
 ## Contact Us
 
-If you're feeling nostalgic, don't hesitate to hit us up on IRC. We have our
-own channel (#kerbaeadastra @ irc.freenode.net).
+Please don't hesitate to hit us up on IRC. We have our own channel (#kerbaeadastra @ irc.freenode.net).
