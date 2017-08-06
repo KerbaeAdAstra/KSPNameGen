@@ -38,6 +38,7 @@ mkdirflags = -p
 
 bin = KSPNameGen.exe
 sln = KSPNameGen.sln
+pdb = KSPNameGen.pdb
 script = kspng
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
@@ -61,6 +62,7 @@ all: $(sln)
 .PHONY: clean
 clean:
 	$(rm) $(cprmflags) $(bin)
+	$(rm) $(cprmflags) $(pdb)
 
 install: all $(projdir)/$(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
