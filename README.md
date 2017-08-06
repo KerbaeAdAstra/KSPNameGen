@@ -36,7 +36,7 @@ A list of valid flags and their arguments follow.
 -f --file:        A string indicating the output file, using either relative or absolute paths.
 -i --interactive: No argument. Forces interactive mode; default.
 -n --number:      An integer indicating the number of names to generate. Also noninteractive.
-All other arguments will result in this message being shown.
+All other (invalid) flags and arguments will result in this message being shown.
 ```
 
 ## License

@@ -305,7 +305,7 @@ namespace KSPNameGen
 				"-f --file:        A string indicating the output file, using either relative or absolute paths.\n" +
 				"-i --interactive: No argument. Forces interactive mode; default.\n" +
 				"-n --number:      An integer indicating the number of names to generate. Also noninteractive.\n" +
-				"All other arguments will result in this message being shown.\n"
+				"All other (invalid) flags and arguments will result in this message being shown.\n"
 				, basename);
 			if (error) //
 			{
@@ -330,7 +330,7 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = PromptS("Would you like to generate more names? (Y/N)", false);
+					inString = PromptS("Would you like to generate more names? (Y/N)");
 					switch (inString)
 					{
 						case "y":
@@ -354,7 +354,7 @@ namespace KSPNameGen
 			Console.Write("Exiting");
 			for (int i = 0; i < 3; i++)
 			{
-				Thread.Sleep(200);
+				Thread.Sleep(333);
 				Console.Write(".");
 			}
 			Console.WriteLine();
@@ -465,7 +465,7 @@ namespace KSPNameGen
 									return;
 
 								case 1: //Filepath
-									filePath = PromptS(prompt[2], false);
+									filePath = PromptS(prompt[2]);
 									break;
 
 								case 2: //Exit
@@ -606,13 +606,9 @@ namespace KSPNameGen
 			return inputLong;
 		}
 
-		static string PromptS(string query, bool help)
+		static string PromptS(string query)
 		{
 			Console.WriteLine(query);
-			if (help)
-			{
-				Console.WriteLine("Type 'help' for help; 'exit' to exit.");
-			}
 			return Console.ReadLine().ToLower();
 		}
 
@@ -675,7 +671,7 @@ namespace KSPNameGen
 			string Generated = "";
 			for (ulong i = 0; i < inputLong / 15; i++)
 			{
-				foreach (var color in colors)
+				foreach (ConsoleColor color in colors)
 				{
 					if (color == currentBackground)
 					{
