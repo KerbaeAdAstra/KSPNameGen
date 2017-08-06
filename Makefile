@@ -24,29 +24,39 @@
 
 # Command definitions
 
-cp = $(shell which cp)
-rm = $(shell which rm)
-csc = $(shell which mcs)
-mkdir = $(shell which mkdir)
-platform = $(shell uname -s)
+cp := $(shell which cp)
+rm := $(shell which rm)
+mkdir := $(shell which mkdir)
+platform := $(shell uname -s)
 
 # Flag definitions
 
-cscflags = -out:
 cprmflags = -f
 mkdirflags = -p
 
 # Path definitions
 
 bin = KSPNameGen.exe
-src = *.cs
+sln = KSPNameGen.sln
 script = kspng
-projdir = KSPNameGen
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
 
-all: $(projdir)/$(src)
-	$(csc) $(projdir)/$(src) $(cscflags)$(bin)
+# Test for msbuild/xbuild
+buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
+ifeq ($(buildtest),1)
+	buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
+	ifeq ($(buildtest),1)
+		$(error Neither msbuild nor xbuild was located! Please check your build environment.)
+	else
+		build := $(shell which xbuild)
+	endif
+else
+	build := $(shell which msbuild)
+endif
+
+all: $(sln)
+	$(build) $(sln)
 
 .PHONY: clean
 clean:
