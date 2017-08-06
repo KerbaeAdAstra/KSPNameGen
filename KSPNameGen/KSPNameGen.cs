@@ -191,8 +191,8 @@ namespace KSPNameGen
 		}
 
 
-        static void Loop()
-        {
+		static void Loop()
+		{
 			string inString;
 			Draw();
 			for (;;)

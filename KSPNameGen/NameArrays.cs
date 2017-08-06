@@ -1,4 +1,4 @@
-﻿// NameArrays.cs
+// NameArrays.cs
 //
 // This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
@@ -28,10 +28,10 @@ using System;
 
 namespace KSPNameGen
 {
-    public static class NameArrays
-    {
+	public static class NameArrays
+	{
 		public static readonly string[] fcp = { // female constructed prefix
-            "Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
+			"Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
 			"Cer", "Clau", "Cris", "Da", "Dan", "Daph", "De", "Deb", "Di", "Eil",
 			"Eli", "Eri", "Fran", "Gem", "Ger", "Gi", "Gil", "Gle", "Gra", "Gwen",
 			"Hai", "Hay", "Hel", "Hil", "Ir", "Isa", "Ja", "Jan", "Jen", "Jes",
@@ -44,7 +44,7 @@ namespace KSPNameGen
 		};
 
 		public static readonly string[] fcs = { // female constructed suffix
-        "a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
+		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
 			"dia", "die", "dine", "dolin", "dra", "drien", "e", "edith", "ee",
@@ -64,7 +64,7 @@ namespace KSPNameGen
 		};
 
 		public static readonly string[] fpr = { // female proper name
-            "Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
+			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
 			"Maya", "Megan", "Mila", "Nancy", "Nicole", "Nina", "Olivia", "Peggy",
@@ -74,7 +74,7 @@ namespace KSPNameGen
 		};
 
 		public static readonly string[] mcp = { // male constructed prefix
-            "Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
+			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
 			"Gene", "Geof", "Gil", "Greg", "Gus", "Had", "Hal", "Han", "Har",
@@ -87,7 +87,7 @@ namespace KSPNameGen
 		};
 
 		public static readonly string[] mcs = { // male constructed suffix
-            "ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
+			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
 			"dorf", "dos", "dous", "dred", "drin", "dun", "ely", "emone", "emy",
@@ -103,11 +103,11 @@ namespace KSPNameGen
 		};
 
 		public static readonly string[] mpr = { // male proper name
-            "Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
+			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
 			"Mac", "Matt", "Phil", "Randall", "Scott", "Scott", "Sean", "Steve",
 			"Tom", "Will"
 		};
-    }
+	}
 }

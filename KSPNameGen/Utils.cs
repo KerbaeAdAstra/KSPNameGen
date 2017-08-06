@@ -1,4 +1,4 @@
-﻿// Utils.cs
+// Utils.cs
 //
 // This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
