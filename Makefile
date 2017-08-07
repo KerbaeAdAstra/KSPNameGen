@@ -47,14 +47,14 @@ buildcache = KSPNameGen/obj
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
-	buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
-	ifeq ($(buildtest),1)
-		$(error Neither msbuild nor xbuild was located! Please check your build environment.)
-	else
-		build := $(shell which xbuild)
-	endif
+    buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
+    ifeq ($(buildtest),1)
+        $(error Neither msbuild nor xbuild was located! Please check your build environment)
+    else
+        build := $(shell which xbuild)
+    endif
 else
-	build := $(shell which msbuild)
+    build := $(shell which msbuild)
 endif
 
 all: $(sln)
