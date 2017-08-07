@@ -49,7 +49,7 @@ buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
     buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
     ifeq ($(buildtest),1)
-        $(error Neither msbuild nor xbuild was located! Please check your build environment)
+        $(error Suitable build tools were not located in your PATH. Please check your build environment)
     else
         build := $(shell which xbuild)
     endif
