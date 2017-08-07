@@ -10,9 +10,11 @@ TestResults/
 # globs
 Makefile.in
 *.DS_Store
+*.exe
 *.sln.cache
 *.suo
 *.cache
+*.pdb
 *.pidb
 *.userprefs
 *.usertasks

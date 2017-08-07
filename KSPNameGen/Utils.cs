@@ -1,4 +1,4 @@
-﻿// AssemblyInfo.cs
+// Utils.cs
 //
 // This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
@@ -22,28 +22,66 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Reflection;
+// using directives
 
-// Information about this assembly is defined by the following attributes. 
-// Change them to the values specific to your project.
+using System;
 
-[assembly: AssemblyTitle("KSPNameGen")]
-[assembly: AssemblyDescription("Free (gratis and libre) name generator for Kerbal Space Program")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kerbae ad Astra group")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+// warning suppression declarations
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+#pragma warning disable CS1717
 
-[assembly: AssemblyVersion("0.2.1.*")]
+namespace KSPNameGen
+{
+	public static class Utils
+	{
+		public static bool FlagExists(string[] arr, string flag)
+		{
+			return Array.Exists(arr, element => element == flag);
+		}
 
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
+		public static bool FlagParse(string[] arr, string flag, out ulong product, ulong def)
+		{
+			product = def;
 
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
+			if (!Array.Exists(arr, element => element == flag))
+			{
+				return false;
+			}
+			int index = Array.IndexOf(arr, flag);
+			if (index == arr.Length - 1)
+			{
+				return false;
+			}
+			ulong prod;
+			if (!ulong.TryParse(arr[index + 1], out prod))
+			{
+				return false;
+			}
+			product = prod;
+			return true;
+		}
+
+		public static bool FlagParse(string[] arr, string flag, out string product, string def)
+		{
+			product = def;
+
+			if (!Array.Exists(arr, element => element == flag))
+			{
+
+				product = product;
+				return false;
+			}
+			int index = Array.IndexOf(arr, flag);
+			if (index == arr.Length - 1)
+			{
+				return false;
+			}
+			if (arr[index + 1][0] == '-')
+			{
+				return false;
+			}
+			product = arr[index + 1];
+			return true;
+		}
+	}
+}
