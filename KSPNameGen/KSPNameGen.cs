@@ -177,7 +177,7 @@ namespace KSPNameGen
 		{
 			GetBasename();
 			Console.Write(
-				"Usage: {0} [ARGUMENTS]\n" +
+				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
 				"-h --help:        No argument. Displays this message.\n" +
 				"-t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
