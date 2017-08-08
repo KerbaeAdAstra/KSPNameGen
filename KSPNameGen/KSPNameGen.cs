@@ -71,6 +71,7 @@ namespace KSPNameGen
 		static string filePath = "";
 		static bool writeFile;
 		static ConsoleKeyInfo input;
+		static string basename;
 		const string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
 			"\nrandomly generated surnames." + // TYPE
 			"Proper names are chosen from a list, while constructed names are" +
@@ -87,16 +88,21 @@ namespace KSPNameGen
 				Loop();
 			}
 			
-			if(Utils.FlagExists(args, "-h") || Utils.FlagExists(args, "--help"))
+			if (Utils.FlagExists(args, "-h") || Utils.FlagExists(args, "--help"))
 			{
 				Usage(false);
+			}
+
+			if (Utils.FlagExists(args, "-v") || Utils.FlagExists(args, "--version"))
+			{
+				Version();
 			}
 			
 			string argument = "fpm";
 			
-			if(Utils.FlagExists(args, "-t") || Utils.FlagExists(args, "--type"))
+			if (Utils.FlagExists(args, "-t") || Utils.FlagExists(args, "--type"))
 			{
-				if(Utils.FlagParse(args, "-t", out argument, argument) || Utils.FlagParse(args, "--type", out argument, argument))
+				if (Utils.FlagParse(args, "-t", out argument, argument) || Utils.FlagParse(args, "--type", out argument, argument))
 				{
 					param = IntArrayify(argument);
 				}
@@ -109,11 +115,11 @@ namespace KSPNameGen
 			Utils.FlagParse(args, "-b", out bufferSize, bufferSize);
 			Utils.FlagParse(args, "--buffer", out bufferSize, bufferSize);
 			
-			if(Utils.FlagExists(args, "-f") || Utils.FlagExists(args, "--file"))
+			if (Utils.FlagExists(args, "-f") || Utils.FlagExists(args, "--file"))
 			{
-				if(Utils.FlagParse(args, "-f", out filePath, filePath) || Utils.FlagParse(args, "--file", out filePath, filePath))
+				if (Utils.FlagParse(args, "-f", out filePath, filePath) || Utils.FlagParse(args, "--file", out filePath, filePath))
 				{
-					if(Accessible())
+					if (Accessible())
 					{
 						writeFile = true;
 					}
@@ -134,9 +140,9 @@ namespace KSPNameGen
 			
 			ulong genNum = 0;
 			
-			if(Utils.FlagExists(args, "-n") || Utils.FlagExists(args, "--number"))
+			if (Utils.FlagExists(args, "-n") || Utils.FlagExists(args, "--number"))
 			{
-				if(Utils.FlagParse(args, "-n", out genNum, genNum) || Utils.FlagParse(args, "--number", out genNum, genNum))
+				if (Utils.FlagParse(args, "-n", out genNum, genNum) || Utils.FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -154,9 +160,8 @@ namespace KSPNameGen
 			Kill(0);
 		}
 
-		static void Usage(bool error)
+		static void GetBasename()
 		{
-			string basename;
 			string lockfile = "/tmp/kspng.lock";
 			if (File.Exists(lockfile))
 			{
@@ -169,6 +174,11 @@ namespace KSPNameGen
 			{
 				basename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
 			}
+		}
+
+		static void Usage(bool error)
+		{
+			GetBasename();
 			Console.Write(
 				"Usage: {0} [ARGUMENTS]\n" +
 				"A list of valid flags and their arguments follow.\n" +
@@ -190,6 +200,17 @@ namespace KSPNameGen
 			}
 		}
 
+		static void Version()
+		{
+			Console.Write(
+				"KSPNameGen version " + MAJOR + "." + MINOR + "." + PATCH + SUFFX +
+				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
+				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
+				"\nThis is free software; you are free to change and redistribute it if and only if you include the license terms stated above when redistributing." +
+				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
+			);
+			Kill(0);
+		}
 
 		static void Loop()
 		{

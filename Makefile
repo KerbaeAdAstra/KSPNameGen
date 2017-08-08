@@ -31,8 +31,8 @@ platform := $(shell uname -s)
 
 # Flag definitions
 
-cpflags = -r
-rmflags = -f
+cpflags = -f
+rmflags = -rf
 mkdirflags = -p
 
 # Path/File definitions
@@ -63,16 +63,16 @@ all: $(sln)
 
 .PHONY: clean
 clean:
-	$(rm) $(cprmflags) $(bin)
-	$(rm) $(cprmflags) $(pdb)
-	$(rm) $(cprmflags) $(buildcache)
+	$(rm) $(rmflags) $(bin)
+	$(rm) $(rmflags) $(pdb)
+	$(rm) $(rmflags) $(buildcache)
 
 install: all $(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
-	$(cp) $(cprmflags) $(bin) $(libexec)
-	$(cp) $(cprmflags) $(script) $(localbin)
+	$(cp) $(cpflags) $(bin) $(libexec)
+	$(cp) $(cpflags) $(script) $(localbin)
 
 .PHONY: uninstall
 uninstall:
-	$(rm) $(cprmflags) $(libexec)/$(bin)
-	$(rm) $(cprmflags) $(localbin)/$(script)
+	$(rm) $(rmflags) $(libexec)/$(bin)
+	$(rm) $(rmflags) $(localbin)/$(script)
