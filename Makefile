@@ -33,6 +33,7 @@ platform := $(shell uname -s)
 
 cpflags = -f
 rmflags = -rf
+buildflags = /verbosity:diagnostic
 mkdirflags = -p
 
 # Path/File definitions

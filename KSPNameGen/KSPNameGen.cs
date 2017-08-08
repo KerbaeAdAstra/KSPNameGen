@@ -51,12 +51,9 @@ namespace KSPNameGen
 
 		enum Modes { Main, Options };
 
-		// static version defs
+		// static version def
 
-		const ushort MAJOR = 0;
-		const ushort MINOR = 3;
-		const ushort PATCH = 0;
-		const string SUFFX = "-git";
+		static readonly string ProductVersion = typeof(KSPNameGen).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
 		// variable definitions
 
@@ -203,12 +200,12 @@ namespace KSPNameGen
 		static void Version()
 		{
 			Console.Write(
-				"KSPNameGen version " + MAJOR + "." + MINOR + "." + PATCH + SUFFX +
+				"KSPNameGen version {0}" +
 				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
 				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
 				"\nThis is free software; you are free to change and redistribute it if and only if you include the license terms stated above when redistributing." +
 				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
-			);
+				, ProductVersion);
 			Kill(0);
 		}
 
@@ -412,7 +409,7 @@ namespace KSPNameGen
 			switch (drawMode)
 			{
 				case Modes.Main:
-					Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
+					Console.WriteLine("KSPNameGen v{0}", ProductVersion);
 
 					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
 					Console.WriteLine(param[0] == 0 ?
