@@ -31,7 +31,8 @@ platform := $(shell uname -s)
 
 # Flag definitions
 
-cprmflags = -rf
+cpflags = -r
+rmflags = -f
 mkdirflags = -p
 
 # Path/File definitions
@@ -39,7 +40,7 @@ mkdirflags = -p
 bin = KSPNameGen.exe
 sln = KSPNameGen.sln
 pdb = KSPNameGen.pdb
-script = kspng
+script = KSPNameGen/kspng
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
 buildcache = KSPNameGen/obj
@@ -66,10 +67,10 @@ clean:
 	$(rm) $(cprmflags) $(pdb)
 	$(rm) $(cprmflags) $(buildcache)
 
-install: all $(projdir)/$(script)
+install: all $(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
 	$(cp) $(cprmflags) $(bin) $(libexec)
-	$(cp) $(cprmflags) $(projdir)/$(script) $(localbin)
+	$(cp) $(cprmflags) $(script) $(localbin)
 
 .PHONY: uninstall
 uninstall:
