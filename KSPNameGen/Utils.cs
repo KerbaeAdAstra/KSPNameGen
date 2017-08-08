@@ -83,5 +83,22 @@ namespace KSPNameGen
 			product = arr[index + 1];
 			return true;
 		}
+
+		public static string PromptS(string query)
+		{
+			Console.WriteLine(query);
+			return Console.ReadLine().ToLower();
+		}
+
+		public static ulong PromptI(string query)
+		{
+			ulong inputLong = 0;
+			Console.WriteLine(query);
+			if (!ulong.TryParse(Console.ReadLine(), out inputLong))
+			{
+				Console.WriteLine("A positive nonzero integer was not specified.");
+			}
+			return inputLong;
+		}
 	}
 }

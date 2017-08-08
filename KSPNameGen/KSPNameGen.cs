@@ -56,7 +56,7 @@ namespace KSPNameGen
 		const ushort MAJOR = 0;
 		const ushort MINOR = 3;
 		const ushort PATCH = 0;
-		const string SUFFX = "";
+		const string SUFFX = "-git";
 
 		// variable definitions
 
@@ -119,7 +119,7 @@ namespace KSPNameGen
 					}
 					else
 					{
-						Console.WriteLine("Invalid file.");
+						Console.WriteLine("A writable file was not specified.");
 					}
 				}
 				else
@@ -204,7 +204,7 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = PromptS("Would you like to generate more names? (Y/N)");
+					inString = Utils.PromptS("Would you like to generate more names? (Y/N)");
 					switch (inString)
 					{
 						case "y":
@@ -312,7 +312,7 @@ namespace KSPNameGen
 						param[cursor[0]] = cursor[1];
 						return;
 					}
-					Iterator(PromptN(prompt[0]), Stringify(param), bufferSize);
+					Iterator(Utils.PromptI(prompt[0]), Stringify(param), bufferSize);
 					gen = false;
 					state = true;
 					break;
@@ -335,11 +335,11 @@ namespace KSPNameGen
 							switch (cursor[0])
 							{
 								case 0: //Buffer size
-									bufferSize = PromptN(prompt[1]);
+									bufferSize = Utils.PromptI(prompt[1]);
 									return;
 
 								case 1: //Filepath
-									filePath = PromptS(prompt[2]);
+									filePath = Utils.PromptS(prompt[2]);
 									break;
 
 								case 2: //Exit
@@ -467,23 +467,6 @@ namespace KSPNameGen
 			}
 
 			return true;
-		}
-
-		static ulong PromptN(string query)
-		{
-			ulong inputLong = 0;
-			Console.WriteLine(query);
-			if (!ulong.TryParse(Console.ReadLine(), out inputLong))
-			{
-				Console.WriteLine("A positive integer was not specified.");
-			}
-			return inputLong;
-		}
-
-		static string PromptS(string query)
-		{
-			Console.WriteLine(query);
-			return Console.ReadLine().ToLower();
 		}
 
 		static string Generate(string _param)
