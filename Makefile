@@ -38,12 +38,10 @@ mkdirflags = -p
 
 # Path/File definitions
 
-bin = KSPNameGen.exe
-sln = KSPNameGen.sln
-pdb = KSPNameGen.pdb
-script = KSPNameGen/kspng
+script = kspng
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
+basename = KSPNameGen
 buildcache = KSPNameGen/obj
 
 # Test for msbuild/xbuild
@@ -60,20 +58,20 @@ else
 endif
 
 all: $(sln)
-	$(build) $(sln)
+	$(build) $(basename).sln
 
 .PHONY: clean
 clean:
-	$(rm) $(rmflags) $(bin)
-	$(rm) $(rmflags) $(pdb)
-	$(rm) $(rmflags) $(buildcache)
+	$(rm) $(rmflags) $(basename).exe
+	$(rm) $(rmflags) $(basename).pdb
+	$(rm) $(rmflags) $(basename)/obj
 
-install: all $(script)
+install: all $(basename)/$(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
-	$(cp) $(cpflags) $(bin) $(libexec)
-	$(cp) $(cpflags) $(script) $(localbin)
+	$(cp) $(cpflags) $(basename).exe $(libexec)
+	$(cp) $(cpflags) $(basename)/$(script) $(localbin)
 
 .PHONY: uninstall
 uninstall:
-	$(rm) $(rmflags) $(libexec)/$(bin)
+	$(rm) $(rmflags) $(libexec)/$(basename).exe
 	$(rm) $(rmflags) $(localbin)/$(script)
