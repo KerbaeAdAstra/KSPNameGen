@@ -13,13 +13,13 @@ git clone https://github.com/KerbaeAdAstra/KSPNameGen.git
 cd KSPNameGen
 ```
 
-If you wish to attempt to build directly from the `develop` branch (that is, potentially unstable and under active development), do not do anything here. If you're feeling less ambitious, run the following command to obtain the latest stable source code (v0.3.0 at the time of this writing) instead:
+If you wish to attempt to build directly from the `develop` branch (that is, potentially unstable and under active development), do not do anything here. If you're feeling less ambitious, run the following command to obtain the source code from a specific version:
 
-`git checkout v0.3.0`
+`git checkout <tag>`
 
 If there is a specific commit you wish to build from, that can be checked out too:
 
-`git checkout da39a3ee5e6b4b0d3255bfef95601890afd80709`
+`git checkout <hash>`
 
 Alternatively, if you just want to obtain the latest source code package, download it from the GitHub releases page. Note that old releases are purged, so only the latest version may be obtained through this route.
 
