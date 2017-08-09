@@ -9,7 +9,7 @@ notifications:
     use_notice: true
     skip_join: true
     template:
-      - "%{repository_slug}#%{build_number} (%{commit} on %{branch} by ${author}): %{message}"
+      - "%{repository_slug}#%{build_number} (%{commit} on %{branch} by %{author}): %{message}"
       - "Changeset: %{compare_url}"
       - "Build details: %{build_url}"
       
