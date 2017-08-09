@@ -28,7 +28,7 @@ KSPNameGen now comes with a non-interactive mode, for when you just want a
 couple of names and don't want to mess around with the interactive interface.
 
 ```plaintext
-Usage: KSPNameGen.exe [flags] [arguments]
+Usage: KSPNameGen.exe [flags] [args]
 A list of valid flags and their arguments follow.
 -h --help:        No argument. Displays this message.
 -t --type:        A string indicating the type of name to generate. Defaults to fpm.
