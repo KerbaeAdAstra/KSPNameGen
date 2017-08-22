@@ -28,6 +28,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using static KSPNameGen.NameArrays;
+using static KSPNameGen.Utils;
 
 // warning suppression declarations
 
@@ -85,21 +87,21 @@ namespace KSPNameGen
 				Loop();
 			}
 			
-			if (Utils.FlagExists(args, "-h") || Utils.FlagExists(args, "--help"))
+			if (FlagExists(args, "-h") || FlagExists(args, "--help"))
 			{
 				Usage(false);
 			}
 
-			if (Utils.FlagExists(args, "-v") || Utils.FlagExists(args, "--version"))
+			if (FlagExists(args, "-v") || FlagExists(args, "--version"))
 			{
 				Version();
 			}
 			
 			string argument = "fpm";
 			
-			if (Utils.FlagExists(args, "-t") || Utils.FlagExists(args, "--type"))
+			if (FlagExists(args, "-t") || FlagExists(args, "--type"))
 			{
-				if (Utils.FlagParse(args, "-t", out argument, argument) || Utils.FlagParse(args, "--type", out argument, argument))
+				if (FlagParse(args, "-t", out argument, argument) || FlagParse(args, "--type", out argument, argument))
 				{
 					param = IntArrayify(argument);
 				}
@@ -109,12 +111,12 @@ namespace KSPNameGen
 				}
 			}
 			
-			Utils.FlagParse(args, "-b", out bufferSize, bufferSize);
-			Utils.FlagParse(args, "--buffer", out bufferSize, bufferSize);
+			FlagParse(args, "-b", out bufferSize, bufferSize);
+			FlagParse(args, "--buffer", out bufferSize, bufferSize);
 			
-			if (Utils.FlagExists(args, "-f") || Utils.FlagExists(args, "--file"))
+			if (FlagExists(args, "-f") || FlagExists(args, "--file"))
 			{
-				if (Utils.FlagParse(args, "-f", out filePath, filePath) || Utils.FlagParse(args, "--file", out filePath, filePath))
+				if (FlagParse(args, "-f", out filePath, filePath) || FlagParse(args, "--file", out filePath, filePath))
 				{
 					if (Accessible())
 					{
@@ -130,16 +132,16 @@ namespace KSPNameGen
 					Usage(true);
 				}
 			}
-			if (Utils.FlagExists(args, "-i") || Utils.FlagExists(args, "--interactive"))
+			if (FlagExists(args, "-i") || FlagExists(args, "--interactive"))
 			{
 				Loop();
 			}
 			
 			ulong genNum = 0;
 			
-			if (Utils.FlagExists(args, "-n") || Utils.FlagExists(args, "--number"))
+			if (FlagExists(args, "-n") || FlagExists(args, "--number"))
 			{
-				if (Utils.FlagParse(args, "-n", out genNum, genNum) || Utils.FlagParse(args, "--number", out genNum, genNum))
+				if (FlagParse(args, "-n", out genNum, genNum) || FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -222,7 +224,7 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = Utils.PromptS("Would you like to generate more names? (Y/N)");
+					inString = PromptS("Would you like to generate more names? (Y/N)");
 					switch (inString)
 					{
 						case "y":
@@ -330,7 +332,7 @@ namespace KSPNameGen
 						param[cursor[0]] = cursor[1];
 						return;
 					}
-					Iterator(Utils.PromptI(prompt[0]), Stringify(param), bufferSize);
+					Iterator(PromptI(prompt[0]), Stringify(param), bufferSize);
 					gen = false;
 					state = true;
 					break;
@@ -353,11 +355,11 @@ namespace KSPNameGen
 							switch (cursor[0])
 							{
 								case 0: //Buffer size
-									bufferSize = Utils.PromptI(prompt[1]);
+									bufferSize = PromptI(prompt[1]);
 									return;
 
 								case 1: //Filepath
-									filePath = Utils.PromptS(prompt[2]);
+									filePath = PromptS(prompt[2]);
 									break;
 
 								case 2: //Exit
@@ -493,48 +495,48 @@ namespace KSPNameGen
 			switch (_param)
 			{
 				case "spf":
-					return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " Kerman";
+					return fpr[random.Next(fpr.Length)] + " Kerman";
 
 				case "spm":
-					return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " Kerman";
+					return mpr[random.Next(mpr.Length)] + " Kerman";
 
 				case "scf":
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcp.Length)] + " Kerman";
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 
 				case "scm":
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcp.Length)] + " Kerman";
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 
 				case "srf":
 					if (toggle)
-						return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " Kerman";
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcp.Length)] + " Kerman";
+						return fpr[random.Next(fpr.Length)] + " Kerman";
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
 
 				case "srm":
 					if (toggle)
-						return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " Kerman";
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcp.Length)] + " Kerman";
+						return mpr[random.Next(mpr.Length)] + " Kerman";
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
 
 				case "fpf":
-					return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
+					return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fpm":
-					return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
+					return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "fcf":
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fcm":
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "frf":
 					if (toggle)
-						return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
+						return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "frm":
 					if (toggle)
-						return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
+						return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
 					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
 			}
