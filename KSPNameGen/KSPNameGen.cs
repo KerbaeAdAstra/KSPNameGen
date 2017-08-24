@@ -70,7 +70,6 @@ namespace KSPNameGen
 		static string filePath = "";
 		static bool writeFile;
 		static ConsoleKeyInfo input;
-		static string basename;
 		const string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
 			"\nrandomly generated surnames." + // TYPE
 			"Proper names are chosen from a list, while constructed names are" +
@@ -159,25 +158,25 @@ namespace KSPNameGen
 			Kill(0);
 		}
 
-		static void GetBasename()
+		static string GetBasename()
 		{
 			string lockfile = "/tmp/kspng.lock";
 			if (File.Exists(lockfile))
 			{
 				StreamReader sr = new StreamReader(lockfile);
-				basename = sr.ReadLine();
+				string basename = sr.ReadLine();
 				sr.Dispose();
 				File.Delete(lockfile);
+				return basename;
 			}
 			else
 			{
-				basename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
+				return Path.GetFileName(Assembly.GetEntryAssembly().Location);
 			}
 		}
 
 		static void Usage(bool error)
 		{
-			GetBasename();
 			Console.Write(
 				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
@@ -188,7 +187,7 @@ namespace KSPNameGen
 				"-i --interactive: No argument. Forces interactive mode; default.\n" +
 				"-n --number:      An integer indicating the number of names to generate. Also noninteractive.\n" +
 				"All other (invalid) flags and arguments will result in this message being shown.\n"
-				, basename);
+				, GetBasename());
 			if (error) //
 			{
 				Kill(1);
