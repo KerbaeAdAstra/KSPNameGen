@@ -47,7 +47,8 @@ namespace KSPNameGen
 			"Specify filepath (absolute or relative)." // Filepath
 		};
 
-		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
+		static readonly ConsoleColor[] colors =
+			(ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
 		// enum defs
 
@@ -55,7 +56,10 @@ namespace KSPNameGen
 
 		// static version def
 
-		static readonly string ProductVersion = typeof(KSPNameGen).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+		static readonly string ProductVersion =
+			typeof(KSPNameGen).Assembly.GetCustomAttribute
+							  <AssemblyInformationalVersionAttribute>()
+							  .InformationalVersion;
 
 		// variable definitions
 
@@ -70,8 +74,8 @@ namespace KSPNameGen
 		static string filePath = "";
 		static bool writeFile;
 		static ConsoleKeyInfo input;
-		const string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
-			"\nrandomly generated surnames." + // TYPE
+		const string help = "Standard names have a 'Kerman' surname, while" +
+			"Future-style names have\nrandomly generated surnames." + // TYPE
 			"Proper names are chosen from a list, while constructed names are" +
 			"\nconstructed from a list of prefixes and suffixes.\n" +
 			"If the option 'combination' is chosen, then there is a 1/20 chance" +
@@ -100,7 +104,8 @@ namespace KSPNameGen
 			
 			if (FlagExists(args, "-t") || FlagExists(args, "--type"))
 			{
-				if (FlagParse(args, "-t", out argument, argument) || FlagParse(args, "--type", out argument, argument))
+				if (FlagParse(args, "-t", out argument, argument) ||
+					FlagParse(args, "--type", out argument, argument))
 				{
 					param = IntArrayify(argument);
 				}
@@ -115,7 +120,8 @@ namespace KSPNameGen
 			
 			if (FlagExists(args, "-f") || FlagExists(args, "--file"))
 			{
-				if (FlagParse(args, "-f", out filePath, filePath) || FlagParse(args, "--file", out filePath, filePath))
+				if (FlagParse(args, "-f", out filePath, filePath) ||
+					FlagParse(args, "--file", out filePath, filePath))
 				{
 					if (Accessible())
 					{
@@ -140,7 +146,8 @@ namespace KSPNameGen
 			
 			if (FlagExists(args, "-n") || FlagExists(args, "--number"))
 			{
-				if (FlagParse(args, "-n", out genNum, genNum) || FlagParse(args, "--number", out genNum, genNum))
+				if (FlagParse(args, "-n", out genNum, genNum) ||
+					FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -161,16 +168,16 @@ namespace KSPNameGen
 		static string GetBasename()
 		{
 			string lockfile = "/tmp/kspng.lock";
-            if (File.Exists(lockfile))
-            {
-                StreamReader sr = new StreamReader(lockfile);
-                string basename = sr.ReadLine();
-                sr.Dispose();
-                File.Delete(lockfile);
-                return basename;
-            }
-            return Path.GetFileName(Assembly.GetEntryAssembly().Location);
-        }
+			if (File.Exists(lockfile))
+			{
+				StreamReader sr = new StreamReader(lockfile);
+				string basename = sr.ReadLine();
+				sr.Dispose();
+				File.Delete(lockfile);
+				return basename;
+			}
+			return Path.GetFileName(Assembly.GetEntryAssembly().Location);
+		}
 
 		static void Usage(bool error)
 		{
@@ -178,12 +185,17 @@ namespace KSPNameGen
 				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
 				"-h --help:        No argument. Displays this message.\n" +
-				"-t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
-				"-b --buffer:      An integer indicating the number of names to write to stdout per frame.\n" +
-				"-f --file:        A string indicating the output file, using either relative or absolute paths.\n" +
+				"-t --type:        A string indicating the type of name to" +
+				"generate. Defaults to fpm.\n" +
+				"-b --buffer:      An integer indicating the number of names to" +
+				"write to stdout per frame.\n" +
+				"-f --file:        A string indicating the output file, using" +
+				"either relative or absolute paths.\n" +
 				"-i --interactive: No argument. Forces interactive mode; default.\n" +
-				"-n --number:      An integer indicating the number of names to generate. Also noninteractive.\n" +
-				"All other (invalid) flags and arguments will result in this message being shown.\n"
+				"-n --number:      An integer indicating the number of names to" +
+				"generate. Also noninteractive.\n" +
+				"All other (invalid) flags and arguments will result in this" +
+				"message being shown.\n"
 				, GetBasename());
 			if (error) //
 			{
@@ -201,7 +213,9 @@ namespace KSPNameGen
 				"KSPNameGen version {0}" +
 				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
 				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
-				"\nThis is free software; you are free to change and redistribute it if and only if you include the license terms stated above when redistributing." +
+				"\nThis is free software; you are free to change and" +
+				"redistribute it if and only if you include the license terms" +
+				"stated above when redistributing." +
 				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
 				, ProductVersion);
 			Kill(0);
@@ -220,7 +234,8 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = PromptS("Would you like to generate more names? (Y/N)");
+					inString = PromptS("Would you like to generate more names?" +
+									   "(Y/N)");
 					switch (inString)
 					{
 						case "y":
@@ -497,42 +512,58 @@ namespace KSPNameGen
 					return mpr[random.Next(mpr.Length)] + " Kerman";
 
 				case "scf":
-					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
+					return fcp[random.Next(fcp.Length)] + fcs
+						[random.Next(fcp.Length)] + " Kerman";
 
 				case "scm":
-					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
+					return mcp[random.Next(mcp.Length)] + mcs
+						[random.Next(mcp.Length)] + " Kerman";
 
 				case "srf":
 					if (toggle)
 						return fpr[random.Next(fpr.Length)] + " Kerman";
-					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcp.Length)] + " Kerman";
+					return fcp[random.Next(fcp.Length)] + fcs
+						[random.Next(fcp.Length)] + " Kerman";
 
 				case "srm":
 					if (toggle)
 						return mpr[random.Next(mpr.Length)] + " Kerman";
-					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcp.Length)] + " Kerman";
+					return mcp[random.Next(mcp.Length)] + mcs
+						[random.Next(mcp.Length)] + " Kerman";
 
 				case "fpf":
-					return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+					return fpr[random.Next(fpr.Length)] + " " + fcp
+						[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fpm":
-					return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+					return mpr[random.Next(mpr.Length)] + " " + mcp
+						[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "fcf":
-					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+					return fcp[random.Next(fcp.Length)] + fcs
+						[random.Next(fcs.Length)] + " " + 
+						fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fcm":
-					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+					return mcp[random.Next(mcp.Length)] + 
+						mcs[random.Next(mcs.Length)] + " " + 
+						mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "frf":
 					if (toggle)
-						return fpr[random.Next(fpr.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
-					return fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)] + " " + fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+						return fpr[random.Next(fpr.Length)] + " " + 
+							fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+					return fcp[random.Next(fcp.Length)] + 
+						fcs[random.Next(fcs.Length)] + " " + 
+						fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "frm":
 					if (toggle)
-						return mpr[random.Next(mpr.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
-					return mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)] + " " + mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+						return mpr[random.Next(mpr.Length)] + " " + 
+							mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+					return mcp[random.Next(mcp.Length)] + 
+						mcs[random.Next(mcs.Length)] + " " + 
+						mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
 					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
 			}
@@ -541,6 +572,7 @@ namespace KSPNameGen
 		static void Nyan(ulong inputLong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
+
 			for (ulong i = 0; i < inputLong / 15; i++)
 			{
 				foreach (ConsoleColor color in colors)
