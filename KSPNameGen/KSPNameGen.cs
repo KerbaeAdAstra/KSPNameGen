@@ -161,19 +161,16 @@ namespace KSPNameGen
 		static string GetBasename()
 		{
 			string lockfile = "/tmp/kspng.lock";
-			if (File.Exists(lockfile))
-			{
-				StreamReader sr = new StreamReader(lockfile);
-				string basename = sr.ReadLine();
-				sr.Dispose();
-				File.Delete(lockfile);
-				return basename;
-			}
-			else
-			{
-				return Path.GetFileName(Assembly.GetEntryAssembly().Location);
-			}
-		}
+            if (File.Exists(lockfile))
+            {
+                StreamReader sr = new StreamReader(lockfile);
+                string basename = sr.ReadLine();
+                sr.Dispose();
+                File.Delete(lockfile);
+                return basename;
+            }
+            return Path.GetFileName(Assembly.GetEntryAssembly().Location);
+        }
 
 		static void Usage(bool error)
 		{
@@ -544,7 +541,6 @@ namespace KSPNameGen
 		static void Nyan(ulong inputLong)
 		{
 			ConsoleColor currentBackground = Console.BackgroundColor;
-			string Generated = "";
 			for (ulong i = 0; i < inputLong / 15; i++)
 			{
 				foreach (ConsoleColor color in colors)
@@ -554,8 +550,7 @@ namespace KSPNameGen
 						continue;
 					}
 					Console.ForegroundColor = color;
-					Generated = Generate(Stringify(param));
-					Console.WriteLine(Generated);
+					Console.WriteLine(Generate(Stringify(param)));
 				}
 			}
 			gen = false;
