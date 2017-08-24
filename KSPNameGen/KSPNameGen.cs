@@ -567,7 +567,7 @@ namespace KSPNameGen
 						mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
 					return null; // this should not ever happen, but it's just
-                                 // there to stop Mono from throwing a fit
+								 // there to stop Mono from throwing a fit
 			}
 		}
 
