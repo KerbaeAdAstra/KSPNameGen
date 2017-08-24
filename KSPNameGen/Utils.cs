@@ -1,6 +1,7 @@
 // Utils.cs
 //
-// This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+// This file is part of KSPNameGen, a free (gratis and libre) name generator for
+// Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
 // KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
 //
@@ -39,7 +40,8 @@ namespace KSPNameGen
 			return Array.Exists(arr, element => element == flag);
 		}
 
-		public static bool FlagParse(string[] arr, string flag, out ulong product, ulong def)
+		public static bool FlagParse(string[] arr, string flag, out
+                                     ulong product, ulong def)
 		{
 			product = def;
 
@@ -61,7 +63,8 @@ namespace KSPNameGen
 			return true;
 		}
 
-		public static bool FlagParse(string[] arr, string flag, out string product, string def)
+		public static bool FlagParse(string[] arr, string flag, out
+                                     string product, string def)
 		{
 			product = def;
 
@@ -96,7 +99,8 @@ namespace KSPNameGen
 			Console.WriteLine(query);
 			if (!ulong.TryParse(Console.ReadLine(), out inputLong))
 			{
-				Console.WriteLine("A positive nonzero integer was not specified.");
+				Console.WriteLine("A positive nonzero integer was not" +
+                                  "specified.");
 			}
 			return inputLong;
 		}

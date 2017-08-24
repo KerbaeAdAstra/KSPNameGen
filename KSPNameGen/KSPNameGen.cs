@@ -1,6 +1,7 @@
 // KSPNameGen.cs
 //
-// This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+// This file is part of KSPNameGen, a free (gratis and libre) name generator for
+// Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
 // KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
 //
@@ -565,7 +566,8 @@ namespace KSPNameGen
 						mcs[random.Next(mcs.Length)] + " " + 
 						mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
-					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
+					return null; // this should not ever happen, but it's just
+                                 // there to stop Mono from throwing a fit
 			}
 		}
 
