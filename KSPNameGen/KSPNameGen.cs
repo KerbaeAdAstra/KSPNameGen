@@ -169,20 +169,6 @@ namespace KSPNameGen
 			Kill(0);
 		}
 
-		static string GetBasename()
-		{
-			string lockfile = "/tmp/kspng.lock";
-			if (Exists(lockfile))
-			{
-				StreamReader sr = new StreamReader(lockfile);
-				string basename = sr.ReadLine();
-				sr.Dispose();
-				Delete(lockfile);
-				return basename;
-			}
-			return Path.GetFileName(Assembly.GetEntryAssembly().Location);
-		}
-
 		static void Usage(bool error)
 		{
 			Write(
@@ -200,7 +186,7 @@ namespace KSPNameGen
 				"generate. Also noninteractive.\n" +
 				"All other (invalid) flags and arguments will result in this " +
 				"message being shown.\n"
-				, GetBasename());
+				, Path.GetFileName(Assembly.GetEntryAssembly().Location));
 			if (error) //
 			{
 				Kill(1);
