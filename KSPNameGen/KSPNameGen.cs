@@ -189,16 +189,16 @@ namespace KSPNameGen
 				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
 				"-h --help:        No argument. Displays this message.\n" +
-				"-t --type:        A string indicating the type of name to" +
+				"-t --type:        A string indicating the type of name to " +
 				"generate. Defaults to fpm.\n" +
-				"-b --buffer:      An integer indicating the number of names to" +
+				"-b --buffer:      An integer indicating the number of names to " +
 				"write to stdout per frame.\n" +
-				"-f --file:        A string indicating the output file, using" +
+				"-f --file:        A string indicating the output file, using " +
 				"either relative or absolute paths.\n" +
 				"-i --interactive: No argument. Forces interactive mode; default.\n" +
-				"-n --number:      An integer indicating the number of names to" +
+				"-n --number:      An integer indicating the number of names to " +
 				"generate. Also noninteractive.\n" +
-				"All other (invalid) flags and arguments will result in this" +
+				"All other (invalid) flags and arguments will result in this " +
 				"message being shown.\n"
 				, GetBasename());
 			if (error) //
@@ -218,7 +218,7 @@ namespace KSPNameGen
 				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
 				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
 				"\nThis is free software; you are free to change and" +
-				"redistribute it if and only if you include the license terms" +
+				"redistribute it if and only if you include the license terms " +
 				"stated above when redistributing." +
 				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
 				, productVersion);
@@ -238,7 +238,7 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = PromptS("Would you like to generate more names?" +
+					inString = PromptS("Would you like to generate more names? " +
 									   "(Y/N)");
 					switch (inString)
 					{
