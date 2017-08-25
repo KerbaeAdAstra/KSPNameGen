@@ -35,6 +35,7 @@ cpflags = -f
 rmflags = -rf
 buildflags = /verbosity:diagnostic
 mkdirflags = -p
+bundleflags = --cross default
 
 # Path/File definitions
 
@@ -65,15 +66,9 @@ else
 endif
 bundletest =
 
-# Test for build environment; mkbundle fails on macOS without flags
-envtest := $(shell uname -s)
-ifeq ($(envtest),Darwin)
-    envflags = --sdk $(shell which mkbundle | cut -c 1-51)
-endif
-envtest =
 all: $(sln)
 	$(build) $(basename).sln
-	$(bundle) -v -o $(executable) $(basename).exe $(envflags)
+	$(bundle) -v -o $(executable) $(basename).exe $(bundleflags)
 
 .PHONY: clean
 clean:
