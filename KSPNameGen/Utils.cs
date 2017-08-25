@@ -26,6 +26,7 @@
 // using directives
 
 using System;
+using static System.Console;
 
 // warning suppression declarations
 
@@ -41,7 +42,7 @@ namespace KSPNameGen
 		}
 
 		public static bool FlagParse(string[] arr, string flag, out
-                                     ulong product, ulong def)
+									 ulong product, ulong def)
 		{
 			product = def;
 
@@ -64,7 +65,7 @@ namespace KSPNameGen
 		}
 
 		public static bool FlagParse(string[] arr, string flag, out
-                                     string product, string def)
+									 string product, string def)
 		{
 			product = def;
 
@@ -89,18 +90,18 @@ namespace KSPNameGen
 
 		public static string PromptS(string query)
 		{
-			Console.WriteLine(query);
-			return Console.ReadLine().ToLower();
+			WriteLine(query);
+			return ReadLine().ToLower();
 		}
 
 		public static ulong PromptI(string query)
 		{
 			ulong inputLong = 0;
-			Console.WriteLine(query);
-			if (!ulong.TryParse(Console.ReadLine(), out inputLong))
+			WriteLine(query);
+			if (!ulong.TryParse(ReadLine(), out inputLong))
 			{
-				Console.WriteLine("A positive nonzero integer was not" +
-                                  "specified.");
+				WriteLine("A positive nonzero integer was not" +
+								  "specified.");
 			}
 			return inputLong;
 		}

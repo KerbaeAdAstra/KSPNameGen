@@ -29,6 +29,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using static System.Console;
 using static KSPNameGen.NameArrays;
 using static KSPNameGen.Utils;
 
@@ -37,7 +38,7 @@ using static KSPNameGen.Utils;
 #pragma warning disable RECS0135
 
 namespace KSPNameGen
-{	
+{
 	class KSPNameGen
 	{
 		// array definitions
@@ -130,7 +131,7 @@ namespace KSPNameGen
 					}
 					else
 					{
-						Console.WriteLine("A writable file was not specified.");
+						WriteLine("A writable file was not specified.");
 					}
 				}
 				else
@@ -162,7 +163,7 @@ namespace KSPNameGen
 				Usage(true);
 			}
 
-			Console.ReadKey(true);
+			ReadKey(true);
 			Kill(0);
 		}
 
@@ -182,7 +183,7 @@ namespace KSPNameGen
 
 		static void Usage(bool error)
 		{
-			Console.Write(
+			Write(
 				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
 				"-h --help:        No argument. Displays this message.\n" +
@@ -210,7 +211,7 @@ namespace KSPNameGen
 
 		static void Version()
 		{
-			Console.Write(
+			Write(
 				"KSPNameGen version {0}" +
 				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
 				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
@@ -248,7 +249,7 @@ namespace KSPNameGen
 							break;
 
 						default:
-							Console.WriteLine("Invalid response.");
+							WriteLine("Invalid response.");
 							break;
 					}
 				}
@@ -257,13 +258,13 @@ namespace KSPNameGen
 
 		static void Kill(ushort exitCode)
 		{
-			Console.Write("Exiting");
+			Write("Exiting");
 			for (int i = 0; i < 3; i++)
 			{
 				Thread.Sleep(333);
-				Console.Write(".");
+				Write(".");
 			}
-			Console.WriteLine();
+			WriteLine();
 			Environment.Exit(exitCode);
 		}
 
@@ -274,7 +275,7 @@ namespace KSPNameGen
 				case Modes.Main:
 					if (state)
 					{
-						input = Console.ReadKey(false);
+						input = ReadKey(false);
 						switch (input.Key)
 						{
 							case ConsoleKey.DownArrow:
@@ -349,7 +350,7 @@ namespace KSPNameGen
 					state = true;
 					break;
 				case Modes.Options:
-					input = Console.ReadKey(false);
+					input = ReadKey(false);
 					switch (input.Key)
 					{
 						case ConsoleKey.DownArrow:
@@ -414,36 +415,36 @@ namespace KSPNameGen
 
 		static void Draw()
 		{
-			ConsoleColor oldBack = Console.BackgroundColor;
+			ConsoleColor oldBack = BackgroundColor;
 			ConsoleColor newBack = ConsoleColor.DarkRed;
 			ConsoleColor fexBack = ConsoleColor.Green;
 			ConsoleColor dneBack = ConsoleColor.Red;
 
-			Console.Clear();
+			Clear();
 			switch (drawMode)
 			{
 				case Modes.Main:
-					Console.WriteLine("KSPNameGen v{0}", ProductVersion);
+					WriteLine("KSPNameGen v{0}", ProductVersion);
 
-					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
-					Console.WriteLine(param[0] == 0 ?
+					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
+					WriteLine(param[0] == 0 ?
 							"[Future] Standard              " :
 							" Future [Standard]             ");
 
-					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
-					Console.WriteLine(param[1] == 0 ?
+					BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
+					WriteLine(param[1] == 0 ?
 							"[Proper] Mixed  Constructed    " :
 										param[1] == 1 ?
 							" Proper [Mixed] Constructed    " :
 							" Proper  Mixed [Constructed]   ");
 
-					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
-					Console.WriteLine(param[2] == 0 ?
+					BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
+					WriteLine(param[2] == 0 ?
 							"[Male] Female                  " :
 							" Male [Female]                 ");
 
-					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
-					Console.WriteLine(param[3] == 0 ?
+					BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
+					WriteLine(param[3] == 0 ?
 							"[Generate] Help  Exit  Options " :
 										param[3] == 1 ?
 							" Generate [Help] Exit  Options " :
@@ -451,36 +452,36 @@ namespace KSPNameGen
 							" Generate  Help [Exit] Options " :
 							" Generate  Help  Exit [Options]");
 
-					Console.BackgroundColor = oldBack;
+					BackgroundColor = oldBack;
 					if (writeHelp)
 					{
-					Console.WriteLine(help);
+					WriteLine(help);
 						writeHelp = false;
 					}
 					break;
 
 				case Modes.Options:
-					Console.WriteLine("Options");
+					WriteLine("Options");
 
-					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
-					Console.WriteLine("Buffer Size:   {0,16}", bufferSize);
+					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
+					WriteLine("Buffer Size:   {0,16}", bufferSize);
 
-					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
-					Console.WriteLine("File Path:                     ");
-					Console.BackgroundColor = Accessible() ? fexBack : dneBack;
-					Console.WriteLine("{0,31}", filePath);
+					BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
+					WriteLine("File Path:                     ");
+					BackgroundColor = Accessible() ? fexBack : dneBack;
+					WriteLine("{0,31}", filePath);
 
-					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
-					Console.WriteLine(writeFile ?
+					BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
+					WriteLine(writeFile ?
 						"Write to File               [x]" :
 						"Write to File               [ ]");
 
-					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
-					Console.WriteLine(cursor[0] == 3 ?
+					BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
+					WriteLine(cursor[0] == 3 ?
 						"[Apply]                        " :
 						" Apply                         ");
 
-					Console.BackgroundColor = oldBack;
+					BackgroundColor = oldBack;
 					break;
 			}
 		}
@@ -573,7 +574,7 @@ namespace KSPNameGen
 
 		static void Nyan(ulong inputLong)
 		{
-			ConsoleColor currentBackground = Console.BackgroundColor;
+			ConsoleColor currentBackground = BackgroundColor;
 
 			for (ulong i = 0; i < inputLong / 15; i++)
 			{
@@ -583,8 +584,8 @@ namespace KSPNameGen
 					{
 						continue;
 					}
-					Console.ForegroundColor = color;
-					Console.WriteLine(Generate(Stringify(param)));
+					ForegroundColor = color;
+					WriteLine(Generate(Stringify(param)));
 				}
 			}
 			gen = false;
@@ -608,7 +609,7 @@ namespace KSPNameGen
 					sr.WriteLine(Generate(_param));
 				}
 				sr.Dispose();
-				Console.WriteLine("Complete.");
+				WriteLine("Complete.");
 				return;
 			}
 
@@ -620,11 +621,11 @@ namespace KSPNameGen
 				buffer += Generated + "\n";
 				if (i % buffsize == 0)
 				{
-					Console.Write(buffer);
+					Write(buffer);
 					buffer = "";
 				}
 			}
-			Console.Write(buffer);
+			Write(buffer);
 		}
 	}
 }
