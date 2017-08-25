@@ -38,11 +38,9 @@ mkdirflags = -p
 
 # Path/File definitions
 
-script = kspng
-libexec = /usr/local/libexec
 localbin = /usr/local/bin
 basename = KSPNameGen
-buildcache = KSPNameGen/obj
+executable = kspng
 
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
@@ -56,22 +54,37 @@ ifeq ($(buildtest),1)
 else
     build := $(shell which msbuild)
 endif
+buildtest =
 
+# Test for mkbundle
+bundletest := $(shell which mkbundle 2> /dev/null; echo $$?)
+ifeq ($(buildtest),1)
+	$(error Suitable build tools were not located in your PATH. Please check your build environment)
+else
+    bundle := $(shell which mkbundle)
+endif
+bundletest =
+
+# Test for build environment; mkbundle fails on macOS without flags
+envtest := $(shell uname -s)
+ifeq ($(envtest),Darwin)
+    envflags = --sdk $(shell which mkbundle | cut -c 1-51)
+endif
+envtest =
 all: $(sln)
 	$(build) $(basename).sln
+	$(bundle) -v -o $(executable) $(basename).exe $(envflags)
 
 .PHONY: clean
 clean:
+	$(rm) $(rmflags) $(executable)
 	$(rm) $(rmflags) $(basename).exe
 	$(rm) $(rmflags) $(basename).pdb
 	$(rm) $(rmflags) $(basename)/obj
 
-install: all $(basename)/$(script)
-	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
-	$(cp) $(cpflags) $(basename).exe $(libexec)
-	$(cp) $(cpflags) $(basename)/$(script) $(localbin)
+install: all
+	$(mkdir) $(mkdirflags) $(localbin)
 
 .PHONY: uninstall
 uninstall:
-	$(rm) $(rmflags) $(libexec)/$(basename).exe
-	$(rm) $(rmflags) $(localbin)/$(script)
+	$(rm) $(rmflags) $(localbin)/$(executable)
