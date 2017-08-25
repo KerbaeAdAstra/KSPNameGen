@@ -79,6 +79,7 @@ clean:
 
 install: all
 	$(mkdir) $(mkdirflags) $(localbin)
+	$(cp) $(cpflags) $(executable $(localbin)
 
 .PHONY: uninstall
 uninstall:
