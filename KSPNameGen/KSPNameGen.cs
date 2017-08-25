@@ -30,6 +30,8 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using static System.Console;
+using static System.ConsoleKey;
+using static System.IO.File;
 using static KSPNameGen.NameArrays;
 using static KSPNameGen.Utils;
 
@@ -39,7 +41,7 @@ using static KSPNameGen.Utils;
 
 namespace KSPNameGen
 {
-	class KSPNameGen
+    class KSPNameGen
 	{
 		// array definitions
 
@@ -58,7 +60,7 @@ namespace KSPNameGen
 
 		// static version def
 
-		static readonly string ProductVersion =
+		static readonly string productVersion =
 			typeof(KSPNameGen).Assembly.GetCustomAttribute
 							  <AssemblyInformationalVersionAttribute>()
 							  .InformationalVersion;
@@ -170,12 +172,12 @@ namespace KSPNameGen
 		static string GetBasename()
 		{
 			string lockfile = "/tmp/kspng.lock";
-			if (File.Exists(lockfile))
+			if (Exists(lockfile))
 			{
 				StreamReader sr = new StreamReader(lockfile);
 				string basename = sr.ReadLine();
 				sr.Dispose();
-				File.Delete(lockfile);
+				Delete(lockfile);
 				return basename;
 			}
 			return Path.GetFileName(Assembly.GetEntryAssembly().Location);
@@ -219,7 +221,7 @@ namespace KSPNameGen
 				"redistribute it if and only if you include the license terms" +
 				"stated above when redistributing." +
 				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
-				, ProductVersion);
+				, productVersion);
 			Kill(0);
 		}
 
@@ -278,28 +280,28 @@ namespace KSPNameGen
 						input = ReadKey(false);
 						switch (input.Key)
 						{
-							case ConsoleKey.DownArrow:
+							case DownArrow:
 								cursor[0]++;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
 								break;
 
-							case ConsoleKey.UpArrow:
+							case UpArrow:
 								cursor[0]--;
 								cursor[0] += 4;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
 								break;
 
-							case ConsoleKey.RightArrow:
+							case RightArrow:
 								cursor[1]++;
 								break;
 
-							case ConsoleKey.LeftArrow:
+							case LeftArrow:
 								cursor[1]--;
 								break;
 
-							case ConsoleKey.Enter:
+							case Enter:
 								switch (param[3])
 								{
 									case 0: // Generate
@@ -353,18 +355,18 @@ namespace KSPNameGen
 					input = ReadKey(false);
 					switch (input.Key)
 					{
-						case ConsoleKey.DownArrow:
+						case DownArrow:
 							cursor[0]++;
 							cursor[0] %= 4;
 							break;
 
-						case ConsoleKey.UpArrow:
+						case UpArrow:
 							cursor[0]--;
 							cursor[0] += 4;
 							cursor[0] %= 4;
 							break;
 
-						case ConsoleKey.Enter:
+						case Enter:
 							switch (cursor[0])
 							{
 								case 0: //Buffer size
@@ -424,7 +426,7 @@ namespace KSPNameGen
 			switch (drawMode)
 			{
 				case Modes.Main:
-					WriteLine("KSPNameGen v{0}", ProductVersion);
+					WriteLine("KSPNameGen v{0}", productVersion);
 
 					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
 					WriteLine(param[0] == 0 ?
@@ -488,11 +490,11 @@ namespace KSPNameGen
 
 		static bool Accessible()
 		{
-			if (!File.Exists(filePath))
+			if (!Exists(filePath))
 				return false;
 			try
 			{
-				File.OpenWrite(filePath).Close();
+				OpenWrite(filePath).Close();
 			}
 			catch
 			{
@@ -603,7 +605,7 @@ namespace KSPNameGen
 			}
 			if (writeFile)
 			{
-				StreamWriter sr = File.CreateText(filePath);
+				StreamWriter sr = CreateText(filePath);
 				for (ulong i = 0; i < number; i++)
 				{
 					sr.WriteLine(Generate(_param));

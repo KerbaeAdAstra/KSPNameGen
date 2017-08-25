@@ -26,6 +26,7 @@
 // using directives
 
 using System;
+using static System.Array;
 using static System.Console;
 
 // warning suppression declarations
@@ -38,7 +39,7 @@ namespace KSPNameGen
 	{
 		public static bool FlagExists(string[] arr, string flag)
 		{
-			return Array.Exists(arr, element => element == flag);
+			return Exists(arr, element => element == flag);
 		}
 
 		public static bool FlagParse(string[] arr, string flag, out
@@ -46,11 +47,11 @@ namespace KSPNameGen
 		{
 			product = def;
 
-			if (!Array.Exists(arr, element => element == flag))
+			if (!Exists(arr, element => element == flag))
 			{
 				return false;
 			}
-			int index = Array.IndexOf(arr, flag);
+			int index = IndexOf(arr, flag);
 			if (index == arr.Length - 1)
 			{
 				return false;
@@ -69,13 +70,13 @@ namespace KSPNameGen
 		{
 			product = def;
 
-			if (!Array.Exists(arr, element => element == flag))
+			if (!Exists(arr, element => element == flag))
 			{
 
 				product = product;
 				return false;
 			}
-			int index = Array.IndexOf(arr, flag);
+			int index = IndexOf(arr, flag);
 			if (index == arr.Length - 1)
 			{
 				return false;
