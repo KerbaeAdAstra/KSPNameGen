@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 15.00
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSPNameGen", "KSPNameGen\KSPNameGen.csproj", "{FCC21C96-8440-4D44-8630-E2EFA4444C00}"
 EndProject
 Global
