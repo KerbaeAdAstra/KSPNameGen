@@ -26,8 +26,11 @@
 // using directives
 
 using System;
+using System.IO;
+using System.Threading;
 using static System.Array;
 using static System.Console;
+using static System.IO.File;
 
 // warning suppression declarations
 
@@ -105,6 +108,56 @@ namespace KSPNameGen
 								  "specified.");
 			}
 			return inputLong;
+		}
+
+		public static string Stringify(int[] _param)
+		{
+			string output = _param[0] == 0 ? "f" : "s";
+			output += _param[1] == 0 ? "p" : _param[1] == 1 ? "r" : "c";
+			output += _param[2] == 0 ? "m" : "f";
+			return output;
+		}
+
+		public static void Kill(ushort exitCode)
+		{
+			Write("Exiting");
+			for (int i = 0; i < 3; i++)
+			{
+				Thread.Sleep(333);
+				Write(".");
+			}
+			WriteLine();
+			Environment.Exit(exitCode);
+		}
+
+		public static string GetBasename()
+		{
+			string lockfile = "/tmp/kspng.lock";
+			if (Exists(lockfile))
+			{
+				StreamReader sr = new StreamReader(lockfile);
+				string basename = sr.ReadLine();
+				sr.Dispose();
+				Delete(lockfile);
+				return basename;
+			}
+			return Path.GetFileName(Assembly.GetEntryAssembly().Location);
+		}
+
+		public static bool Accessible(string filePath)
+		{
+			if (!Exists(filePath))
+				return false;
+			try
+			{
+				OpenWrite(filePath).Close();
+			}
+			catch
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

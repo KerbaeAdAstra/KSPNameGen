@@ -28,7 +28,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using static System.Console;
 using static System.ConsoleKey;
 using static System.IO.File;
@@ -41,7 +40,7 @@ using static KSPNameGen.Utils;
 
 namespace KSPNameGen
 {
-    class KSPNameGen
+	class KSPNameGen
 	{
 		// array definitions
 
@@ -127,7 +126,7 @@ namespace KSPNameGen
 				if (FlagParse(args, "-f", out filePath, filePath) ||
 					FlagParse(args, "--file", out filePath, filePath))
 				{
-					if (Accessible())
+					if (Accessible(filePath))
 					{
 						writeFile = true;
 					}
@@ -167,20 +166,6 @@ namespace KSPNameGen
 
 			ReadKey(true);
 			Kill(0);
-		}
-
-		static string GetBasename()
-		{
-			string lockfile = "/tmp/kspng.lock";
-			if (Exists(lockfile))
-			{
-				StreamReader sr = new StreamReader(lockfile);
-				string basename = sr.ReadLine();
-				sr.Dispose();
-				Delete(lockfile);
-				return basename;
-			}
-			return Path.GetFileName(Assembly.GetEntryAssembly().Location);
 		}
 
 		static void Usage(bool error)
@@ -256,18 +241,6 @@ namespace KSPNameGen
 					}
 				}
 			}
-		}
-
-		static void Kill(ushort exitCode)
-		{
-			Write("Exiting");
-			for (int i = 0; i < 3; i++)
-			{
-				Thread.Sleep(333);
-				Write(".");
-			}
-			WriteLine();
-			Environment.Exit(exitCode);
 		}
 
 		static void NameGen()
@@ -379,7 +352,7 @@ namespace KSPNameGen
 
 								case 2: //Exit
 									writeFile = !writeFile;
-									writeFile &= Accessible();
+									writeFile &= Accessible(filePath);
 									break;
 
 								case 3: //Apply
@@ -390,14 +363,6 @@ namespace KSPNameGen
 					}
 					break;
 			}
-		}
-
-		static string Stringify(int[] _param)
-		{
-			string output = _param[0] == 0 ? "f" : "s";
-			output += _param[1] == 0 ? "p" : _param[1] == 1 ? "r" : "c";
-			output += _param[2] == 0 ? "m" : "f";
-			return output;
 		}
 		
 		static int[] IntArrayify(string par)
@@ -470,7 +435,7 @@ namespace KSPNameGen
 
 					BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
 					WriteLine("File Path:                     ");
-					BackgroundColor = Accessible() ? fexBack : dneBack;
+					BackgroundColor = Accessible(filePath) ? fexBack : dneBack;
 					WriteLine("{0,31}", filePath);
 
 					BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
@@ -486,22 +451,6 @@ namespace KSPNameGen
 					BackgroundColor = oldBack;
 					break;
 			}
-		}
-
-		static bool Accessible()
-		{
-			if (!Exists(filePath))
-				return false;
-			try
-			{
-				OpenWrite(filePath).Close();
-			}
-			catch
-			{
-				return false;
-			}
-
-			return true;
 		}
 
 		static string Generate(string _param)
