@@ -78,10 +78,10 @@ namespace KSPNameGen
 		static bool writeFile;
 		static ConsoleKeyInfo input;
 		const string help = "Standard names have a 'Kerman' surname, while" +
-			"Future-style names have\nrandomly generated surnames." + // TYPE
-			"Proper names are chosen from a list, while constructed names are" +
-			"\nconstructed from a list of prefixes and suffixes.\n" +
-			"If the option 'combination' is chosen, then there is a 1/20 chance" +
+			"\nFuture-style names have randomly generated surnames." + // TYPE
+			"\nProper names are chosen from a list, while constructed names are" +
+			"\nconstructed from a list of prefixes and suffixes." +
+			"\nIf the option 'combination' is chosen, then there is a 1/20 chance" +
 			"\nthat the generated name is proper."; // CMBO
 
 		// application logic begins here
@@ -202,7 +202,7 @@ namespace KSPNameGen
 				"KSPNameGen version {0}" +
 				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
 				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
-				"\nThis is free software; you are free to change and" +
+				"\nThis is free software; you are free to change and " +
 				"redistribute it if and only if you include the license terms " +
 				"stated above when redistributing." +
 				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
@@ -223,8 +223,9 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = PromptS("Would you like to generate more names? " +
+					WriteLine("Would you like to generate more names? " +
 									   "(Y/N)");
+					inString = ReadKey(true).KeyChar.ToString();
 					switch (inString)
 					{
 						case "y":
