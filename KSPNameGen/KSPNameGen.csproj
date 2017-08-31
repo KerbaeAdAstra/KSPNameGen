@@ -38,6 +38,7 @@
     <Compile Include="KSPNameGen.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="NameArrays.cs" />
+    <Compile Include="ProductVersion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
