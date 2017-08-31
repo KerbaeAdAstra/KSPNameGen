@@ -1,5 +1,7 @@
 language: csharp
 solution: KSPNameGen.sln
+script:
+  - make
 notifications:
   irc:
     channels:
