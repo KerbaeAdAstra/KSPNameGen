@@ -45,6 +45,12 @@ localbin = /usr/local/bin
 basename = KSPNameGen
 buildcache = KSPNameGen/obj
 
+# Get the git versioning
+
+stable = 0.3.0
+gitrevs := $(shell git rev-list v$(stable)..HEAD | wc -l)
+githash := $(shell git rev-parse --short HEAD)
+
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
@@ -58,7 +64,7 @@ else
     build := $(shell which msbuild)
 endif
 
-all: $(sln)
+all: $(sln) version
 	$(build) $(basename).sln
 
 .PHONY: clean
@@ -66,6 +72,7 @@ clean:
 	$(rm) $(rmflags) $(basename).exe
 	$(rm) $(rmflags) $(basename).pdb
 	$(rm) $(rmflags) $(basename)/obj
+	$(rm) $(rmflags) $(basename)/ProductVersion.cs
 
 install: all $(basename)/$(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
@@ -76,3 +83,7 @@ install: all $(basename)/$(script)
 uninstall:
 	$(rm) $(rmflags) $(libexec)/$(basename).exe
 	$(rm) $(rmflags) $(localbin)/$(script)
+
+.PHONY: version
+version:
+	$(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\n\t{\n\t\tpublic static string productVersion = \"$(stable)-$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
