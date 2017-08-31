@@ -57,13 +57,6 @@ namespace KSPNameGen
 
 		enum Modes { Main, Options };
 
-		// static version def
-
-		static readonly string productVersion =
-			typeof(KSPNameGen).Assembly.GetCustomAttribute
-							  <AssemblyInformationalVersionAttribute>()
-							  .InformationalVersion;
-
 		// variable definitions
 
 		static readonly Random random = new Random();
@@ -206,7 +199,7 @@ namespace KSPNameGen
 				"redistribute it if and only if you include the license terms " +
 				"stated above when redistributing." +
 				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
-				, productVersion);
+				, ProductVersion.productVersion);
 			Kill(0);
 		}
 
@@ -392,7 +385,7 @@ namespace KSPNameGen
 			switch (drawMode)
 			{
 				case Modes.Main:
-					WriteLine("KSPNameGen v{0}", productVersion);
+					WriteLine("KSPNameGen v{0}", ProductVersion.productVersion);
 
 					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
 					WriteLine(param[0] == 0 ?
