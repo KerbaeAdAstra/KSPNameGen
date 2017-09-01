@@ -1,5 +1,11 @@
 # Installation for Unix-like OSes
 
+## TL;DR
+
+`$ sudo make install clean` or `# make install clean`, depending on if you're root or not. You *cannot* make KSPNameGen available system-wide if you do not have root/sudo access.
+
+## Introduction
+
 Unlike most projects out there written for Unix-like OSes, `KSPNameGen` comes with a `Makefile`, but no `configure` script. One must, however, ensure that the core dependency, Mono, is installed, or the `make` process will fail.
 
 Mono can be obtained here: <<http://www.mono-project.com/download/>>
