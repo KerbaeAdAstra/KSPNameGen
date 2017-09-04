@@ -10,10 +10,10 @@ jobs:
       script: sudo make install clean
     - stage: verify
       script: kspng -v
-      script: kspng -h
+    - script: kspng -h
     - stage: test
       script: kspng -b $RANDOM -n $RANDOM
-      script: kspng -n $RANDOM -b $RANDOM
+    - script: kspng -n $RANDOM -b $RANDOM
 notifications:
   irc:
     channels:
