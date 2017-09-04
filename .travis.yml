@@ -1,7 +1,19 @@
+dist: trusty
+sudo: required
 language: csharp
 solution: KSPNameGen.sln
-script:
-  - make
+jobs:
+  include:
+    stage: build
+    script: make all clean
+    stage: deploy
+    script: sudo make install clean
+    stage: verify
+    script: kspng -v
+    script: kspng -h
+    stage: test
+    script: kspng -b $RANDOM -n $RANDOM
+    script: kspng -n $RANDOM -b $RANDOM
 notifications:
   irc:
     channels:
