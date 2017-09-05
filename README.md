@@ -1,10 +1,4 @@
-# KSPNameGen
-
-[![GitHub (pre-)release](https://img.shields.io/github/release/KerbaeAdAstra/KSPNameGen/all.svg)](https://github.com/KerbaeAdAstra/KSPNameGen/releases)
-[![License](https://img.shields.io/github/license/KerbaeAdAstra/KSPNameGen.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/KerbaeAdAstra/KSPNameGen.svg?branch=develop)](https://travis-ci.org/KerbaeAdAstra/KSPNameGen)
-
----
+#
 
 ```plaintext
     __ _______ ____  _   __                     ______
@@ -14,12 +8,18 @@
 /_/ |_/____/_/   /_/ |_/\__,_/_/ /_/ /_/\___/\____/\___/_/ /_/
 ```
 
-## What is KSPNameGen?
+[![GitHub (pre-)release](https://img.shields.io/github/release/KerbaeAdAstra/KSPNameGen/all.svg)](https://github.com/KerbaeAdAstra/KSPNameGen/releases)
+[![License](https://img.shields.io/github/license/KerbaeAdAstra/KSPNameGen.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/KerbaeAdAstra/KSPNameGen.svg?branch=develop)](https://travis-ci.org/KerbaeAdAstra/KSPNameGen)
+
+---
+
+## What is KSPNameGen? ##
 
 KSPNameGen is a free (both gratis and libre) random name generator for the
 popular PC game Kerbal Space Program. Now rewritten in C#!
 
-## Command-Line Arguments
+## Command-Line Arguments ##
 
 KSPNameGen now comes with a non-interactive mode, for when you just want a
 couple of names and don't want to mess around with the interactive interface.
@@ -36,10 +36,10 @@ A list of valid flags and their arguments follow.
 All other (invalid) flags and arguments will result in this message being shown.
 ```
 
-## License
+## License ##
 
 See LICENSE.md.
 
-## Contact Us
+## Contact Us ##
 
 Please don't hesitate to hit us up on IRC. We have our own channel (#kerbaeadastra @ irc.freenode.net).
