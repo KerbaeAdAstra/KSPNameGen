@@ -53,21 +53,21 @@ githash := $(shell git rev-parse --short HEAD)
 # Test for travis env; gitrevs should be 0 due to shallow clone
 
 ifeq ($(gitrevs),0)
-    gitrevs = travis
+	gitrevs = travis
 endif
 
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
-    buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
-    ifeq ($(buildtest),1)
-        $(error Suitable build tools were not located in your PATH. Please\
+	buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
+	ifeq ($(buildtest),1)
+		$(error Suitable build tools were not located in your PATH. Please\
 		check your build environment)
-    else
-        build := $(shell which xbuild)
-    endif
+	else
+		build := $(shell which xbuild)
+	endif
 else
-    build := $(shell which msbuild)
+	build := $(shell which msbuild)
 endif
 
 all: $(sln) version
@@ -92,6 +92,9 @@ uninstall:
 
 .PHONY: version
 version:
-	$(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\
-	\n\t{\n\t\tpublic static string productVersion = \
-	\"$(stable).$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
+    pvexist := $(shell stat $(basename)/ProductVersion.cs > /dev/null 2>&1; echo $$?)
+    ifeq ($(pvexist),1)
+        $(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\
+        \n\t{\n\t\tpublic static string productVersion = \
+        \"$(stable).$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
+    endif
