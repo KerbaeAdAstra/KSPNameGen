@@ -65,7 +65,7 @@ else
 endif
 
 all: $(sln) version
-	$(build) $(basename).sln
+	$(build) $(buildflags) $(basename).sln
 
 .PHONY: clean
 clean:
