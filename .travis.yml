@@ -7,13 +7,9 @@ jobs:
     - stage: build
       script: make all clean
     - stage: verify
-      script: make all
-      script: mono KSPNameGen.exe -v
-      script: mono KSPNameGen.exe -h
+      script: make all; mono KSPNameGen.exe -v; mono KSPNameGen.exe -h
     - stage: test
-      script: make all
-      script: mono KSPNameGen.exe -b $RANDOM -n $RANDOM
-      script: mono KSPNameGen.exe -n $RANDOM -b $RANDOM
+      script: make all; mono KSPNameGen.exe -b $RANDOM -n $RANDOM; mono KSPNameGen.exe -n $RANDOM -b $RANDOM
     - stage: deploy
       script: sudo make install clean
 notifications:
