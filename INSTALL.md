@@ -60,8 +60,8 @@ Then the source package has been tampered with or is corrupt. Dispose of it and 
 If the source package returns a good signature, go ahead and unpack it:
 
 ```plaintext
-tar xJvf KSPNameGen-vx.x.x.tar.xz
-cd KSPNameGen-vx.x.x
+tar xJvf KSPNameGen-vx.x.x-src.tar.xz
+cd KSPNameGen-vx.x.x-src
 ```
 
 ## Running `make`
