@@ -86,4 +86,4 @@ uninstall:
 
 .PHONY: version
 version:
-	$(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\n\t{\n\t\tpublic static string productVersion = \"$(stable)-$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
+	$(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\n\t{\n\t\tpublic static string productVersion = \"$(stable).$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
