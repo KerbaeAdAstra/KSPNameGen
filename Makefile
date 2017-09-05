@@ -34,7 +34,7 @@ platform := $(shell uname -s)
 
 cpflags = -f
 rmflags = -rf
-buildflags = /verbosity:diagnostic
+buildflags = /verbosity:diagnostic /property:Configuration=Release
 mkdirflags = -p
 
 # Path/File definitions
