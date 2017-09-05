@@ -1,11 +1,11 @@
 # Autosave files
 *~
+*.swp
 
 # build
 [Oo]bj/
 [Bb]in/
-
-# globs
+ProductVersion.cs
 *.exe
 *.pdb
 *.userprefs
