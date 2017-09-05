@@ -43,7 +43,6 @@ script = kspng
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
 basename = KSPNameGen
-buildcache = KSPNameGen/obj
 
 # Get the git versioning
 
@@ -56,7 +55,8 @@ buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
     buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
     ifeq ($(buildtest),1)
-        $(error Suitable build tools were not located in your PATH. Please check your build environment)
+        $(error Suitable build tools were not located in your PATH. Please\
+		check your build environment)
     else
         build := $(shell which xbuild)
     endif
@@ -86,4 +86,6 @@ uninstall:
 
 .PHONY: version
 version:
-	$(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\n\t{\n\t\tpublic static string productVersion = \"$(stable).$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
+	$(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\
+	\n\t{\n\t\tpublic static string productVersion = \
+	\"$(stable).$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
