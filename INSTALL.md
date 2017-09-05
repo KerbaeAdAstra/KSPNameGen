@@ -29,6 +29,41 @@ If there is a specific commit you wish to build from, that can be checked out to
 
 Alternatively, if you just want to obtain the latest source code package, download it from the GitHub releases page. Note that old releases are purged, so only the latest version may be obtained through this route.
 
+## Verifying the package
+
+It's always a good idea to verify the integrity of the source package after you've downloaded it. While not strictly required, if you're paranoid it's best to do so.
+
+First, obtain GPG through your operating system's package manager (or similar). Once you have that installed, obtain the signature for the *correct package* on the downloads page (which should have a file extension `.asc`). If you download the wrong signature for the package, it will always report a bad signature, no matter what. Be forewarned.
+
+Once you have both the source package and signature for that package downloaded, run this command:
+
+`gpg --verify /path/to/signature.asc /path/to/src/package.tar.xz`
+
+It should output a message similar to this:
+
+```plaintext
+gpg: Signature made [...]
+gpg:                using RSA key [...]
+gpg: Good signature from "[...]" [ultimate]
+```
+
+If the last line looks like this instead:
+
+```plaintext
+gpg: Signature made [...]
+gpg:                using RSA key [...]
+gpg: BAD signature from "[...]" [ultimate]
+```
+
+Then the source package has been tampered with or is corrupt. Dispose of it and try redownloading it.
+
+If the source package returns a good signature, go ahead and unpack it:
+
+```plaintext
+tar xJvf KSPNameGen-vx.x.x.tar.xz
+cd KSPNameGen-vx.x.x
+```
+
 ## Running `make`
 
 Once all of that is complete, simply run `make`. `make` will generate messages as it compiles KSPNameGen. If it fails during a certain step, there are several possible reasons why it failed. Some of the more common ones follow:
