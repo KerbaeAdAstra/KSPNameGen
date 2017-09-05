@@ -50,6 +50,12 @@ stable = 0.3.0
 gitrevs := $(shell git rev-list v$(stable)..HEAD | wc -l)
 githash := $(shell git rev-parse --short HEAD)
 
+# Test for travis env; gitrevs should be 0 due to shallow clone
+
+ifeq ($(gitrevs),0)
+    gitrevs = travis
+endif
+
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)

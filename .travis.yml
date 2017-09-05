@@ -2,6 +2,8 @@ dist: trusty
 sudo: required
 language: csharp
 solution: KSPNameGen.sln
+git:
+  depth: 1
 jobs:
   include:
     - stage: build
@@ -22,4 +24,3 @@ notifications:
       - "%{repository_slug}#%{build_number} (%{commit} on %{branch} by %{author}): %{message}"
       - "Changeset: %{compare_url}"
       - "Build details: %{build_url}"
-      
