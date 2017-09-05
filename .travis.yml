@@ -5,13 +5,11 @@ solution: KSPNameGen.sln
 jobs:
   include:
     - stage: build
-      script: make all clean
-    - stage: verify
-      script: make all; mono KSPNameGen.exe -v; mono KSPNameGen.exe -h
+      script: ./scripts/build.sh
     - stage: test
-      script: make all; mono KSPNameGen.exe -b $RANDOM -n $RANDOM; mono KSPNameGen.exe -n $RANDOM -b $RANDOM
+      script: ./scripts/test.sh
     - stage: deploy
-      script: sudo make install clean
+      script: ./scripts/deploy.sh
 notifications:
   irc:
     channels:
