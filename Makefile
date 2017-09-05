@@ -61,7 +61,7 @@ buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
 	buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
 	ifeq ($(buildtest),1)
-		$(error Suitable build tools were not located in your PATH. Please\
+        $(error Suitable build tools were not located in your PATH. Please\
 		check your build environment)
 	else
 		build := $(shell which xbuild)
