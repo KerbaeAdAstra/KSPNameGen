@@ -69,7 +69,7 @@ cd KSPNameGen-vx.x.x-src
 Once all of that is complete, simply run `make`. `make` will generate messages as it compiles KSPNameGen. If it fails during a certain step, there are several possible reasons why it failed. Some of the more common ones follow:
 
 * Problem: `Makefile:64: *** Suitable build tools were not located in your PATH. Please check your build environment.  Stop.`
-* Solution: `make` did not detect any build tools in your PATH. Try manually providing the PATH to it (`PATH=/path/to/mono/ make`) if it is installed, or (re)install it if it is not installed or broken.
+* Solution: `make` did not detect any build tools in your PATH. Try manually providing the PATH to it (`PATH=/path/to/mono/:$PATH make`) if it is installed, or (re)install it if it is not installed or broken.
 * Problem: `Build FAILED.`
 * Solution: The code in that commit (if `git checkout <hash>` was executed prior to running `make`) is broken. Try checking out the latest stable code, or another commit.
 
