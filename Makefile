@@ -47,8 +47,8 @@ basename = KSPNameGen
 # Get the git versioning
 
 stable = 0.3.0
-gitrevs := $(shell git rev-list v$(stable)..HEAD | wc -l)
-githash := $(shell git rev-parse --short HEAD)
+gitrevs := $(shell git rev-list v$(stable)..HEAD 2> /dev/null | wc -l)
+githash := $(shell git rev-parse --short HEAD 2> /dev/null)
 
 # Test for travis env; gitrevs should be 0 due to shallow clone
 
