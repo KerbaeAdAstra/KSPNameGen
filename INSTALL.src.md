@@ -1,8 +1,4 @@
-# Installation for Unix-like OSes
-
-## TL;DR
-
-`$ sudo make install clean` or `# make install clean`, depending on if you're root or not. You *cannot* make KSPNameGen available system-wide if you do not have root/sudo access.
+# Installation from source on Unix-like operating systems
 
 ## Introduction
 
