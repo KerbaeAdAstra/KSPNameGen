@@ -65,7 +65,7 @@ namespace KSPNameGen
 		static int[] param = { 0, 0, 0, 0 };
 		static bool state = true;
 		static bool writeHelp;
-		static Modes drawMode;
+		static Modes drawMode = Modes.Main;
 		static ulong bufferSize = 48;
 		static string filePath = "";
 		static bool writeFile;
