@@ -27,7 +27,7 @@ namespace KSPNameGen
 {
 	public static class NameArrays
 	{
-		public static readonly string[] fcp = { // female constructed prefix
+		public static string[] fcp = { // female constructed prefix
 			"Aga", "Al", "An", "Ar", "As", "Bar", "Bea", "Ber", "Car", "Cat",
 			"Cer", "Clau", "Cris", "Da", "Dan", "Daph", "De", "Deb", "Di", "Eil",
 			"Eli", "Eri", "Fran", "Gem", "Ger", "Gi", "Gil", "Gle", "Gra", "Gwen",
@@ -40,7 +40,7 @@ namespace KSPNameGen
 			"Tra", "Tri", "Ur", "Val", "Ver", "Vir", "Wen", "Wil", "Zel"
 		};
 
-		public static readonly string[] fcs = { // female constructed suffix
+		public static string[] fcs = { // female constructed suffix
 		"a", "alla", "an", "anda", "anna", "anne", "ayne", "be", "bel",
 			"bella", "belle", "berta", "beth", "bie", "by", "ca", "cee", "cella",
 			"chel", "chell", "chelle", "cia", "cie", "cine", "cy", "da", "di",
@@ -60,7 +60,7 @@ namespace KSPNameGen
 			"zie", "zy"
 		};
 
-		public static readonly string[] fpr = { // female proper name
+		public static string[] fpr = { // female proper name
 			"Alice", "Barbara", "Bonnie", "Brooke", "Carol", "Dottie", "Dotty",
 			"Eileen", "Ellen", "Heidi", "Jane", "Jean", "Jeaneane", "Jeanette",
 			"Joan", "Judith", "Karen", "Leah", "Leia", "Lisa", "Lola", "Margaret",
@@ -70,7 +70,7 @@ namespace KSPNameGen
 			"Tatyana", "Valentina"
 		};
 
-		public static readonly string[] mcp = { // male constructed prefix
+		public static string[] mcp = { // male constructed prefix
 			"Ad", "Al", "Ald", "An", "Bar", "Bart", "Bil", "Billy-Bob", "Bob",
 			"Bur", "Cal", "Cam", "Chad", "Cor", "Dan", "Der", "Des", "Dil", "Do",
 			"Don", "Dood", "Dud", "Dun", "Ed", "El", "En", "Er", "Fer", "Fred",
@@ -83,7 +83,7 @@ namespace KSPNameGen
 			"Sid", "Sig", "Son", "Thom", "Thomp", "Tom", "Wehr", "Wil"
 		};
 
-		public static readonly string[] mcs = { // male constructed suffix
+		public static string[] mcs = { // male constructed suffix
 			"ald", "bal", "bald", "bart", "bas", "berry", "bert", "bin", "ble",
 			"bles", "bo", "bree", "brett", "bro", "bur", "burry", "bus", "by",
 			"cal", "can", "cas", "cott", "dan", "das", "den", "din", "do", "don",
@@ -99,7 +99,7 @@ namespace KSPNameGen
 			"win", "wise", "zer", "zon", "zor"
 		};
 
-		public static readonly string[] mpr = { // male proper name
+		public static string[] mpr = { // male proper name
 			"Adam", "Al", "Alan", "Archibald", "Buzz", "Carson", "Chad", "Charlie",
 			"Chris", "Chuck", "Dean", "Ed", "Edan", "Edlu", "Frank", "Franklin",
 			"Gus", "Hans", "Jack", "James", "Jim", "Kirk", "Kurt", "Lars", "Luke",
