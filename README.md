@@ -8,10 +8,6 @@
 /_/ |_/____/_/   /_/ |_/\__,_/_/ /_/ /_/\___/\____/\___/_/ /_/
 ```
 
-[![GitHub (pre-)release](https://img.shields.io/github/release/KerbaeAdAstra/KSPNameGen/all.svg)](https://github.com/KerbaeAdAstra/KSPNameGen/releases)
-[![License](https://img.shields.io/github/license/KerbaeAdAstra/KSPNameGen.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/KerbaeAdAstra/KSPNameGen.svg?branch=develop)](https://travis-ci.org/KerbaeAdAstra/KSPNameGen)
-
 ---
 
 ## What is KSPNameGen? ##
