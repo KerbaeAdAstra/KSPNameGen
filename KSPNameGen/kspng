@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # kspng
 #
-# This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+# This file is part of KSPNameGen, a free (gratis and libre) name generator for
+# Kerbal Space Program.
 # Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
 # KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
 #
@@ -24,12 +25,12 @@
 # THE SOFTWARE.
 
 # sanity check - is Mono installed and in the PATH?
-if ! which mono &> /dev/null; then
+if ! which mono > /dev/null 2>&1; then
 	>&2 echo "Mono was not located in the PATH! Please ensure that it was installed properly."
 	exit 1
 fi
 
 # sanity check complete - run mono now
 lockfile=/tmp/kspng.lock
-echo "$(basename $0)" > $lockfile
+basename "$0" > $lockfile
 exec "$(which mono)" /usr/local/libexec/KSPNameGen.exe "$@"

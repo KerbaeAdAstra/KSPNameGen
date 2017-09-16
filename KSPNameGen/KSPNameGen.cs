@@ -1,6 +1,7 @@
 // KSPNameGen.cs
 //
-// This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+// This file is part of KSPNameGen, a free (gratis and libre) name generator for
+// Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
 // KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
 //
@@ -27,14 +28,18 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
+using static System.Console;
+using static System.ConsoleKey;
+using static System.IO.File;
+using static KSPNameGen.NameArrays;
+using static KSPNameGen.Utils;
 
 // warning suppression declarations
 
 #pragma warning disable RECS0135
 
 namespace KSPNameGen
-{	
+{
 	class KSPNameGen
 	{
 		// array definitions
@@ -45,18 +50,12 @@ namespace KSPNameGen
 			"Specify filepath (absolute or relative)." // Filepath
 		};
 
-		static readonly ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
+		static readonly ConsoleColor[] colors =
+			(ConsoleColor[])Enum.GetValues(typeof(ConsoleColor)); // cache colors
 
 		// enum defs
 
 		enum Modes { Main, Options };
-
-		// static version defs
-
-		const ushort MAJOR = 0;
-		const ushort MINOR = 3;
-		const ushort PATCH = 0;
-		const string SUFFX = "";
 
 		// variable definitions
 
@@ -71,11 +70,11 @@ namespace KSPNameGen
 		static string filePath = "";
 		static bool writeFile;
 		static ConsoleKeyInfo input;
-		const string help = "Standard names have a 'Kerman' surname, while Future-style names have" +
-			"\nrandomly generated surnames." + // TYPE
-			"Proper names are chosen from a list, while constructed names are" +
-			"\nconstructed from a list of prefixes and suffixes.\n" +
-			"If the option 'combination' is chosen, then there is a 1/20 chance" +
+		const string help = "Standard names have a 'Kerman' surname, while" +
+			"\nFuture-style names have randomly generated surnames." + // TYPE
+			"\nProper names are chosen from a list, while constructed names are" +
+			"\nconstructed from a list of prefixes and suffixes." +
+			"\nIf the option 'combination' is chosen, then there is a 1/20 chance" +
 			"\nthat the generated name is proper."; // CMBO
 
 		// application logic begins here
@@ -87,16 +86,22 @@ namespace KSPNameGen
 				Loop();
 			}
 			
-			if(Utils.FlagExists(args, "-h") || Utils.FlagExists(args, "--help"))
+			if (FlagExists(args, "-h") || FlagExists(args, "--help"))
 			{
 				Usage(false);
+			}
+
+			if (FlagExists(args, "-v") || FlagExists(args, "--version"))
+			{
+				Version();
 			}
 			
 			string argument = "fpm";
 			
-			if(Utils.FlagExists(args, "-t") || Utils.FlagExists(args, "--type"))
+			if (FlagExists(args, "-t") || FlagExists(args, "--type"))
 			{
-				if(Utils.FlagParse(args, "-t", out argument, argument) || Utils.FlagParse(args, "--type", out argument, argument))
+				if (FlagParse(args, "-t", out argument, argument) ||
+					FlagParse(args, "--type", out argument, argument))
 				{
 					param = IntArrayify(argument);
 				}
@@ -106,20 +111,21 @@ namespace KSPNameGen
 				}
 			}
 			
-			Utils.FlagParse(args, "-b", out bufferSize, bufferSize);
-			Utils.FlagParse(args, "--buffer", out bufferSize, bufferSize);
+			FlagParse(args, "-b", out bufferSize, bufferSize);
+			FlagParse(args, "--buffer", out bufferSize, bufferSize);
 			
-			if(Utils.FlagExists(args, "-f") || Utils.FlagExists(args, "--file"))
+			if (FlagExists(args, "-f") || FlagExists(args, "--file"))
 			{
-				if(Utils.FlagParse(args, "-f", out filePath, filePath) || Utils.FlagParse(args, "--file", out filePath, filePath))
+				if (FlagParse(args, "-f", out filePath, filePath) ||
+					FlagParse(args, "--file", out filePath, filePath))
 				{
-					if(Accessible())
+					if (Accessible(filePath))
 					{
 						writeFile = true;
 					}
 					else
 					{
-						Console.WriteLine("Invalid file.");
+						WriteLine("A writable file was not specified.");
 					}
 				}
 				else
@@ -127,16 +133,17 @@ namespace KSPNameGen
 					Usage(true);
 				}
 			}
-			if (Utils.FlagExists(args, "-i") || Utils.FlagExists(args, "--interactive"))
+			if (FlagExists(args, "-i") || FlagExists(args, "--interactive"))
 			{
 				Loop();
 			}
 			
 			ulong genNum = 0;
 			
-			if(Utils.FlagExists(args, "-n") || Utils.FlagExists(args, "--number"))
+			if (FlagExists(args, "-n") || FlagExists(args, "--number"))
 			{
-				if(Utils.FlagParse(args, "-n", out genNum, genNum) || Utils.FlagParse(args, "--number", out genNum, genNum))
+				if (FlagParse(args, "-n", out genNum, genNum) ||
+					FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -150,36 +157,28 @@ namespace KSPNameGen
 				Usage(true);
 			}
 
-			Console.ReadKey(true);
+			ReadKey(true);
 			Kill(0);
 		}
 
 		static void Usage(bool error)
 		{
-			string basename;
-			string lockfile = "/tmp/kspng.lock";
-			if (File.Exists(lockfile))
-			{
-				StreamReader sr = new StreamReader(lockfile);
-				basename = sr.ReadLine();
-				sr.Dispose();
-				File.Delete(lockfile);
-			}
-			else
-			{
-				basename = Path.GetFileName(Assembly.GetEntryAssembly().Location);
-			}
-			Console.Write(
-				"Usage: {0} [ARGUMENTS]\n" +
+			Write(
+				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
 				"-h --help:        No argument. Displays this message.\n" +
-				"-t --type:        A string indicating the type of name to generate. Defaults to fpm.\n" +
-				"-b --buffer:      An integer indicating the number of names to write to stdout per frame.\n" +
-				"-f --file:        A string indicating the output file, using either relative or absolute paths.\n" +
+				"-t --type:        A string indicating the type of name to " +
+				"generate. Defaults to fpm.\n" +
+				"-b --buffer:      An integer indicating the number of names to " +
+				"write to stdout per frame.\n" +
+				"-f --file:        A string indicating the output file, using " +
+				"either relative or absolute paths.\n" +
 				"-i --interactive: No argument. Forces interactive mode; default.\n" +
-				"-n --number:      An integer indicating the number of names to generate. Also noninteractive.\n" +
-				"All other (invalid) flags and arguments will result in this message being shown.\n"
-				, basename);
+				"-n --number:      An integer indicating the number of names to " +
+				"generate. Also noninteractive.\n" +
+				"All other (invalid) flags and arguments will result in this " +
+				"message being shown.\n"
+				, GetBasename());
 			if (error) //
 			{
 				Kill(1);
@@ -190,6 +189,19 @@ namespace KSPNameGen
 			}
 		}
 
+		static void Version()
+		{
+			Write(
+				"KSPNameGen version {0}" +
+				"\nCopyright (c) 2016-2017 the Kerbae ad Astra group." +
+				"\nLicense MIT: The MIT License <https://opensource.org/licenses/MIT>" +
+				"\nThis is free software; you are free to change and " +
+				"redistribute it if and only if you include the license terms " +
+				"stated above when redistributing." +
+				"\nThere is NO WARRANTY, to the extent permitted by law.\n"
+				, ProductVersion.productVersion);
+			Kill(0);
+		}
 
 		static void Loop()
 		{
@@ -204,7 +216,9 @@ namespace KSPNameGen
 				}
 				else
 				{
-					inString = PromptS("Would you like to generate more names? (Y/N)");
+					WriteLine("Would you like to generate more names? " +
+									   "(Y/N)");
+					inString = ReadKey(true).KeyChar.ToString();
 					switch (inString)
 					{
 						case "y":
@@ -216,23 +230,11 @@ namespace KSPNameGen
 							break;
 
 						default:
-							Console.WriteLine("Invalid response.");
+							WriteLine("Invalid response.");
 							break;
 					}
 				}
 			}
-		}
-
-		static void Kill(ushort exitCode)
-		{
-			Console.Write("Exiting");
-			for (int i = 0; i < 3; i++)
-			{
-				Thread.Sleep(333);
-				Console.Write(".");
-			}
-			Console.WriteLine();
-			Environment.Exit(exitCode);
 		}
 
 		static void NameGen()
@@ -242,31 +244,31 @@ namespace KSPNameGen
 				case Modes.Main:
 					if (state)
 					{
-						input = Console.ReadKey(false);
+						input = ReadKey(false);
 						switch (input.Key)
 						{
-							case ConsoleKey.DownArrow:
+							case DownArrow:
 								cursor[0]++;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
 								break;
 
-							case ConsoleKey.UpArrow:
+							case UpArrow:
 								cursor[0]--;
 								cursor[0] += 4;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
 								break;
 
-							case ConsoleKey.RightArrow:
+							case RightArrow:
 								cursor[1]++;
 								break;
 
-							case ConsoleKey.LeftArrow:
+							case LeftArrow:
 								cursor[1]--;
 								break;
 
-							case ConsoleKey.Enter:
+							case Enter:
 								switch (param[3])
 								{
 									case 0: // Generate
@@ -312,30 +314,30 @@ namespace KSPNameGen
 						param[cursor[0]] = cursor[1];
 						return;
 					}
-					Iterator(PromptN(prompt[0]), Stringify(param), bufferSize);
+					Iterator(PromptI(prompt[0]), Stringify(param), bufferSize);
 					gen = false;
 					state = true;
 					break;
 				case Modes.Options:
-					input = Console.ReadKey(false);
+					input = ReadKey(false);
 					switch (input.Key)
 					{
-						case ConsoleKey.DownArrow:
+						case DownArrow:
 							cursor[0]++;
 							cursor[0] %= 4;
 							break;
 
-						case ConsoleKey.UpArrow:
+						case UpArrow:
 							cursor[0]--;
 							cursor[0] += 4;
 							cursor[0] %= 4;
 							break;
 
-						case ConsoleKey.Enter:
+						case Enter:
 							switch (cursor[0])
 							{
 								case 0: //Buffer size
-									bufferSize = PromptN(prompt[1]);
+									bufferSize = PromptI(prompt[1]);
 									return;
 
 								case 1: //Filepath
@@ -344,7 +346,7 @@ namespace KSPNameGen
 
 								case 2: //Exit
 									writeFile = !writeFile;
-									writeFile &= Accessible();
+									writeFile &= Accessible(filePath);
 									break;
 
 								case 3: //Apply
@@ -355,14 +357,6 @@ namespace KSPNameGen
 					}
 					break;
 			}
-		}
-
-		static string Stringify(int[] _param)
-		{
-			string output = _param[0] == 0 ? "f" : "s";
-			output += _param[1] == 0 ? "p" : _param[1] == 1 ? "r" : "c";
-			output += _param[2] == 0 ? "m" : "f";
-			return output;
 		}
 		
 		static int[] IntArrayify(string par)
@@ -382,36 +376,36 @@ namespace KSPNameGen
 
 		static void Draw()
 		{
-			ConsoleColor oldBack = Console.BackgroundColor;
+			ConsoleColor oldBack = BackgroundColor;
 			ConsoleColor newBack = ConsoleColor.DarkRed;
 			ConsoleColor fexBack = ConsoleColor.Green;
 			ConsoleColor dneBack = ConsoleColor.Red;
 
-			Console.Clear();
+			Clear();
 			switch (drawMode)
 			{
 				case Modes.Main:
-					Console.WriteLine("KSPNameGen v" + MAJOR + "." + MINOR + "." + PATCH + SUFFX);
+					WriteLine("KSPNameGen v{0}", ProductVersion.productVersion);
 
-					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
-					Console.WriteLine(param[0] == 0 ?
+					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
+					WriteLine(param[0] == 0 ?
 							"[Future] Standard              " :
 							" Future [Standard]             ");
 
-					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
-					Console.WriteLine(param[1] == 0 ?
+					BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
+					WriteLine(param[1] == 0 ?
 							"[Proper] Mixed  Constructed    " :
 										param[1] == 1 ?
 							" Proper [Mixed] Constructed    " :
 							" Proper  Mixed [Constructed]   ");
 
-					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
-					Console.WriteLine(param[2] == 0 ?
+					BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
+					WriteLine(param[2] == 0 ?
 							"[Male] Female                  " :
 							" Male [Female]                 ");
 
-					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
-					Console.WriteLine(param[3] == 0 ?
+					BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
+					WriteLine(param[3] == 0 ?
 							"[Generate] Help  Exit  Options " :
 										param[3] == 1 ?
 							" Generate [Help] Exit  Options " :
@@ -419,71 +413,38 @@ namespace KSPNameGen
 							" Generate  Help [Exit] Options " :
 							" Generate  Help  Exit [Options]");
 
-					Console.BackgroundColor = oldBack;
+					BackgroundColor = oldBack;
 					if (writeHelp)
 					{
-					Console.WriteLine(help);
+					WriteLine(help);
 						writeHelp = false;
 					}
 					break;
 
 				case Modes.Options:
-					Console.WriteLine("Options");
+					WriteLine("Options");
 
-					Console.BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
-					Console.WriteLine("Buffer Size:   {0,16}", bufferSize);
+					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
+					WriteLine("Buffer Size:   {0,16}", bufferSize);
 
-					Console.BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
-					Console.WriteLine("File Path:                     ");
-					Console.BackgroundColor = Accessible() ? fexBack : dneBack;
-					Console.WriteLine("{0,31}", filePath);
+					BackgroundColor = cursor[0] == 1 ? newBack : oldBack;
+					WriteLine("File Path:                     ");
+					BackgroundColor = Accessible(filePath) ? fexBack : dneBack;
+					WriteLine("{0,31}", filePath);
 
-					Console.BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
-					Console.WriteLine(writeFile ?
+					BackgroundColor = cursor[0] == 2 ? newBack : oldBack;
+					WriteLine(writeFile ?
 						"Write to File               [x]" :
 						"Write to File               [ ]");
 
-					Console.BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
-					Console.WriteLine(cursor[0] == 3 ?
+					BackgroundColor = cursor[0] == 3 ? newBack : oldBack;
+					WriteLine(cursor[0] == 3 ?
 						"[Apply]                        " :
 						" Apply                         ");
 
-					Console.BackgroundColor = oldBack;
+					BackgroundColor = oldBack;
 					break;
 			}
-		}
-
-		static bool Accessible()
-		{
-			if (!File.Exists(filePath))
-				return false;
-			try
-			{
-				File.OpenWrite(filePath).Close();
-			}
-			catch
-			{
-				return false;
-			}
-
-			return true;
-		}
-
-		static ulong PromptN(string query)
-		{
-			ulong inputLong = 0;
-			Console.WriteLine(query);
-			if (!ulong.TryParse(Console.ReadLine(), out inputLong))
-			{
-				Console.WriteLine("A positive integer was not specified.");
-			}
-			return inputLong;
-		}
-
-		static string PromptS(string query)
-		{
-			Console.WriteLine(query);
-			return Console.ReadLine().ToLower();
 		}
 
 		static string Generate(string _param)
@@ -492,57 +453,74 @@ namespace KSPNameGen
 			switch (_param)
 			{
 				case "spf":
-					return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " Kerman";
+					return fpr[random.Next(fpr.Length)] + " Kerman";
 
 				case "spm":
-					return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " Kerman";
+					return mpr[random.Next(mpr.Length)] + " Kerman";
 
 				case "scf":
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcp.Length)] + " Kerman";
+					return fcp[random.Next(fcp.Length)] + fcs
+						[random.Next(fcp.Length)] + " Kerman";
 
 				case "scm":
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcp.Length)] + " Kerman";
+					return mcp[random.Next(mcp.Length)] + mcs
+						[random.Next(mcp.Length)] + " Kerman";
 
 				case "srf":
 					if (toggle)
-						return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " Kerman";
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcp.Length)] + " Kerman";
+						return fpr[random.Next(fpr.Length)] + " Kerman";
+					return fcp[random.Next(fcp.Length)] + fcs
+						[random.Next(fcp.Length)] + " Kerman";
 
 				case "srm":
 					if (toggle)
-						return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " Kerman";
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcp.Length)] + " Kerman";
+						return mpr[random.Next(mpr.Length)] + " Kerman";
+					return mcp[random.Next(mcp.Length)] + mcs
+						[random.Next(mcp.Length)] + " Kerman";
 
 				case "fpf":
-					return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
+					return fpr[random.Next(fpr.Length)] + " " + fcp
+						[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fpm":
-					return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
+					return mpr[random.Next(mpr.Length)] + " " + mcp
+						[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "fcf":
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
+					return fcp[random.Next(fcp.Length)] + fcs
+						[random.Next(fcs.Length)] + " " + 
+						fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "fcm":
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
+					return mcp[random.Next(mcp.Length)] + 
+						mcs[random.Next(mcs.Length)] + " " + 
+						mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 
 				case "frf":
 					if (toggle)
-						return NameArrays.fpr[random.Next(NameArrays.fpr.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
-					return NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)] + " " + NameArrays.fcp[random.Next(NameArrays.fcp.Length)] + NameArrays.fcs[random.Next(NameArrays.fcs.Length)];
+						return fpr[random.Next(fpr.Length)] + " " + 
+							fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
+					return fcp[random.Next(fcp.Length)] + 
+						fcs[random.Next(fcs.Length)] + " " + 
+						fcp[random.Next(fcp.Length)] + fcs[random.Next(fcs.Length)];
 
 				case "frm":
 					if (toggle)
-						return NameArrays.mpr[random.Next(NameArrays.mpr.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
-					return NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)] + " " + NameArrays.mcp[random.Next(NameArrays.mcp.Length)] + NameArrays.mcs[random.Next(NameArrays.mcs.Length)];
+						return mpr[random.Next(mpr.Length)] + " " + 
+							mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
+					return mcp[random.Next(mcp.Length)] + 
+						mcs[random.Next(mcs.Length)] + " " + 
+						mcp[random.Next(mcp.Length)] + mcs[random.Next(mcs.Length)];
 				default:
-					return null; // this should not ever happen, but it's just there to stop Mono from throwing a fit
+					return null; // this should not ever happen, but it's just
+								 // there to stop Mono from throwing a fit
 			}
 		}
 
 		static void Nyan(ulong inputLong)
 		{
-			ConsoleColor currentBackground = Console.BackgroundColor;
-			string Generated = "";
+			ConsoleColor currentBackground = BackgroundColor;
+
 			for (ulong i = 0; i < inputLong / 15; i++)
 			{
 				foreach (ConsoleColor color in colors)
@@ -551,9 +529,8 @@ namespace KSPNameGen
 					{
 						continue;
 					}
-					Console.ForegroundColor = color;
-					Generated = Generate(Stringify(param));
-					Console.WriteLine(Generated);
+					ForegroundColor = color;
+					WriteLine(Generate(Stringify(param)));
 				}
 			}
 			gen = false;
@@ -571,13 +548,13 @@ namespace KSPNameGen
 			}
 			if (writeFile)
 			{
-				StreamWriter sr = File.CreateText(filePath);
+				StreamWriter sr = CreateText(filePath);
 				for (ulong i = 0; i < number; i++)
 				{
 					sr.WriteLine(Generate(_param));
 				}
 				sr.Dispose();
-				Console.WriteLine("Complete.");
+				WriteLine("Complete.");
 				return;
 			}
 
@@ -589,11 +566,11 @@ namespace KSPNameGen
 				buffer += Generated + "\n";
 				if (i % buffsize == 0)
 				{
-					Console.Write(buffer);
+					Write(buffer);
 					buffer = "";
 				}
 			}
-			Console.Write(buffer);
+			Write(buffer);
 		}
 	}
 }

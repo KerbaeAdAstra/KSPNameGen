@@ -1,6 +1,7 @@
 // NameArrays.cs
 //
-// This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+// This file is part of KSPNameGen, a free (gratis and libre) name generator for
+// Kerbal Space Program.
 // Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
 // KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
 //
@@ -21,10 +22,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-// using directives
-
-using System;
 
 namespace KSPNameGen
 {

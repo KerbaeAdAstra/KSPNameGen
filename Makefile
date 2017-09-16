@@ -1,6 +1,7 @@
 # Makefile
 #
-# This file is part of KSPNameGen, a free (gratis and libre) name generator for Kerbal Space Program.
+# This file is part of KSPNameGen, a free (gratis and libre) name generator for
+# Kerbal Space Program.
 # Kerbal Space Program is (c) 2011-2017 Squad. All Rights Reserved.
 # KSPNameGen is (c) 2016-2017 the Kerbae ad Astra group <kerbaeadastra@gmail.com>.
 #
@@ -31,47 +32,55 @@ platform := $(shell uname -s)
 
 # Flag definitions
 
-cprmflags = -rf
+cpflags = -f
+rmflags = -rf
+buildflags = /property:Configuration=Release
 mkdirflags = -p
 
 # Path/File definitions
 
-bin = KSPNameGen.exe
-sln = KSPNameGen.sln
-pdb = KSPNameGen.pdb
 script = kspng
 libexec = /usr/local/libexec
 localbin = /usr/local/bin
-buildcache = KSPNameGen/obj
+basename = KSPNameGen
 
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
-    buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
-    ifeq ($(buildtest),1)
-        $(error Suitable build tools were not located in your PATH. Please check your build environment)
-    else
-        build := $(shell which xbuild)
-    endif
+	buildtest := $(shell which xbuild 2> /dev/null; echo $$?)
+	ifeq ($(buildtest),1)
+        $(error Suitable build tools were not located in your PATH. Please\
+		check your build environment)
+	else
+		build := $(shell which xbuild)
+	endif
 else
-    build := $(shell which msbuild)
+	build := $(shell which msbuild)
 endif
 
-all: $(sln)
-	$(build) $(sln)
+all: $(sln) version
+	$(build) $(buildflags) $(basename).sln
 
 .PHONY: clean
 clean:
-	$(rm) $(cprmflags) $(bin)
-	$(rm) $(cprmflags) $(pdb)
-	$(rm) $(cprmflags) $(buildcache)
+	$(rm) $(rmflags) $(basename).exe
+	$(rm) $(rmflags) $(basename).pdb
+	$(rm) $(rmflags) $(basename)/obj
+	$(rm) $(rmflags) $(basename)/ProductVersion.cs
 
-install: all $(projdir)/$(script)
+install: all $(basename)/$(script)
 	$(mkdir) $(mkdirflags) $(libexec) $(localbin)
-	$(cp) $(cprmflags) $(bin) $(libexec)
-	$(cp) $(cprmflags) $(projdir)/$(script) $(localbin)
+	$(cp) $(cpflags) $(basename).exe $(libexec)
+	$(cp) $(cpflags) $(basename)/$(script) $(localbin)
 
 .PHONY: uninstall
 uninstall:
-	$(rm) $(cprmflags) $(libexec)/$(bin)
-	$(rm) $(cprmflags) $(localbin)/$(script)
+	$(rm) $(rmflags) $(libexec)/$(basename).exe
+	$(rm) $(rmflags) $(localbin)/$(script)
+
+.PHONY: version
+version:
+    pvexist := $(shell stat $(basename)/ProductVersion.cs > /dev/null 2>&1; echo $$?)
+    ifeq ($(pvexist),1)
+        $(shell exec ./scripts/genver.sh)
+    endif
