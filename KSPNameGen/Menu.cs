@@ -182,11 +182,12 @@ namespace KSPNameGen
 		
 		public void MoveCursor(bool isUp)
 		{
-            while (!selectable[cursor])
+            do
             {
-                cursor += isUp ? -1 : 1;
-                cursor = (cursor + content.Count) % content.Count;
+            cursor += isUp ? -1 : 1;
+            cursor = (cursor + content.Count) % content.Count;
             }
+            while (!selectable[cursor]);
         }
 		
 		public void MoveLineCursor(bool isLeft)
