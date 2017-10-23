@@ -80,7 +80,7 @@ namespace KSPNameGen
 			"\nthat the generated name is proper."; // CMBO
 		const string rosterFormat = 
 			"\tKERBAL\n" +
-			"\t\t{\n" +
+			"\t\t{{\n" +
 			"\t\t\tname = {0}\n" +
 			"\t\t\tgender = {1}\n" +
 			"\t\t\ttype = Crew\n" +
@@ -99,13 +99,13 @@ namespace KSPNameGen
 			"\t\t\tidx = -1\n" +
 			"\t\t\textraXP = 0\n" +
 			"\t\t\tCAREER_LOG\n" +
-			"\t\t\t{\n" +
+			"\t\t\t{{\n" +
 			"\t\t\t\tflight = 0\n" +
-			"\t\t\t}\n" +
+			"\t\t\t}}\n" +
 			"\t\t\tFLIGHT_LOG\n" +
-			"\t\t\t{\n" +
+			"\t\t\t{{\n" +
 			"\t\t\t\tflight = 0\n" +
-			"\t\t\t}\n";
+			"\t\t\t}}\n";
 
 		// application logic begins here
 
