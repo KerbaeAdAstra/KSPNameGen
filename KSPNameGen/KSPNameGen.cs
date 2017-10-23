@@ -260,22 +260,31 @@ namespace KSPNameGen
 			
 			ui[0] = new Menu(new Line[5]
 			{
-				new Line(String.Format("KSPNameGen v{0}", ProductVersion.productVersion)),
-				new Line(new Option(new string[2]{"Future", "Standard"})),
-				new Line(new Option(new string[3]{"Proper", "Mixed", "Constructed"})),
-				new Line(new Option(new string[2]{"Male", "Female"})),
-				new Line(new Option(new string[4]{"Generate", "Help", "Exit", "Options"}))
-			}, new int[5]{0,0,0,0,0}, new bool[5]{false, true, true, true, true}, 0);
+				new Line(String.Format
+                         ("KSPNameGen v{0}", ProductVersion.productVersion)),
+				new Line(new Option(new string[]
+                {"Future", "Standard"})),
+				new Line(new Option(new string[]
+                {"Proper", "Mixed", "Constructed"})),
+				new Line(new Option(new string[]
+                {"Male", "Female"})),
+				new Line(new Option(new string[]
+                {"Generate", "Help", "Exit", "Options"}))
+			}, new int[]{0, 0, 0, 0, 0}, new bool[]
+            {false, true, true, true, true}, 0);
 			
 			ui[1] = new Menu(new Line[6]
 			{
 				new Line("Options"),
-				new Line(String.Format("Buffer Size:   {0,16}", bufferSize)),
+				new Line(String.Format
+                         ("Buffer Size:   {0,16}", bufferSize)),
 				new Line("File Path"),
 				new Line(filePath),
-				new Line(String.Format("Write to File               [{0}]", writeFile ? 'x' : ' ')),
+				new Line(String.Format("Write to File               [{0}]",
+                                       writeFile ? 'x' : ' ')),
 				new Line(" Apply ")
-			}, new int[6]{0,0,0,0,0,0}, new bool[6]{false, true, true, false, true, true}, 5);
+			}, new int[]{0, 0, 0, 0, 0, 0}, new bool[]
+            {false, true, true, false, true, true}, 5);
 			
 			Draw();
 			for (;;)

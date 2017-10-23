@@ -33,7 +33,7 @@ namespace KSPNameGen
 		int count;				//The quantity of options available
 		int index;
 		
-		//The position of the selected option
+		// The position of the selected option
 		public int Index
 		{
 			get
@@ -58,11 +58,12 @@ namespace KSPNameGen
 			Index = 0;
 		}
 		
-		//Turns all options into a single line, surrounding the selected one with square brackets
+		//Turns all options into a single line, surrounding the selected one
+        // with square brackets
 		public override string ToString()
 		{
 			string output = "";
-			for(int i = 0; i < count; i++)
+			for (int i = 0; i < count; i++)
 			{
 				output += i == index ? "[" : " ";
 				output += options[i];

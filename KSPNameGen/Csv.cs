@@ -1,4 +1,4 @@
-//Csv.cs
+// Csv.cs
 //
 // This file is part of KSPNameGen, a free (gratis and libre) name generator for
 // Kerbal Space Program.
@@ -23,10 +23,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-//using directives
-
-using System;
-using System.Collections.Generic;
+// using directives
 
 namespace KSPNameGen
 {
@@ -42,7 +39,7 @@ namespace KSPNameGen
 		{
 			name = content;
 			order = 0;
-			memberOrders = new int[1]{0};
+			memberOrders = new int[]{0};
 		}
 		
 		public Csv(string[] content)
@@ -52,7 +49,7 @@ namespace KSPNameGen
 			memberNames = content;
 			members = new Csv[content.Length];
 			memberOrders = new int[content.Length];
-			for(int i = 0; i < content.Length; i++)
+			for (int i = 0; i < content.Length; i++)
 			{
 				members[i] = new Csv(content[i]);
 				memberOrders[i] = 0;
@@ -66,11 +63,12 @@ namespace KSPNameGen
 			members = content;
 			memberNames = new string[content.Length];
 			memberOrders = new int[content.Length];
-			for(int i = 0; i < content.Length; i++)
+			for (int i = 0; i < content.Length; i++)
 			{
 				memberNames[i] = content[i].GetName();
 				memberOrders[i] = content[i].GetOrder();
-				order = content[i].GetOrder() > order ? content[i].GetOrder() : order;
+				order = content[i].GetOrder() > order ? 
+                                  content[i].GetOrder() : order;
 			}
 		}
 		
@@ -86,12 +84,8 @@ namespace KSPNameGen
 		
 		public Csv[] GetMembers()
 		{
-			if(order == 0)
-			{
-				return new Csv[1]{this};
-			}
-			return members;
-		}
+            return order == 0 ? new Csv[] { this } : members;
+        }
 		
 		public bool IsString()
 		{

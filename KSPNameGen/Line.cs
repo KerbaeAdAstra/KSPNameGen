@@ -29,27 +29,23 @@ namespace KSPNameGen
 {
 	class Line
 	{
-		//Represents whether the line is interactive or only informational
+		// Represents whether the line is interactive or only informational
 		bool isOption
 		{
 			get;
 		}
 		Option opt;
 		string backing;
-		//The string representation of the line
+		// The string representation of the line
 		public string display
 		{
 			get
 			{
-				if(!isOption)
-				{
-					return backing;
-				}
-				return opt.ToString();
-			}
+                return !isOption ? backing : opt.ToString();
+            }
 			set
 			{
-				if(!isOption)
+				if (!isOption)
 				{
 					backing = value;
 				}
@@ -61,12 +57,8 @@ namespace KSPNameGen
 		{
 			get
 			{
-				if(!isOption)
-				{
-					return -1;
-				}
-				return opt.Index;
-			}
+                return !isOption ? -1 : opt.Index;
+            }
 			set
 			{
 				opt.Index = value;
@@ -90,21 +82,15 @@ namespace KSPNameGen
 		//Returns either the selected option or the display string.
 		public string GetSelection()
 		{
-			if(!isOption)
-			{
-				return backing;
-			}
-			return opt.GetSelection();
+            return !isOption ? backing : opt.GetSelection();
 		}
 		
 		//If an option, selects the relevant index.
 		public void Select(int s)
 		{
-			if(!isOption)
-			{
-				return;
-			}
-			opt.Index = s;
+            if (!isOption)
+                return;
+            opt.Index = s;
 		}
 		
 		//Moves the cursor

@@ -39,6 +39,10 @@
     <Compile Include="Utils.cs" />
     <Compile Include="NameArrays.cs" />
     <Compile Include="ProductVersion.cs" />
+    <Compile Include="Csv.cs" />
+    <Compile Include="Line.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Option.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

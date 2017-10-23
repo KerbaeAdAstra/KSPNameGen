@@ -34,7 +34,7 @@ namespace KSPNameGen
 	{
 		List<Line> content;
 		int cursor;	//The vertical position of the cursor
-		static ConsoleColor[] highlights = new ConsoleColor[4]{
+		static ConsoleColor[] highlights = {
 			Console.BackgroundColor,
 			ConsoleColor.DarkRed,
 			ConsoleColor.Green,
@@ -48,7 +48,7 @@ namespace KSPNameGen
 			get
 			{
 				int[] output = new int[content.Count];
-				for(int i = 0; i < output.Length; i++)
+				for (int i = 0; i < output.Length; i++)
 				{
 					output[i] = content[i].Index;
 				}
@@ -62,7 +62,7 @@ namespace KSPNameGen
 			get
 			{
 				string[] output = new string[content.Count];
-				for(int i = 0; i < output.Length; i++)
+				for (int i = 0; i < output.Length; i++)
 				{
 					output[i] = content[i].GetSelection();
 				}
@@ -77,7 +77,7 @@ namespace KSPNameGen
 			{
 				string[] output = new string[content.Count];
 				{
-					for(int i = 0; i < output.Length; i++)
+					for (int i = 0; i < output.Length; i++)
 					{
 						output[i] = content[i].display;
 					}
@@ -90,18 +90,22 @@ namespace KSPNameGen
 		public Menu(Line l)
 		{
 			cursor = 0;
-			content = new List<Line>();
-			content.Add(l);
-			def.Add(0);
+            content = new List<Line>
+            {
+                l
+            };
+            def.Add(0);
 			selectable.Add(true);
 		}
 		
 		public Menu(Line l, int d)
 		{
 			cursor = 0;
-			content = new List<Line>();
-			content.Add(l);
-			def.Add(d);
+            content = new List<Line>
+            {
+                l
+            };
+            def.Add(d);
 			selectable.Add(true);
 		}
 		
@@ -112,13 +116,11 @@ namespace KSPNameGen
 			content.AddRange(l);
 			def.AddRange(d);
 			selectable.AddRange(s);
-			foreach(bool b in selectable)
+			foreach (bool b in selectable)
 			{
-				if(b)
-				{
-					break;
-				}
-				cursor++;
+                if (b)
+                    break;
+                cursor++;
 			}
 		}
 		
@@ -153,9 +155,10 @@ namespace KSPNameGen
 		public void Draw()
 		{
 			Console.Clear();
-			for(int i = 0; i < content.Count; i++)
+			for (int i = 0; i < content.Count; i++)
 			{
-				Console.BackgroundColor = cursor == i ? highlights[1] : highlights[def[i]];	//indicate selection
+				Console.BackgroundColor = cursor == i ?
+                    highlights[1] : highlights[def[i]];	// indicate selection
 				Console.WriteLine(displays[i]);
 				Console.BackgroundColor = highlights[0];
 			}
@@ -179,13 +182,12 @@ namespace KSPNameGen
 		
 		public void MoveCursor(bool isUp)
 		{
-			do
-			{
-				cursor += isUp ? -1 : 1;
-				cursor = (cursor + content.Count) % content.Count;
-			}
-			while(!selectable[cursor]);
-		}
+            while (!selectable[cursor])
+            {
+                cursor += isUp ? -1 : 1;
+                cursor = (cursor + content.Count) % content.Count;
+            }
+        }
 		
 		public void MoveLineCursor(bool isLeft)
 		{
