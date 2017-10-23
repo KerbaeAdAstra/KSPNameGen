@@ -80,32 +80,33 @@ namespace KSPNameGen
 			"\nthat the generated name is proper."; // CMBO
 		const string rosterFormat = 
 			"\tKERBAL\n" +
+			"\t{{\n" +
+			"\t\tname = {0}\n" +
+			"\t\tgender = {1}\n" +
+			"\t\ttype = Crew\n" +
+			"\t\ttrait = {2}\n" +
+			"\t\tbrave = {3}\n" +
+			"\t\tdumb = {4}\n" +
+			"\t\tbadS = {5}\n" +
+			"\t\tveteran = False\n" +
+			"\t\ttour = False\n" +
+			"\t\tstate = Available\n" +
+			"\t\tinactive = False\n" +
+			"\t\tinactiveTimeEnd = 0\n" +
+			"\t\tgExperienced = 0\n" +
+			"\t\toutDueToG = False\n" +
+			"\t\tToD = 0\n" +
+			"\t\tidx = -1\n" +
+			"\t\textraXP = 0\n" +
+			"\t\tCAREER_LOG\n" +
 			"\t\t{{\n" +
-			"\t\t\tname = {0}\n" +
-			"\t\t\tgender = {1}\n" +
-			"\t\t\ttype = Crew\n" +
-			"\t\t\ttrait = {2}\n" +
-			"\t\t\tbrave = {3}\n" +
-			"\t\t\tdumb = {4}\n" +
-			"\t\t\tbadS = {5}\n" +
-			"\t\t\tveteran = False\n" +
-			"\t\t\ttour = False\n" +
-			"\t\t\tstate = Available\n" +
-			"\t\t\tinactive = False\n" +
-			"\t\t\tinactiveTimeEnd = 0\n" +
-			"\t\t\tgExperienced = 0\n" +
-			"\t\t\toutDueToG = False\n" +
-			"\t\t\tToD = 0\n" +
-			"\t\t\tidx = -1\n" +
-			"\t\t\textraXP = 0\n" +
-			"\t\t\tCAREER_LOG\n" +
-			"\t\t\t{{\n" +
-			"\t\t\t\tflight = 0\n" +
-			"\t\t\t}}\n" +
-			"\t\t\tFLIGHT_LOG\n" +
-			"\t\t\t{{\n" +
-			"\t\t\t\tflight = 0\n" +
-			"\t\t\t}}\n";
+			"\t\t\tflight = 0\n" +
+			"\t\t}}\n" +
+			"\t\tFLIGHT_LOG\n" +
+			"\t\t{{\n" +
+			"\t\t\tflight = 0\n" +
+			"\t\t}}\n" +
+			"\t}}\n";
 
 		// application logic begins here
 
@@ -178,6 +179,8 @@ namespace KSPNameGen
 					FlagParse(args, "--number", out genNum, genNum))
 					{
 						RosterIterator(genNum, Stringify(param), bufferSize);
+						ReadKey(true);
+						Kill(0);
 					}
 					else
 					{
@@ -429,7 +432,7 @@ namespace KSPNameGen
 			ConsoleColor fexBack = ConsoleColor.Green;
 			ConsoleColor dneBack = ConsoleColor.Red;
 
-			Clear();
+			Console.Clear();
 			switch (drawMode)
 			{
 				case Modes.Main:
@@ -621,18 +624,18 @@ namespace KSPNameGen
 
 		static void RosterIterator(ulong number, string _param, ulong buffsize)
 		{
-			string gender = random.Next(0, 1) == 1 ? "Male" : "Female";
-			string trait = random.Next(0, 2) == 0 ? "Pilot" : 
-			random.Next(0, 1) == 0 ? "Engineer" : "Scientist";
-			string brave = random.NextDouble().ToString();
-			string dumb = random.NextDouble().ToString();
-			string badS = random.Next(0, 9) == 0 ? "True" : "False";
 			if (writeFile)
 			{
 				StreamWriter sw = CreateText(filePath);
 				sw.Write("ROSTER\n{\n");
 				for (ulong i = 0; i < number; i++)
 				{
+					string gender = _param.ToCharArray()[2] == 'm' ? "Male" : "Female";
+					string trait = random.Next(0, 2) == 0 ? "Pilot" : 
+					random.Next(0, 1) == 0 ? "Engineer" : "Scientist";
+					string brave = random.NextDouble().ToString();
+					string dumb = random.NextDouble().ToString();
+					string badS = random.Next(0, 9) == 0 ? "True" : "False";
 					sw.Write(
 						String.Format(rosterFormat, Generate(_param), gender, trait, brave, dumb, badS)
 					);
@@ -644,8 +647,15 @@ namespace KSPNameGen
 			}
 			string buffer = "";
 			string Generated = "";
+			Write("ROSTER\n{\n");
 			for (ulong i = 0; i < number; i++)
 			{
+				string gender = _param.ToCharArray()[2] == 'm' ? "Male" : "Female";
+				string trait = random.Next(0, 2) == 0 ? "Pilot" : 
+				random.Next(0, 1) == 0 ? "Engineer" : "Scientist";
+				string brave = random.NextDouble().ToString();
+				string dumb = random.NextDouble().ToString();
+				string badS = random.Next(0, 9) == 0 ? "True" : "False";
 				Generated = Generate(_param);
 				buffer += String.Format(rosterFormat, Generated, gender, trait, brave, dumb, badS) + "\n";
 				if (i % buffsize == 0)
@@ -655,6 +665,7 @@ namespace KSPNameGen
 				}
 			}
 			Write(buffer);
+			Write("}\n");
 		}
 	}
 }
