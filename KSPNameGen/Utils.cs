@@ -46,12 +46,9 @@ namespace KSPNameGen
 			return Exists(arr, element => element == flag);
 		}
 
-		public static bool FlagParse(string[] arr, string flag, out
-									 ulong product, ulong def)
+		public static bool FlagParse(string[] arr, string flag, ref ulong product)
 		{
-			product = def;
-
-			if (!Exists(arr, element => element == flag))
+		  if (!Exists(arr, element => element == flag))
 			{
 				return false;
 			}
@@ -69,11 +66,8 @@ namespace KSPNameGen
 			return true;
 		}
 
-		public static bool FlagParse(string[] arr, string flag, out
-									 string product, string def)
+		public static bool FlagParse(string[] arr, string flag, ref string product)
 		{
-			product = def;
-
 			if (!Exists(arr, element => element == flag))
 			{
 

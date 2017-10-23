@@ -23,7 +23,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// using statements
+// using directives
 
 using System;
 using System.IO;
@@ -131,8 +131,8 @@ namespace KSPNameGen
 			
 			if (FlagExists(args, "-t") || FlagExists(args, "--type"))
 			{
-				if (FlagParse(args, "-t", out argument, argument) ||
-					FlagParse(args, "--type", out argument, argument))
+				if (FlagParse(args, "-t", ref argument) ||
+					FlagParse(args, "--type", ref argument))
 				{
 					param = IntArrayify(argument);
 				}
@@ -142,13 +142,13 @@ namespace KSPNameGen
 				}
 			}
 			
-			FlagParse(args, "-b", out bufferSize, bufferSize);
-			FlagParse(args, "--buffer", out bufferSize, bufferSize);
+			FlagParse(args, "-b", ref bufferSize);
+			FlagParse(args, "--buffer", ref bufferSize);
 			
 			if (FlagExists(args, "-f") || FlagExists(args, "--file"))
 			{
-				if (FlagParse(args, "-f", out filePath, filePath) ||
-					FlagParse(args, "--file", out filePath, filePath))
+				if (FlagParse(args, "-f", ref filePath) ||
+					FlagParse(args, "--file", ref filePath))
 				{
 					if (Accessible(filePath))
 					{
