@@ -33,14 +33,16 @@ namespace KSPNameGen
 	class Menu
 	{
 		List<Line> content;
-		int cursor;
+		int cursor;	//The vertical position of the cursor
 		static ConsoleColor[] highlights = new ConsoleColor[4]{
 			Console.BackgroundColor,
 			ConsoleColor.DarkRed,
 			ConsoleColor.Green,
 			ConsoleColor.Red};
-		List<int> def;
+		List<int> def = new List<int>();	//Specifies highlight colors according to highlights
+		List<bool> selectable = new List<bool>();
 		
+		//The indices of each line in the content
 		public int[] indices
 		{
 			get
@@ -48,12 +50,13 @@ namespace KSPNameGen
 				int[] output = new int[content.Count];
 				for(int i = 0; i < output.Length; i++)
 				{
-					output[i] = content[i].index;
+					output[i] = content[i].Index;
 				}
 				return output;
 			}
 		}
 		
+		//The selections of each line in the content
 		public string[] selections
 		{
 			get
@@ -67,6 +70,7 @@ namespace KSPNameGen
 			}
 		}
 		
+		//The display strings of each line in the content
 		public string[] displays
 		{
 			get
@@ -82,12 +86,14 @@ namespace KSPNameGen
 			}
 		}
 		
+		//Constructors
 		public Menu(Line l)
 		{
 			cursor = 0;
 			content = new List<Line>();
 			content.Add(l);
 			def.Add(0);
+			selectable.Add(true);
 		}
 		
 		public Menu(Line l, int d)
@@ -96,20 +102,38 @@ namespace KSPNameGen
 			content = new List<Line>();
 			content.Add(l);
 			def.Add(d);
+			selectable.Add(true);
 		}
 		
-		public Menu(Line[] l, int[] d)
+		public Menu(Line[] l, int[] d, bool[] s, int c)
 		{
-			cursor = 0;
+			cursor = c;
 			content = new List<Line>();
 			content.AddRange(l);
 			def.AddRange(d);
+			selectable.AddRange(s);
+			foreach(bool b in selectable)
+			{
+				if(b)
+				{
+					break;
+				}
+				cursor++;
+			}
 		}
 		
+		//Adds a line with default highlighting.
 		public void AddLine(Line l)
 		{
 			content.Add(l);
 			def.Add(0);
+		}
+		
+		//Adds a line with supplied highlighting.
+		public void AddLine(Line l, int d)
+		{
+			content.Add(l);
+			def.Add(d);
 		}
 		
 		/*
@@ -143,7 +167,27 @@ namespace KSPNameGen
 			Console.WriteLine(message);
 		}
 		
-		public void MoveCursor(bool isLeft)
+		public void SetHighlight(int index, int colorID)
+		{
+			def[index] = colorID;
+		}
+		
+		public void SetDisplay(int index, string newDisplay)
+		{
+			content[index].display = newDisplay;
+		}
+		
+		public void MoveCursor(bool isUp)
+		{
+			do
+			{
+				cursor += isUp ? -1 : 1;
+				cursor = (cursor + content.Count) % content.Count;
+			}
+			while(!selectable[cursor]);
+		}
+		
+		public void MoveLineCursor(bool isLeft)
 		{
 			content[cursor].MoveCursor(isLeft);
 		}

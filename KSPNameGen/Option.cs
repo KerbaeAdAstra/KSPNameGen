@@ -23,14 +23,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace KSPNameGen
 {
 	class Option
 	{
-		string[] options;
-		int count;
+		string[] options;	//The set of strings representing the options
+		int count;				//The quantity of options available
+		int index;
 		
-		public int index
+		//The position of the selected option
+		public int Index
 		{
 			get
 			{
@@ -39,18 +43,23 @@ namespace KSPNameGen
 			
 			set
 			{
+				Console.WriteLine((value + count) % count);
+				Console.WriteLine(index);
 				index = (value + count) % count;
+				Console.WriteLine(index);
 			}
 		}
 		
+		//Constructs a new Option with an array of strings
 		public Option(string[] choices)
 		{
 			options = choices;
 			count = options.Length;
-			index = 0;
+			Index = 0;
 		}
 		
-		public string ToString()
+		//Turns all options into a single line, surrounding the selected one with square brackets
+		public override string ToString()
 		{
 			string output = "";
 			for(int i = 0; i < count; i++)
@@ -62,6 +71,7 @@ namespace KSPNameGen
 			return output;
 		}
 		
+		//Returns the selected option as a string
 		public string GetSelection()
 		{
 			return options[index];

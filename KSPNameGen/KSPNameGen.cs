@@ -28,6 +28,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using KSPNameGen;
 using static System.Console;
 using static System.ConsoleKey;
 using static System.IO.File;
@@ -71,6 +72,7 @@ namespace KSPNameGen
 		static string filePath = "";
 		static Modes drawMode = Modes.Main;
 		static ConsoleKeyInfo input;
+		static Menu[] ui = new Menu[2];
 		static readonly Random random = new Random();
 		const string help = "Standard names have a 'Kerman' surname, while" +
 			"\nFuture-style names have randomly generated surnames." + // TYPE
@@ -173,10 +175,11 @@ namespace KSPNameGen
 			
 			if (FlagExists(args, "-n") || FlagExists(args, "--number"))
 			{
+				/*
 				if (FlagExists(args, "-r") || FlagExists(args, "--roster"))
 				{
-					if (FlagParse(args, "-n", out genNum, genNum) ||
-					FlagParse(args, "--number", out genNum, genNum))
+					if (FlagParse(args, "-n", ref genNum) ||
+					FlagParse(args, "--number", ref genNum))
 					{
 						RosterIterator(genNum, Stringify(param), bufferSize);
 						ReadKey(true);
@@ -187,8 +190,8 @@ namespace KSPNameGen
 						Usage(true);
 					}
 				}
-				if (FlagParse(args, "-n", out genNum, genNum) ||
-					FlagParse(args, "--number", out genNum, genNum))
+				if (FlagParse(args, "-n", ref genNum) ||
+					FlagParse(args, "--number", ref genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -196,6 +199,7 @@ namespace KSPNameGen
 				{
 					Usage(true);
 				}
+				*/
 			}
 			else
 			{
@@ -253,6 +257,26 @@ namespace KSPNameGen
 		static void Loop()
 		{
 			string inString;
+			
+			ui[0] = new Menu(new Line[5]
+			{
+				new Line(String.Format("KSPNameGen v{0}", ProductVersion.productVersion)),
+				new Line(new Option(new string[2]{"Future", "Standard"})),
+				new Line(new Option(new string[3]{"Proper", "Mixed", "Constructed"})),
+				new Line(new Option(new string[2]{"Male", "Female"})),
+				new Line(new Option(new string[4]{"Generate", "Help", "Exit", "Options"}))
+			}, new int[5]{0,0,0,0,0}, new bool[5]{false, true, true, true, true}, 0);
+			
+			ui[1] = new Menu(new Line[6]
+			{
+				new Line("Options"),
+				new Line(String.Format("Buffer Size:   {0,16}", bufferSize)),
+				new Line("File Path"),
+				new Line(filePath),
+				new Line(String.Format("Write to File               [{0}]", writeFile ? 'x' : ' ')),
+				new Line(" Apply ")
+			}, new int[6]{0,0,0,0,0,0}, new bool[6]{false, true, true, false, true, true}, 5);
+			
 			Draw();
 			for (;;)
 			{
@@ -298,6 +322,7 @@ namespace KSPNameGen
 								cursor[0]++;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
+								ui[0].MoveCursor(false);
 								break;
 
 							case UpArrow:
@@ -305,14 +330,17 @@ namespace KSPNameGen
 								cursor[0] += 4;
 								cursor[0] %= 4;
 								cursor[1] = param[cursor[0]];
+								ui[0].MoveCursor(true);
 								break;
 
 							case RightArrow:
 								cursor[1]++;
+								ui[0].MoveLineCursor(false);
 								break;
 
 							case LeftArrow:
 								cursor[1]--;
+								ui[0].MoveLineCursor(true);
 								break;
 
 							case Enter:
@@ -376,12 +404,14 @@ namespace KSPNameGen
 						case DownArrow:
 							cursor[0]++;
 							cursor[0] %= 4;
+							ui[1].MoveCursor(false);
 							break;
 
 						case UpArrow:
 							cursor[0]--;
 							cursor[0] += 4;
 							cursor[0] %= 4;
+							ui[1].MoveCursor(true);
 							break;
 
 						case Enter:
@@ -432,10 +462,11 @@ namespace KSPNameGen
 			ConsoleColor fexBack = ConsoleColor.Green;
 			ConsoleColor dneBack = ConsoleColor.Red;
 
-			Console.Clear();
+			//Console.Clear();
 			switch (drawMode)
 			{
 				case Modes.Main:
+					/*
 					WriteLine("KSPNameGen v{0}", ProductVersion.productVersion);
 
 					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
@@ -470,9 +501,14 @@ namespace KSPNameGen
 					WriteLine(help);
 						writeHelp = false;
 					}
+					*/
+					
+					ui[0].Draw();
+					
 					break;
 
 				case Modes.Options:
+					/*
 					WriteLine("Options");
 
 					BackgroundColor = cursor[0] == 0 ? newBack : oldBack;
@@ -494,6 +530,10 @@ namespace KSPNameGen
 						" Apply                         ");
 
 					BackgroundColor = oldBack;
+					*/
+					
+					ui[1].Draw();
+					
 					break;
 			}
 		}

@@ -118,7 +118,7 @@ namespace KSPNameGen
 			Write("Exiting");
 			for (int i = 0; i < 3; i++)
 			{
-				Thread.Sleep(333);
+				Thread.Sleep(100);
 				Write(".");
 			}
 			WriteLine();

@@ -23,18 +23,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace KSPNameGen
 {
 	class Line
 	{
+		//Represents whether the line is interactive or only informational
 		bool isOption
 		{
 			get;
 		}
 		Option opt;
-		public string display;
+		string backing;
+		//The string representation of the line
+		public string display
+		{
+			get
+			{
+				if(!isOption)
+				{
+					return backing;
+				}
+				return opt.ToString();
+			}
+			set
+			{
+				if(!isOption)
+				{
+					backing = value;
+				}
+			}
+		}
 		
-		public int index
+		//If an option, the index of the option. Otherwise, -1.
+		public int Index
 		{
 			get
 			{
@@ -42,48 +65,57 @@ namespace KSPNameGen
 				{
 					return -1;
 				}
-				return opt.index;
+				return opt.Index;
+			}
+			set
+			{
+				opt.Index = value;
 			}
 		}
 		
+		//Constructs a Line with an option.
 		public Line(Option o)
 		{
 			isOption = true;
 			opt = o;
-			display = opt.ToString();
 		}
 		
+		//Constructs a Line with a simple string.
 		public Line(string datum)
 		{
 			isOption = false;
-			display = datum;
+			backing = datum;
 		}
 		
+		//Returns either the selected option or the display string.
 		public string GetSelection()
 		{
 			if(!isOption)
 			{
-				return display;
+				return backing;
 			}
 			return opt.GetSelection();
 		}
 		
+		//If an option, selects the relevant index.
 		public void Select(int s)
 		{
 			if(!isOption)
 			{
 				return;
 			}
-			opt.index = s;
+			opt.Index = s;
 		}
 		
+		//Moves the cursor
 		public void MoveCursor(bool isLeft)
 		{
 			if(!isOption)
 			{
+				Console.WriteLine("Not an option!");
 				return;
 			}
-			opt.index = opt.index + (isLeft ? -1 : 1);
+			Index = Index + (isLeft ? -1 : 1);
 		}
 	}
 }
