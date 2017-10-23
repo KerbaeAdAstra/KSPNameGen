@@ -99,7 +99,7 @@ namespace KSPNameGen
 			WriteLine(query);
 			if (!ulong.TryParse(ReadLine(), out inputLong))
 			{
-				WriteLine("A positive nonzero integer was not" +
+				WriteLine("A positive nonzero integer was not " +
 								  "specified.");
 			}
 			return inputLong;

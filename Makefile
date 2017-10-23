@@ -44,18 +44,6 @@ libexec = /usr/local/libexec
 localbin = /usr/local/bin
 basename = KSPNameGen
 
-# Get the git versioning
-
-stable = 0.3.0
-gitrevs := $(shell git rev-list v$(stable)..HEAD 2> /dev/null | wc -l)
-githash := $(shell git rev-parse --short HEAD 2> /dev/null)
-
-# Test for travis env; gitrevs should be 0 due to shallow clone
-
-ifeq ($(gitrevs),0)
-	gitrevs = travis
-endif
-
 # Test for msbuild/xbuild
 buildtest := $(shell which msbuild 2> /dev/null; echo $$?)
 ifeq ($(buildtest),1)
@@ -94,7 +82,5 @@ uninstall:
 version:
     pvexist := $(shell stat $(basename)/ProductVersion.cs > /dev/null 2>&1; echo $$?)
     ifeq ($(pvexist),1)
-        $(shell echo "namespace KSPNameGen\n{\n\tpublic static class ProductVersion\
-        \n\t{\n\t\tpublic static string productVersion = \
-        \"$(stable).$(gitrevs)-g$(githash)\";\n\t}\n}" > $(basename)/ProductVersion.cs)
+        $(shell exec ./scripts/genver.sh)
     endif

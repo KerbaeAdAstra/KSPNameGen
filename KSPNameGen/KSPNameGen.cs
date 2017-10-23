@@ -59,23 +59,54 @@ namespace KSPNameGen
 
 		// variable definitions
 
-		static readonly Random random = new Random();
+
 		static bool gen = true;
+		static bool state = true;
+		static bool writeFile;
+		static bool writeHelp;
+		static bool writeRoster;
 		static int[] cursor = { 0, 0 };
 		static int[] param = { 0, 0, 0, 0 };
-		static bool state = true;
-		static bool writeHelp;
-		static Modes drawMode = Modes.Main;
 		static ulong bufferSize = 48;
 		static string filePath = "";
-		static bool writeFile;
+		static Modes drawMode = Modes.Main;
 		static ConsoleKeyInfo input;
+		static readonly Random random = new Random();
 		const string help = "Standard names have a 'Kerman' surname, while" +
 			"\nFuture-style names have randomly generated surnames." + // TYPE
 			"\nProper names are chosen from a list, while constructed names are" +
 			"\nconstructed from a list of prefixes and suffixes." +
 			"\nIf the option 'combination' is chosen, then there is a 1/20 chance" +
 			"\nthat the generated name is proper."; // CMBO
+		const string rosterFormat = 
+			"\tKERBAL\n" +
+			"\t{{\n" +
+			"\t\tname = {0}\n" +
+			"\t\tgender = {1}\n" +
+			"\t\ttype = Crew\n" +
+			"\t\ttrait = {2}\n" +
+			"\t\tbrave = {3}\n" +
+			"\t\tdumb = {4}\n" +
+			"\t\tbadS = {5}\n" +
+			"\t\tveteran = False\n" +
+			"\t\ttour = False\n" +
+			"\t\tstate = Available\n" +
+			"\t\tinactive = False\n" +
+			"\t\tinactiveTimeEnd = 0\n" +
+			"\t\tgExperienced = 0\n" +
+			"\t\toutDueToG = False\n" +
+			"\t\tToD = 0\n" +
+			"\t\tidx = -1\n" +
+			"\t\textraXP = 0\n" +
+			"\t\tCAREER_LOG\n" +
+			"\t\t{{\n" +
+			"\t\t\tflight = 0\n" +
+			"\t\t}}\n" +
+			"\t\tFLIGHT_LOG\n" +
+			"\t\t{{\n" +
+			"\t\t\tflight = 0\n" +
+			"\t\t}}\n" +
+			"\t}}\n";
 
 		// application logic begins here
 
@@ -142,8 +173,22 @@ namespace KSPNameGen
 			
 			if (FlagExists(args, "-n") || FlagExists(args, "--number"))
 			{
-				if (FlagParse(args, "-n", ref genNum) ||
-					FlagParse(args, "--number", ref genNum))
+				if (FlagExists(args, "-r") || FlagExists(args, "--roster"))
+				{
+					if (FlagParse(args, "-n", out genNum, genNum) ||
+					FlagParse(args, "--number", out genNum, genNum))
+					{
+						RosterIterator(genNum, Stringify(param), bufferSize);
+						ReadKey(true);
+						Kill(0);
+					}
+					else
+					{
+						Usage(true);
+					}
+				}
+				if (FlagParse(args, "-n", out genNum, genNum) ||
+					FlagParse(args, "--number", out genNum, genNum))
 				{
 					Iterator(genNum, Stringify(param), bufferSize);
 				}
@@ -166,15 +211,17 @@ namespace KSPNameGen
 			Write(
 				"Usage: {0} [flags] [args]\n" +
 				"A list of valid flags and their arguments follow.\n" +
-				"-h --help:        No argument. Displays this message.\n" +
-				"-t --type:        A string indicating the type of name to " +
+				"-h --help:		No argument. Displays this message.\n" +
+				"-t --type:		A string indicating the type of name to " +
 				"generate. Defaults to fpm.\n" +
-				"-b --buffer:      An integer indicating the number of names to " +
+				"-r --roster:		Generates names, and then writes them to a " +
+				"ROSTER node so that it can be used in-game.\n" +
+				"-b --buffer:		An integer indicating the number of names to " +
 				"write to stdout per frame.\n" +
-				"-f --file:        A string indicating the output file, using " +
+				"-f --file:		A string indicating the output file, using " +
 				"either relative or absolute paths.\n" +
-				"-i --interactive: No argument. Forces interactive mode; default.\n" +
-				"-n --number:      An integer indicating the number of names to " +
+				"-i --interactive:	No argument. Forces interactive mode; default.\n" +
+				"-n --number:		An integer indicating the number of names to " +
 				"generate. Also noninteractive.\n" +
 				"All other (invalid) flags and arguments will result in this " +
 				"message being shown.\n"
@@ -313,6 +360,10 @@ namespace KSPNameGen
 						}
 						param[cursor[0]] = cursor[1];
 						return;
+					}
+					if (writeRoster)
+					{
+						RosterIterator(PromptI(prompt[0]), Stringify(param), bufferSize);
 					}
 					Iterator(PromptI(prompt[0]), Stringify(param), bufferSize);
 					gen = false;
@@ -538,7 +589,6 @@ namespace KSPNameGen
 			Loop();
 		}
 
-
 		static void Iterator(ulong number, string _param, ulong buffsize)
 		{
 			if (number > uint.MaxValue)
@@ -548,16 +598,15 @@ namespace KSPNameGen
 			}
 			if (writeFile)
 			{
-				StreamWriter sr = CreateText(filePath);
+				StreamWriter sw = CreateText(filePath);
 				for (ulong i = 0; i < number; i++)
 				{
-					sr.WriteLine(Generate(_param));
+					sw.WriteLine(Generate(_param));
 				}
-				sr.Dispose();
+				sw.Dispose();
 				WriteLine("Complete.");
 				return;
 			}
-
 			string buffer = "";
 			string Generated = "";
 			for (ulong i = 0; i < number; i++)
@@ -571,6 +620,52 @@ namespace KSPNameGen
 				}
 			}
 			Write(buffer);
+		}
+
+		static void RosterIterator(ulong number, string _param, ulong buffsize)
+		{
+			if (writeFile)
+			{
+				StreamWriter sw = CreateText(filePath);
+				sw.Write("ROSTER\n{\n");
+				for (ulong i = 0; i < number; i++)
+				{
+					string gender = _param.ToCharArray()[2] == 'm' ? "Male" : "Female";
+					string trait = random.Next(0, 2) == 0 ? "Pilot" : 
+					random.Next(0, 1) == 0 ? "Engineer" : "Scientist";
+					string brave = random.NextDouble().ToString();
+					string dumb = random.NextDouble().ToString();
+					string badS = random.Next(0, 9) == 0 ? "True" : "False";
+					sw.Write(
+						String.Format(rosterFormat, Generate(_param), gender, trait, brave, dumb, badS)
+					);
+				}
+				sw.Write("}\n");
+				sw.Dispose();
+				WriteLine("Complete.");
+				return;
+			}
+			string buffer = "";
+			string Generated = "";
+			Write("ROSTER\n{\n");
+			for (ulong i = 0; i < number; i++)
+			{
+				string gender = _param.ToCharArray()[2] == 'm' ? "Male" : "Female";
+				string trait = random.Next(0, 2) == 0 ? "Pilot" : 
+				random.Next(0, 1) == 0 ? "Engineer" : "Scientist";
+				string brave = random.NextDouble().ToString();
+				string dumb = random.NextDouble().ToString();
+				string badS = random.Next(0, 9) == 0 ? "True" : "False";
+				Generated = Generate(_param);
+				buffer += String.Format(rosterFormat, Generated, gender, trait, brave, dumb, badS) + "\n";
+				if (i % buffsize == 0)
+				{
+					Write(buffer);
+					buffer = "";
+				}
+			}
+			Write(buffer);
+			Write("}\n");
 		}
 	}
 }
